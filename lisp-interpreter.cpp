@@ -18,8 +18,10 @@ int main() {
 }
 
 string read() {
-    string blah;
-    return;
+    string line;
+    cout << '>';
+    cin >> line;
+    return line;
 }
 
 void parse() {
