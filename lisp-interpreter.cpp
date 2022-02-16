@@ -12,8 +12,9 @@ int main() {
     cout << "hello world" << endl;
     cout << "testing changes" << endl;
 
-    while(1){
-        eval(parse(read()));
+    int go = 1;
+    while(go){
+        go = eval(parse(read()));
     }
 }
 
@@ -25,10 +26,10 @@ string read() {
 }
 
 void parse() {
-
+    // return array of tokens
     return;
 }
 
 void eval() {
-
+    // do something with the tokens
 }
