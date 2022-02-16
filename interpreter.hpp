@@ -1,5 +1,5 @@
 // TOKENS
-enum TokenType {nil, name, symbol, number};
+enum TokenType {nil, string, number, leftParen, rightParen};
 
 template <typename T>
 class Token {
