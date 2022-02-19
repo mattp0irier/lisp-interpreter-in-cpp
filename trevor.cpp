@@ -15,13 +15,14 @@ int main(int argc, char *argv[]){
         cout << "Usage: lisp [file]" << endl;
         return -1;
     }
-    if (argc == 1) {
+    if (argc == 2) {
         runFile(argv[0]);
     }
     else{
         runPrompt();
     }
 
+    return 1;
 }
 
 void runFile(string filename){
@@ -35,12 +36,16 @@ void runPrompt(){
     while (1){
         cout << "> ";
         cin >> line;
-        if (line == "") break;
+//        if (line.length() == 0) break;
         run(line);
     }
+
+    return;
 
 }
 
 void run(string line){
+// vector<Token) tokens;
+// scanTokens(line, tokens);
     cout << "ran something" << endl;
 }
