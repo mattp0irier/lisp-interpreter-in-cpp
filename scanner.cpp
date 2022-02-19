@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <iostream>
 #include "Token.cpp"
 
 using namespace std;
@@ -16,7 +17,7 @@ class Scanner {
         }
 
         void addToken(TokenType type, string value) {
-            tokens.push_back(new Token(type, value, currentLine));
+            tokens.push_back(*(new Token(type, value, currentLine)));
         }
 
         void scanToken() {
@@ -34,5 +35,13 @@ class Scanner {
     public:
         Scanner(string input) {
             this->input = input;
+        }
+
+        void printTokens() {
+            for (int i=0; i<tokens.size(); i++){
+                cout << tokens[i].getVal();
+                if (i+1 != tokens.size()) cout << " ";
+            }
+            cout << endl;
         }
 };
