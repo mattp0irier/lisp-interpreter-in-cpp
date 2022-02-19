@@ -1,0 +1,2 @@
+// for random things that will be used later
+enum OperationType {ifOp, whileOp, setOp, beginOp, plusOp, minusOp, multOp, divOp, eqOp, ltOp, gtOp, consOp, carOp, cdrOp, isNumOp, isSymOp, isListOp, isNullOp, printOp, tOp}
