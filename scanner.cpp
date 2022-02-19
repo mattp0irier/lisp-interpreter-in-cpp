@@ -39,7 +39,7 @@ class Scanner {
 
         void printTokens() {
             for (int i=0; i<tokens.size(); i++){
-                cout << tokens[i].getVal();
+                cout << "\"" << tokens[i].getVal() << "\"";
                 if (i+1 != tokens.size()) cout << " ";
             }
             cout << endl;

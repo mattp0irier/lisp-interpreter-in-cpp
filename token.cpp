@@ -24,4 +24,10 @@ class Token {
             this->value = value;
             this->line = line;
         }
+
+        string getVal() { return value; }
+        TokenType getType() { return type; }
+        int getLine() { return line; }
+
+        
 };
