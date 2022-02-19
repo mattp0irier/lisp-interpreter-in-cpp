@@ -3,8 +3,8 @@
 #include <fstream>
 #include <vector>
 
-#include interpreter.hpp
-#include lisp-class.hpp;
+#include "interpreter.hpp";
+#include "lisp-class.hpp";
 
 using namespace std;
 
