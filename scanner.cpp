@@ -29,31 +29,31 @@ class Scanner {
             char c = getNextChar();
             switch (c) {
             case '(':
-                addToken(LEFT_PAREN, NULL);
+                addToken(LEFT_PAREN, c);
                 break;
             case ')':
-                addToken(RIGHT_PAREN, NULL);
+                addToken(RIGHT_PAREN, c);
                 break;
             case '+':
-                addToken(PLUS, NULL);
+                addToken(PLUS, c);
                 break;
             case '-':
-                addToken(MINUS, NULL);
+                addToken(MINUS, c);
                 break;
             case '*':
-                addToken(MULTIPLY, NULL);
+                addToken(MULTIPLY, c);
                 break;
             case '/':
-                addToken(DIVIDE, NULL);
+                addToken(DIVIDE, c);
                 break;
             case '=':
-                addToken(EQUAL, NULL);
+                addToken(EQUAL, c);
                 break;
             case '<':
-                addToken(LESS_THAN, NULL);
+                addToken(LESS_THAN, c);
                 break;
             case '>':
-                addToken(GREATER_THAN, NULL);
+                addToken(GREATER_THAN, c);
                 break;
 
             // ignore whitespace
@@ -101,12 +101,13 @@ class Scanner {
         }
 
         vector<Token> scanTokens() {
-            while() {
+            while(index < input.length()) {
                 startIndex = index;
                 scanToken();
             }
 
-            /// FINISH
+            addToken(END_OF_FILE, NULL);
+            return tokens;
         }
 
         void printTokens() {
