@@ -38,7 +38,7 @@ void runPrompt(){
     string line;
     while (1){
         cout << "> ";
-        cin >> line;
+        getline(cin, line);
 //        if (line.length() == 0) break;
         run(line);
     }

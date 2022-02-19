@@ -9,7 +9,7 @@ class Scanner {
     private:
         string input;
         int startIndex;
-        int index;
+        int index = 0;
         vector<Token> tokens;
         int currentLine;
 
@@ -84,6 +84,7 @@ class Scanner {
         }
 
         void getNumber() {
+            //cout << "getNumber" << endl;
             while (isdigit(index + 1)) {
                 getNextChar();
             }
@@ -91,6 +92,7 @@ class Scanner {
         }
 
         void getIdentifier() {
+            //cout << "getIdentifier" << endl;
             while (isalpha(index + 1)) {
                 getNextChar();
             }
@@ -108,7 +110,7 @@ class Scanner {
             // cout << "beginning scan" << endl;
             while(index < input.length()) {
                 startIndex = index;
-                cout << "scanning token at index " << index << endl;
+                //cout << "scanning token at index " << index << endl;
                 scanToken();
             }
 
