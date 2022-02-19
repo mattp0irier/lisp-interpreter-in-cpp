@@ -23,6 +23,7 @@
         "type_traits": "cpp",
         "vector": "cpp",
         "string": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "ostream": "cpp"
     }
 }

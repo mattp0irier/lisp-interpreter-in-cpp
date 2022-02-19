@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Token.cpp"
+#include "token.cpp"
 
 using namespace std;
 
@@ -11,25 +11,21 @@ class Scanner {
         int startIndex;
         int index;
         vector<Token> tokens;
-        int currentLine = 0;
+        int currentLine;
 
         char getNextChar() {
             return input.at(index++);
         }
 
         void addToken(TokenType type, string value) {
-           // Token *newToken = new Token(type, value, currentLine);
-           // tokens.push_back(*newToken);
-           Token test_token(LEFT_PAREN, "(", 0);
-           cout << "adding token 1" << endl;
-           tokens.push_back(test_token);
-            cout << "added string token" << endl;
+            tokens.push_back(Token(type, value, currentLine));
+            // cout << "added string token" << endl;
         }
 
         void addToken(TokenType type, int value) {
-            cout << "adding token 2" << endl;
-            tokens.push_back((Token(type, value, currentLine)));
-            cout <<"pushback complete"<<endl;
+            // cout << "adding token 2" << endl;
+            tokens.push_back(Token(type, value, currentLine));
+            // cout <<"pushback complete"<<endl;
         }
 
         void scanToken() {
@@ -105,11 +101,14 @@ class Scanner {
     public:
         Scanner(string input) {
             this->input = input;
+            currentLine = 0;
         }
 
         vector<Token> scanTokens() {
+            // cout << "beginning scan" << endl;
             while(index < input.length()) {
                 startIndex = index;
+                cout << "scanning token at index " << index << endl;
                 scanToken();
             }
 
@@ -119,7 +118,12 @@ class Scanner {
 
         void printTokens() {
             for (int i=0; i<tokens.size(); i++){
-                cout << "\"" << tokens[i].getType() << "\"";
+                if(tokens[i].getType() == NUMBER) {
+                    cout << "\"" << tokens[i].getNumVal() << "\"";
+                }
+                else {
+                    cout << "\"" << tokens[i].getVal() << "\"";
+                }
                 if (i+1 != tokens.size()) cout << " ";
             }
             cout << endl;
