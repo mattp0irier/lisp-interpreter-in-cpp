@@ -14,13 +14,16 @@ enum TokenType {
     // Keywords
     IF, WHILE, SET, BEGIN, CONS, CAR, CDR,
     IS_NUMBER, IS_SYMBOL, IS_LIST, IS_NULL,
-    PRINT, DEFINE, CALL
+    PRINT, DEFINE, CALL,
+
+    END_OF_FILE
 };
 
 class Token {
     private:
         TokenType type;
         string value;
+        int numValue;
         int line;
 
     public:
@@ -29,9 +32,15 @@ class Token {
             this->value = value;
             this->line = line;
         }
+        Token(TokenType type, int numValue, int line) {
+            this->type = type;
+            this->numValue = numValue;
+            this->line = line;
+        }
 
         string getVal() { return value; }
         TokenType getType() { return type; }
         int getLine() { return line; }
+
 
 };
