@@ -34,5 +34,4 @@ class Token {
         TokenType getType() { return type; }
         int getLine() { return line; }
 
-
 };
