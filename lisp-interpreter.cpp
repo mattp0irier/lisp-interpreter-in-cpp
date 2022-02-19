@@ -3,76 +3,52 @@
 #include <fstream>
 #include <vector>
 
-#include "interpreter.hpp";
-#include "lisp-class.hpp";
+#include "scanner.cpp"
+//#include "lisp-class.hpp";
 
 using namespace std;
 
-string read();
-void parse();
-void eval();
+void runFile(string filename);
+void runPrompt();
+void run(string line);
 
-int main() {
-    cout << "hello world" << endl;
-    cout << "testing changes" << endl;
 
-    int go = 1;
-    while(go){
-        go = eval(parse(read()));
+int main(int argc, char *argv[]){
+    if (argc > 2) {
+        cout << "Usage: lisp [file]" << endl;
+        return -1;
     }
+    if (argc == 2) {
+        runFile(argv[0]);
+    }
+    else{
+        runPrompt();
+    }
+
+    return 1;
 }
 
-string read() {
+void runFile(string filename){
+    ifstream input(filename);;
+    string str((istreambuf_iterator<char>(input)), istreambuf_iterator<char>());
+    run(str);
+}
+
+void runPrompt(){
     string line;
-    cout << '>';
-    cin >> line;
-    return line;
-}
-
-void parse(string inputLine) {
-    int i = 0;
-    vector<Token> tokenList;
-    while(i < inputLine.length()) {
-        if (inputLine[i] == '(') {
-            
-            // Token t = new Token(leftParen, '(')
-            // tokenList.push_back(t);
-            // i++;
-        }
-        else if(inputLine[i] == ')') {
-            // Token t = new Token(leftParen, ')')
-            // tokenList.push_back(t);
-            // i++;
-        }
-        else if(isalpha(inputLine[i])) {
-            
-        }
-        else {
-            // error
-        }
+    while (1){
+        cout << "> ";
+        cin >> line;
+//        if (line.length() == 0) break;
+        run(line);
     }
+
     return;
+
 }
 
-void eval() {
-    // do something with the tokens
+void run(string line){
+    Scanner scanner(line);
+    scanner.scanTokens();
+    scanner.printTokens();
 }
-
-
-/*
-(+ 2 (* 3 (+ 5 8)))
-(+ 2 (if (< 3 4) (5) (6)))
-
-(if (< 3 4) (print 5) (print 6))
-
-look for leftParen, increment paren depth, increment pos
-while(not whitespace) {
-    look at chars
-}
-match to operation type with switch statement, else return error
-
-skip whitespace
-
-
-
-*/

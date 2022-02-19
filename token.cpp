@@ -22,25 +22,45 @@ enum TokenType {
 class Token {
     private:
         TokenType type;
-        string value;
+        string value = NULL;
         int numValue;
         int line;
 
     public:
-        Token(TokenType type, string value, int line) {
-            this->type = type;
-            this->value = value;
-            this->line = line;
-        }
-        Token(TokenType type, int numValue, int line) {
-            this->type = type;
-            this->numValue = numValue;
-            this->line = line;
+        Token(){
+            type = END_OF_FILE;
+            value = "meh";
+            numValue = -2;
+            line = -1;
         }
 
-        string getVal() { return value; }
-        TokenType getType() { return type; }
-        int getLine() { return line; }
+        Token(TokenType type, string value, int line) {
+            type = type;
+            value = value;
+            line = line;
+        }
+        Token(TokenType type, int numValue, int line) {
+            type = type;
+            numValue = numValue;
+            line = line;
+        }
+        Token(const Token &src){
+            this->type = src.getType();
+            this->value = src.getVal();
+            this->numValue = src.getNumVal();
+            this->line = src.getLine();
+        }
+        Token &operator= (const Token &src) {
+            this->type = src.getType();
+            this->value = src.getVal();
+            this->numValue = src.getNumVal();
+            this->line = src.getLine();
+        }
+
+        string getVal() const { return value; }
+        int getNumVal() const { return numValue; }
+        TokenType getType() const { return type; }
+        int getLine() const { return line; }
 
 
 };

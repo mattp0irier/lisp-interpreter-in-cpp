@@ -18,42 +18,49 @@ class Scanner {
         }
 
         void addToken(TokenType type, string value) {
-            tokens.push_back(*(new Token(type, value, currentLine)));
+           // Token *newToken = new Token(type, value, currentLine);
+           // tokens.push_back(*newToken);
+           Token test_token(LEFT_PAREN, "(", 0);
+           cout << "adding token 1" << endl;
+           tokens.push_back(test_token);
+            cout << "added string token" << endl;
         }
 
         void addToken(TokenType type, int value) {
-            tokens.push_back(*(new Token(type, value, currentLine)));
+            cout << "adding token 2" << endl;
+            tokens.push_back((Token(type, value, currentLine)));
+            cout <<"pushback complete"<<endl;
         }
 
         void scanToken() {
             char c = getNextChar();
             switch (c) {
             case '(':
-                addToken(LEFT_PAREN, c);
+                addToken(LEFT_PAREN, string(1, c));
                 break;
             case ')':
-                addToken(RIGHT_PAREN, c);
+                addToken(RIGHT_PAREN, string(1, c));
                 break;
             case '+':
-                addToken(PLUS, c);
+                addToken(PLUS, string(1, c));
                 break;
             case '-':
-                addToken(MINUS, c);
+                addToken(MINUS, string(1, c));
                 break;
             case '*':
-                addToken(MULTIPLY, c);
+                addToken(MULTIPLY, string(1, c));
                 break;
             case '/':
-                addToken(DIVIDE, c);
+                addToken(DIVIDE, string(1, c));
                 break;
             case '=':
-                addToken(EQUAL, c);
+                addToken(EQUAL, string(1, c));
                 break;
             case '<':
-                addToken(LESS_THAN, c);
+                addToken(LESS_THAN, string(1, c));
                 break;
             case '>':
-                addToken(GREATER_THAN, c);
+                addToken(GREATER_THAN, string(1, c));
                 break;
 
             // ignore whitespace
@@ -106,13 +113,13 @@ class Scanner {
                 scanToken();
             }
 
-            addToken(END_OF_FILE, NULL);
+            addToken(END_OF_FILE, -1);
             return tokens;
         }
 
         void printTokens() {
             for (int i=0; i<tokens.size(); i++){
-                cout << "\"" << tokens[i].getVal() << "\"";
+                cout << "\"" << tokens[i].getType() << "\"";
                 if (i+1 != tokens.size()) cout << " ";
             }
             cout << endl;
