@@ -17,6 +17,15 @@ class Scanner {
             return input.at(index++);
         }
 
+        char peek() {
+            if (done()) return '\0';
+            return input.at(index);
+        }
+
+        bool done() {
+            return index >= input.length();
+        }
+
         void addToken(TokenType type, string value) {
             tokens.push_back(Token(type, value, currentLine));
             // cout << "added string token" << endl;
@@ -69,6 +78,10 @@ class Scanner {
             case '\n':
                 currentLine++; // increment line counter
                 break;
+            // string handler
+            case '\"':
+                getString();
+                break;
             default:
                 if(isdigit(c)) {
                     getNumber();
@@ -84,11 +97,10 @@ class Scanner {
         }
 
         void getNumber() {
-            //cout << "getNumber" << endl;
-            while (isdigit(index + 1)) {
+            while (isdigit(peek())) {
                 getNextChar();
             }
-            addToken(NUMBER, stoi(input.substr(startIndex, index)));
+            addToken(NUMBER, stoi(input.substr(startIndex, index-startIndex)));
         }
 
         void getIdentifier() {
@@ -96,7 +108,21 @@ class Scanner {
             while (isalpha(index + 1)) {
                 getNextChar();
             }
-            addToken(IDENTIFIER, input.substr(startIndex, index));
+            addToken(IDENTIFIER, input.substr(startIndex, index-startIndex));
+        }
+
+        void getString() {
+            while (peek() != '\"' && !done()) {
+                if (peek() == '\n') currentLine++;
+                getNextChar();
+            }
+            cout << "while loop broke at index " << index << endl;
+            if (done()) {
+                cout << "Error: Unterminated String" << endl;
+                return;
+            }
+            getNextChar();
+            addToken(STRING, input.substr(startIndex+1, index-startIndex-2));
         }
 
 

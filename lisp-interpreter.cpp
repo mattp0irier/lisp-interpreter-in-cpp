@@ -39,7 +39,7 @@ void runPrompt(){
     while (1){
         cout << "> ";
         getline(cin, line);
-//        if (line.length() == 0) break;
+        if (line.length() == 0) break;
         run(line);
     }
 
