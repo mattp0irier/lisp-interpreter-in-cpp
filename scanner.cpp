@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <map>
+#include <cctype>
 #include "token.cpp"
 
 using namespace std;
@@ -12,6 +14,21 @@ class Scanner {
         int index = 0;
         vector<Token> tokens;
         int currentLine;
+
+        map<string, TokenType> keywords = {
+            {"if", IF},
+            {"while", WHILE},
+            {"set", SET},
+            {"begin", BEGIN},
+            {"cons", CONS},
+            {"car", CAR},
+            {"cdr", CDR},
+            {"number?", IS_NUMBER},
+            {"symbol?", IS_SYMBOL},
+            {"list?", IS_LIST},
+            {"null?", IS_NULL},
+            {"print", PRINT}
+        };
 
         char getNextChar() {
             return input.at(index++);
@@ -67,7 +84,10 @@ class Scanner {
             case '>':
                 addToken(GREATER_THAN, string(1, c));
                 break;
-
+            case 'T':
+                if (isalpha(peek())) getIdentifier();
+                else addToken(T, string(1, c));
+                break;
             // ignore whitespace
             case ' ':
                 break;
@@ -90,7 +110,7 @@ class Scanner {
                     getIdentifier();
                 }
                 else {
-                    cout << "Invalid character at line " << currentLine << endl;
+                    cout << "Invalid character " << input.at(index) << " in line " << currentLine << endl;
                 }
                 break;
             }
@@ -100,15 +120,30 @@ class Scanner {
             while (isdigit(peek())) {
                 getNextChar();
             }
+            // FIXME support for floating point nums
             addToken(NUMBER, stoi(input.substr(startIndex, index-startIndex)));
         }
 
         void getIdentifier() {
-            //cout << "getIdentifier" << endl;
-            while (isalpha(index + 1)) {
+            while (isalpha(peek())) {
                 getNextChar();
             }
-            addToken(IDENTIFIER, input.substr(startIndex, index-startIndex));
+            
+            // Identifier may end with ?
+            if (peek() == '?') getNextChar();
+
+            string idName = input.substr(startIndex, index-startIndex);
+            for (int i=0; i<idName.length(); i++){
+                idName[i] = tolower(idName[i]);
+            }
+            TokenType type;
+            if (keywords.count(idName)){
+                type = keywords[idName];
+            }
+            else {
+                type = IDENTIFIER;
+            } 
+            addToken(type, idName);
         }
 
         void getString() {
