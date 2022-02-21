@@ -28,46 +28,43 @@ class Parser {
                 case EQUAL:
                 case LESS_THAN:
                 case GREATER_THAN:
-                    checkMath();
+                    if(!(checkMath(index))) return false;
                     break;
                 case T:
-                    checkTrue();
+                    if(!(checkTrue(index))) return false;
                     break;
-                
-                // Literals
-                IDENTIFIER
 
                 // Keywords
                 case IF:
-                    checkIf();
+                    if(!(checkIf(index))) return false;
                     break;
                 case WHILE:
-                    checkWhile();
+                    if(!(checkWhile(index))) return false;
                     break;
                 case SET:
-                    checkSet();
+                    if(!(checkSet(index))) return false;
                     break;
                 case BEGIN:
-                    checkBegin();
+                    if(!(checkBegin(index))) return false;
                     break;
                 case CONS:
-                    checkCons();
+                    if(!(checkCons(index))) return false;
                     break;
                 case CAR:
                 case CDR:
-                    checkCarCdr();
+                    if(!(checkCarCdr(index))) return false;
                     break;
                 case IS_NUMBER:
                 case IS_SYMBOL:
                 case IS_LIST:
                 case IS_NULL:
-                    checkIs();
+                    if(!(checkIs(index))) return false;
                     break;
                 case PRINT:
-                    checkPrint();
+                    if(!(checkPrint(index))) return false;
                     break;
                 case DEFINE:
-                    checkDefine();
+                    if(!(checkDefine(index))) return false;
                     break;
                 
                 case END_OF_FILE:
@@ -75,7 +72,7 @@ class Parser {
                     break;
 
                 case IDENTIFIER:
-                    checkIdent();
+                    if(!(checkIdent(index))) return false;
                     break;
 
                 default:
