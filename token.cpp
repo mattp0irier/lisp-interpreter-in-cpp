@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#ifndef _TOKEN_
+#define _TOKEN_
+
 enum TokenType {
     // 1-Character Tokens
     LEFT_PAREN, RIGHT_PAREN,
@@ -29,6 +32,11 @@ class Token {
         int line = 0;
 
     public:
+        Token(){
+            type = END_OF_FILE;
+            intValue = -1;
+            line = -1;
+        }
         Token(TokenType type, string value, int line) {
             this->type = type;
             this->value = value;
@@ -66,3 +74,5 @@ class Token {
         int getLine() const { return line; }
 
 };
+
+#endif

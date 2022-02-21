@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "scanner.cpp"
-//#include "lisp-class.hpp";
+#include "expression.cpp"
+
 
 using namespace std;
 
@@ -52,6 +53,9 @@ void runPrompt(){
 
 void run(string line){
     Scanner scanner(line);
-    scanner.scanTokens();
+    vector<Token> tokens = scanner.scanTokens();
     scanner.printTokens();
+    Expression *exprTree = toExprTree(tokens, 0);
+    exprTree->print();
+    cout << endl;
 }
