@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <iomanip>
 #include <map>
 #include <cctype>
 #include "token.cpp"
@@ -39,6 +40,10 @@ class Scanner {
             return input.at(index);
         }
 
+        char peekNext() {
+            return input.at(index + 1);
+        }
+
         bool done() {
             return index >= input.length();
         }
@@ -52,6 +57,10 @@ class Scanner {
             // cout << "adding token 2" << endl;
             tokens.push_back(Token(type, value, currentLine));
             // cout <<"pushback complete"<<endl;
+        }
+
+        void addToken(TokenType type, double value) {
+            tokens.push_back(Token(type, value, currentLine));
         }
 
         void scanToken() {
@@ -120,8 +129,12 @@ class Scanner {
             while (isdigit(peek())) {
                 getNextChar();
             }
-            // FIXME support for floating point nums
-            addToken(NUMBER, stoi(input.substr(startIndex, index-startIndex)));
+            if (peek() == '.' && isdigit(peekNext())) {
+                getNextChar();
+                while (isdigit(peek())) getNextChar();
+                addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)));
+            }
+            else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)));
         }
 
         void getIdentifier() {
@@ -181,8 +194,15 @@ class Scanner {
 
         void printTokens() {
             for (int i=0; i<tokens.size(); i++){
-                if(tokens[i].getType() == NUMBER) {
-                    cout << "\"" << tokens[i].getNumVal() << "\"";
+                if(tokens[i].getType() == INTEGER) {
+                    cout << "\"" << tokens[i].getIntVal() << "\"";
+                }
+                else if (tokens[i].getType() == FLOAT) {
+                    cout << fixed << setprecision(2);
+                    cout << "\"" << tokens[i].getFloatVal() << "\"";
+                }
+                else if (tokens[i].getType() == END_OF_FILE){
+                    cout << "\"eof\"";
                 }
                 else {
                     cout << "\"" << tokens[i].getVal() << "\"";

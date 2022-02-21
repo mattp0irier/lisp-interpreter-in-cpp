@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
     if (argc == 2) {
-        runFile(argv[0]);
+        runFile(argv[1]);
     }
     else{
         runPrompt();
@@ -29,9 +29,12 @@ int main(int argc, char *argv[]){
 }
 
 void runFile(string filename){
-    ifstream input(filename);;
-    string str((istreambuf_iterator<char>(input)), istreambuf_iterator<char>());
-    run(str);
+    ifstream input(filename);
+    string str;
+    while (input) {
+        getline(input, str);
+        if (str.length()) run(str);
+    }
 }
 
 void runPrompt(){
