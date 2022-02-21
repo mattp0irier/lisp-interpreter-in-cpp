@@ -57,7 +57,7 @@ class Parser {
                 case CDR:
                     checkCarCdr();
                     break;
-                case IS_NUMBER
+                case IS_NUMBER:
                 case IS_SYMBOL:
                 case IS_LIST:
                 case IS_NULL:
