@@ -76,18 +76,22 @@ Expression *toExprTree(vector<Token> tokens, int index) {
     Expression *node = new Expression(tokens[index]);
     switch(node->getType()) {
         case GROUPING:
+            // expects an expression
             delete node;
             return toExprTree(tokens, index + 1);
             break;
         case LITERAL:
+            // no children
             node->setLeft(NULL);
             node->setRight(NULL);
             break;
         case UNARY:
+            // expects grouping or literal
             node->setRight(NULL);
             node->setLeft(toExprTree(tokens, index + 1));
             break;
         case BINARY:
+            // expects expression, literal, grouping for each
             node->setLeft(toExprTree(tokens, index + 1));
             node->setRight(toExprTree(tokens, index + 2));
             break;
