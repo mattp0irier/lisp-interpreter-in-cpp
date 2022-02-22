@@ -6,7 +6,7 @@
 using namespace std;
 
 
-template <typename T>
+  
 class Expr {
     public:
     /*
@@ -27,7 +27,7 @@ class Expr {
     */      
 };
 
-template <typename T>
+  
 class Assign: public Expr {
     public:
         Assign(Token name, Expr value){
@@ -35,11 +35,11 @@ class Assign: public Expr {
             value = value;
         }
 
-        Token name final;
-        Expr value final;
+        Token name;
+        Expr value;
 };
 
-template <typename T>
+  
 class Binary: public Expr {
     public:
         Binary(Expr left, Token op, Expr right){
@@ -49,12 +49,12 @@ class Binary: public Expr {
         }
 
      
-        Expr left final;
-        Token op final;
-        Expr right final;
+        Expr left;
+        Token op;
+        Expr right;
 };
 
-template <typename T>
+  
 class Call: public Expr {
     public:
         Call(Expr callee, Token paren, vector<Expr> args){
@@ -64,12 +64,12 @@ class Call: public Expr {
         }
 
      
-        Expr callee final;
-        Token paren final;
-        vector<Expr> final;
+        Expr callee;
+        Token paren;
+        vector<Expr> args;
 };
 
-template <typename T>
+  
 class Get: public Expr {
     public:
         Get(Expr obj, Token name){
@@ -78,11 +78,11 @@ class Get: public Expr {
         }
 
      
-        Expr obj final;
-        Token name final;
+        Expr obj;
+        Token name;
 };
 
-template <typename T>
+  
 class Grouping: public Expr {
     public:
         Grouping(Expr expression){
@@ -90,7 +90,7 @@ class Grouping: public Expr {
         }
 
      
-        Expr expression final;
+        Expr expression;
 };
 
 template <typename T>
@@ -101,10 +101,10 @@ class Literal: public Expr {
         }
 
      
-        T value final;
+        T value;
 };
 
-template <typename T>
+  
 class Logical: public Expr {
     public:
         Logical(Expr left, Token op, Expr right){
@@ -114,12 +114,12 @@ class Logical: public Expr {
         }
 
      
-        Expr left final;
-        Token op final;
-        Expr right final;
+        Expr left;
+        Token op;
+        Expr right;
 };
 
-template <typename T>
+  
 class Set: public Expr {
     public:
         Set(Expr object, Token name, Expr value){
@@ -129,12 +129,12 @@ class Set: public Expr {
         }
 
      
-        Expr object final;
-        Token name final;
-        Expr value final;
+        Expr object;
+        Token name;
+        Expr value;
 };
 
-template <typename T>
+  
 class This: public Expr {
     public:
         This(Token keyword){
@@ -142,10 +142,10 @@ class This: public Expr {
         }
 
      
-        Token keyword final;
+        Token keyword;
 };
 
-template <typename T>
+  
 class Unary: public Expr {
     public:
         Unary(Token op, Expr right){
@@ -154,11 +154,11 @@ class Unary: public Expr {
         }
 
      
-        Token op final;
-        Expr right final;
+        Token op;
+        Expr right;
 };
 
-template <typename T>
+  
 class Variable: public Expr {
     public:
         Variable(Token name){
@@ -166,5 +166,5 @@ class Variable: public Expr {
         }
 
      
-        Token name final;
+        Token name;
 };
