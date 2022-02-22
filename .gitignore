@@ -33,3 +33,4 @@
 
 # VS CODE BS
 .vscode
+.vscode/settings.json
