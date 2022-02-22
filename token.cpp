@@ -10,7 +10,7 @@ enum TokenType {
     // 1-Character Tokens
     LEFT_PAREN, RIGHT_PAREN,
     PLUS, MINUS, MULTIPLY, DIVIDE,
-    EQUAL, LESS_THAN, GREATER_THAN, T,
+    EQUAL, LESS_THAN, GREATER_THAN, T, NIL,
 
     // Literals
     IDENTIFIER, STRING, INTEGER, FLOAT,
