@@ -5,6 +5,7 @@
 
 #include "scanner.cpp"
 #include "expression.cpp"
+#include "parser.cpp"
 
 
 using namespace std;
@@ -55,6 +56,8 @@ void run(string line){
     Scanner scanner(line);
     vector<Token> tokens = scanner.scanTokens();
     scanner.printTokens();
+    Parser parser(tokens);
+    Expr expression = parser.parse();
     Expression *exprTree = toExprTree(tokens, 0);
     exprTree->print();
     cout << endl;

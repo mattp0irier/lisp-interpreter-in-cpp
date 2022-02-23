@@ -35,56 +35,79 @@ class Parser {
         }
 
         Expr expression() {
-            return comparison();
+            cout << "In expression with token" << peek().getVal() << endl;
+            Expr expr = comparison();
+            cout << "collapsed!" << endl;
+            return expr;
         }
 
         Expr comparison() {
-            Expr expr = term();
+            cout << "In comparison with token" << peek().getVal() << endl;
+            Expr expr;
 
-            while (match(GREATER_THAN, LESS_THAN, EQUAL)) {
+            if (match(GREATER_THAN) || match(LESS_THAN) || match(EQUAL)) {
                 Token op = previous();
+                Expr left = term();
                 Expr right = term();
-                expr = Binary(expr, op, right);
+                expr = Binary(left, op, right);
+            }
+            else {
+                expr = term();
             }
 
             return expr;
         }
 
         Expr term() {
-            Expr expr = factor();
+            cout << "In term with token" << peek().getVal() << endl;
+            Expr expr;
 
-            while (match(MINUS, PLUS)) {
+            if (match(MINUS) || match(PLUS)) {
                 Token op = previous();
+                Expr left = factor();
+                cout << "factor1 created" << endl;
                 Expr right = factor();
-                expr = Binary(expr, op, right);
+                cout << "factor2 created" << endl;
+                expr = Binary(left, op, right);
+                cout << "Binary created" << endl;
+            }
+            else {
+                expr = factor();
             }
 
             return expr;
         }
 
         Expr factor() {
-            Expr expr = unary();
+            cout << "In factor with token" << peek().getVal() << endl;
+            Expr expr;
 
-            while (match(DIVIDE, MULTIPLY)) {
+            if (match(DIVIDE) || match(MULTIPLY)) {
                 Token op = previous();
+                Expr left = unary();
                 Expr right = unary();
-                expr = Binary(expr, op, right);
+                expr = Binary(left, op, right);
+            }
+            else {
+                expr = unary();
             }
 
             return expr;
         }
 
         Expr unary() {
+            cout << "In unary with token" << peek().getVal() << endl;
             if (match(MINUS)) {
-            Token op = previous();
-            Expr right = unary();
-            return Unary(op, right);
+                Token op = previous();
+                Expr right = unary();
+                return Unary(op, right);
             }
 
             return primary();
         }
 
         Expr primary() {
+            cout << "In primary with token" << peek().getVal() << endl;
             if (match(T)) return Literal<bool>(true);
             if (match(NIL)) return Literal<bool>(false);
 
@@ -104,16 +127,12 @@ class Parser {
                 return Grouping(expr);
             }
         }
-
-        bool match(TokenType types...) {
-            va_list args;
-            va_start(args, types);
-            if (check(types)) {
+        
+        bool match(TokenType type) {
+            if (check(type)) {
                 advance();
                 return true;
             }
-            va_arg(args, TokenType);
-            va_end(args);
             return false;
         }
 

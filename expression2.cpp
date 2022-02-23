@@ -43,9 +43,11 @@ class Assign: public Expr {
 class Binary: public Expr {
     public:
         Binary(Expr left, Token op, Expr right){
-            left = left;
-            op = op;
-            right = right;
+            this->left = left;
+            cout << "hi" << endl;
+            this->op = op;
+            cout << "bye" << endl;
+            this->right = right;
         }
 
      
