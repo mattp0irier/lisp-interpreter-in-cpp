@@ -108,13 +108,12 @@ class Parser {
         bool match(TokenType types...) {
             va_list args;
             va_start(args, types);
-            
-            for (TokenType type : types) {
-                if (check(type)) {
-                    advance();
-                    return true;
-                }
+            if (check(types)) {
+                advance();
+                return true;
             }
+            va_arg(args, TokenType);
+            va_end(args);
             return false;
         }
 
@@ -128,8 +127,10 @@ class Parser {
             index = 0;
         }
 
-        bool parse();
-
+        Expr parse() {
+            return expression();
+        }
+        
         // bool checkStatement() {
         //     switch(tokens.at(index).getType()) {
         //         // Expressions
