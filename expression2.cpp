@@ -2,32 +2,106 @@
 #include <vector>
 #include <string>
 #include "token.cpp"
-#include "variant.hpp"
+#include "boost/any.hpp"
 
 using namespace std;
 
-template <typename T>
 class Visitor {
-
-    virtual T visitAssignExpr(Assign expr);
-    virtual T visitBinaryExpr(Binary expr);
-    virtual T visitCallExpr(Call expr);
-    virtual T visitGetExpr(Get expr);
-    virtual T visitGroupingExpr(Grouping expr);
-    virtual T visitLiteralExpr(Literal expr);
-    virtual T visitLogicalExpr(Logical expr);
-    virtual T visitSetExpr(Set expr);
-    virtual T visitThisExpr(This expr);
-    virtual T visitUnaryExpr(Unary expr);
-    virtual T visitVariableExpr(Variable expr);
+    virtual boost::any visitAssignExpr(Assign expr);
+    virtual boost::any visitBinaryExpr(Binary expr);
+    virtual boost::any visitCallExpr(Call expr);
+    virtual boost::any visitGetExpr(Get expr);
+    virtual boost::any visitGroupingExpr(Grouping expr);
+    virtual boost::any visitLiteralExpr(Literal expr);
+    virtual boost::any visitLogicalExpr(Logical expr);
+    virtual boost::any visitSetExpr(Set expr);
+    virtual boost::any visitThisExpr(This expr);
+    virtual boost::any visitUnaryExpr(Unary expr);
+    virtual boost::any visitVariableExpr(Variable expr);
 
 };
 
+class AssignVisitor: public Visitor {
+    public:
+    boost::any visitAssignExpr(Assign expr){
+
+    }
+};
+
+class BinaryVisitor: public Visitor {
+    public:
+    boost::any visitBinaryExpr(Binary expr){
+        
+    }
+};
+
+class CallVisitor: public Visitor {
+    public:
+    boost::any visitCallExpr(Call expr){
+        
+    }
+};
+
+class GetVisitor: public Visitor {
+    public:
+    boost::any visitGetExpr(Get expr){
+        
+    }
+};
+
+class GroupingVisitor: public Visitor {
+    public:
+    boost::any visitGroupingExpr(Grouping expr){
+        
+    }
+};
+
+class LiteralVisitor: public Visitor {
+    public:
+    boost::any visitLiteralExpr(Literal expr){
+        
+    }
+};
+
+class LogicalVisitor: public Visitor {
+    public:
+    boost::any visitLogicalExpr(Logical expr){
+        
+    }
+};
+
+class SetVisitor: public Visitor {
+    public:
+    boost::any visitSetExpr(Set expr){
+        
+    }
+};
+
+class ThisVisitor: public Visitor {
+    public:
+    boost::any visitThisExpr(This expr){
+        
+    }
+};
+
+class UnaryVisitor: public Visitor {
+    public:
+    boost::any visitUnaryExpr(Unary expr){
+        
+    }
+};
+
+class VariableVisitor: public Visitor {
+    public:
+    boost::any visitVariableExpr(Variable expr){
+        
+    }
+};
 
 class Expr {
     public:
 
-   // virtual T accept();  
+    virtual boost::any accept(Visitor visitor);  
     
 };
 
@@ -41,6 +115,10 @@ class Assign: public Expr {
 
         Token name;
         Expr value;
+
+    boost::any accept(AssignVisitor visitor){
+        return visitor.visitAssignExpr(*this);
+    }
 };
 
   
@@ -56,6 +134,9 @@ class Binary: public Expr {
         Expr left;
         Token op;
         Expr right;
+    boost::any accept(BinaryVisitor visitor){
+        return visitor.visitBinaryExpr(*this);
+    }
 };
 
   
@@ -71,6 +152,9 @@ class Call: public Expr {
         Expr callee;
         Token paren;
         vector<Expr> args;
+    boost::any accept(AssignVisitor visitor){
+        return visitor.visitAssignExpr(*this);
+    }
 };
 
   
@@ -97,15 +181,15 @@ class Grouping: public Expr {
         Expr expression;
 };
 
-template <typename T>
+
 class Literal: public Expr {
     public:
-        Literal(T value){
+        Literal(boost::any value){
             value = value;
         }
 
      
-        T value;
+        boost::any value;
 };
 
   
