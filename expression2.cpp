@@ -2,15 +2,13 @@
 #include <vector>
 #include <string>
 #include "token.cpp"
+#include "variant.hpp"
 
 using namespace std;
 
+template <typename T>
+class Visitor {
 
-  
-class Expr {
-    public:
-    /*
-    these might not actually be necessary??
     virtual T visitAssignExpr(Assign expr);
     virtual T visitBinaryExpr(Binary expr);
     virtual T visitCallExpr(Call expr);
@@ -23,8 +21,14 @@ class Expr {
     virtual T visitUnaryExpr(Unary expr);
     virtual T visitVariableExpr(Variable expr);
 
-    virtual T accept();  
-    */      
+};
+
+
+class Expr {
+    public:
+
+   // virtual T accept();  
+    
 };
 
   
@@ -43,11 +47,9 @@ class Assign: public Expr {
 class Binary: public Expr {
     public:
         Binary(Expr left, Token op, Expr right){
-            this->left = left;
-            cout << "hi" << endl;
-            this->op = op;
-            cout << "bye" << endl;
-            this->right = right;
+            left = left;
+            op = op;
+            right = right;
         }
 
      
