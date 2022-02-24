@@ -58,7 +58,9 @@ void run(string line){
     scanner.printTokens();
     Parser parser(tokens);
     Expr expression = parser.parse();
-    Expression *exprTree = toExprTree(tokens, 0);
-    exprTree->print();
+    Interpreter interpreter;
+    cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
+//    Expression *exprTree = toExprTree(tokens, 0);
+//    exprTree->print();
     cout << endl;
 }

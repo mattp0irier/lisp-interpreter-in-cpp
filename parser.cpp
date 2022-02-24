@@ -108,17 +108,17 @@ class Parser {
 
         Expr primary() {
             cout << "In primary with token" << peek().getVal() << endl;
-            if (match(T)) return Literal<bool>(true);
-            if (match(NIL)) return Literal<bool>(false);
+            if (match(T)) return Literal(true);
+            if (match(NIL)) return Literal(false);
 
             if (match(INTEGER)) {
-                return Literal<int>(previous().getIntVal());
+                return Literal(previous().getIntVal());
             }
             else if(match(FLOAT)) {
-                return Literal<float>(previous().getFloatVal());
+                return Literal(previous().getFloatVal());
             }
             else if(match(STRING)) {
-                return Literal<string>(previous().getVal());
+                return Literal(previous().getVal());
             }
 
             if (match(LEFT_PAREN)) {
