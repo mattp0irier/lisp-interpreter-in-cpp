@@ -7,6 +7,7 @@
 using namespace std;
 
 class Visitor {
+    public:
     virtual boost::any visitAssignExpr(Assign expr);
     virtual boost::any visitBinaryExpr(Binary expr);
     virtual boost::any visitCallExpr(Call expr);
@@ -19,83 +20,82 @@ class Visitor {
     virtual boost::any visitUnaryExpr(Unary expr);
     virtual boost::any visitVariableExpr(Variable expr);
 
+    boost::any evaluate(Expr expr){
+        return expr.accept(*this);
+    }
 };
 
-class AssignVisitor: public Visitor {
+class Interpreter: public Visitor {
     public:
     boost::any visitAssignExpr(Assign expr){
 
     }
-};
 
-class BinaryVisitor: public Visitor {
-    public:
     boost::any visitBinaryExpr(Binary expr){
-        
-    }
-};
+        boost::any left = evaluate(expr.left);
+        boost::any right = evaluate(expr.right);
 
-class CallVisitor: public Visitor {
-    public:
+        switch(expr.op.getType()) {
+            case MINUS:
+                return boost::any_cast<double>(left) - boost::any_cast<double>(right);
+                break;
+            case MULTIPLY:
+                return boost::any_cast<double>(left) * boost::any_cast<double>(right);
+                break;
+            case DIVIDE:
+                return boost::any_cast<double>(left) / boost::any_cast<double>(right);
+                break;
+            case PLUS:
+                return boost::any_cast<double>(left) + boost::any_cast<double>(right);
+                break;
+            default:
+                cout << "This should be unreachable" << endl;
+                return NULL;
+        }
+    }
+
     boost::any visitCallExpr(Call expr){
         
     }
-};
 
-class GetVisitor: public Visitor {
-    public:
     boost::any visitGetExpr(Get expr){
         
     }
-};
 
-class GroupingVisitor: public Visitor {
-    public:
     boost::any visitGroupingExpr(Grouping expr){
-        
+        return evaluate(expr.expression);
     }
-};
 
-class LiteralVisitor: public Visitor {
-    public:
     boost::any visitLiteralExpr(Literal expr){
-        
+        return expr.value;
     }
-};
 
-class LogicalVisitor: public Visitor {
-    public:
     boost::any visitLogicalExpr(Logical expr){
         
     }
-};
 
-class SetVisitor: public Visitor {
-    public:
     boost::any visitSetExpr(Set expr){
         
     }
-};
 
-class ThisVisitor: public Visitor {
-    public:
     boost::any visitThisExpr(This expr){
         
     }
-};
 
-class UnaryVisitor: public Visitor {
-    public:
     boost::any visitUnaryExpr(Unary expr){
-        
-    }
-};
+        boost::any right = evaluate(expr.right);
 
-class VariableVisitor: public Visitor {
-    public:
+        switch(expr.op.getType()) {
+            case MINUS:
+                return -1 * boost::any_cast<double>(right);
+        }
+        return NULL;
+    }
+
     boost::any visitVariableExpr(Variable expr){
         
     }
+
 };
 
 class Expr {
@@ -116,7 +116,7 @@ class Assign: public Expr {
         Token name;
         Expr value;
 
-    boost::any accept(AssignVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitAssignExpr(*this);
     }
 };
@@ -134,7 +134,7 @@ class Binary: public Expr {
         Expr left;
         Token op;
         Expr right;
-    boost::any accept(BinaryVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitBinaryExpr(*this);
     }
 };
@@ -152,7 +152,7 @@ class Call: public Expr {
         Expr callee;
         Token paren;
         vector<Expr> args;
-    boost::any accept(CallVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitCallExpr(*this);
     }
 };
@@ -168,7 +168,7 @@ class Get: public Expr {
      
         Expr obj;
         Token name;
-    boost::any accept(GetVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitGetExpr(*this);
     }
 };
@@ -182,7 +182,7 @@ class Grouping: public Expr {
 
      
         Expr expression;
-    boost::any accept(GroupingVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitGroupingExpr(*this);
     }
 };
@@ -196,7 +196,7 @@ class Literal: public Expr {
 
      
         boost::any value;
-    boost::any accept(LiteralVisitor visitor){
+    boost::any accept(Interpreter visitor){
         return visitor.visitLiteralExpr(*this);
     }
 };
@@ -214,6 +214,9 @@ class Logical: public Expr {
         Expr left;
         Token op;
         Expr right;
+    boost::any accept(Interpreter visitor){
+        return visitor.visitLogicalExpr(*this);
+    }
 };
 
   
@@ -229,6 +232,9 @@ class Set: public Expr {
         Expr object;
         Token name;
         Expr value;
+    boost::any accept(Interpreter visitor){
+        return visitor.visitSetExpr(*this);
+    }
 };
 
   
@@ -240,6 +246,9 @@ class This: public Expr {
 
      
         Token keyword;
+    boost::any accept(Interpreter visitor){
+        return visitor.visitThisExpr(*this);
+    }
 };
 
   
@@ -253,6 +262,9 @@ class Unary: public Expr {
      
         Token op;
         Expr right;
+    boost::any accept(Interpreter visitor){
+        return visitor.visitUnaryExpr(*this);
+    }
 };
 
   
@@ -261,7 +273,9 @@ class Variable: public Expr {
         Variable(Token name){
             name = name;
         }
-
      
         Token name;
+    boost::any accept(Interpreter visitor){
+        return visitor.visitVariableExpr(*this);
+    }
 };
