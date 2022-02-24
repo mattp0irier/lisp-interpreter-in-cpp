@@ -152,8 +152,8 @@ class Call: public Expr {
         Expr callee;
         Token paren;
         vector<Expr> args;
-    boost::any accept(AssignVisitor visitor){
-        return visitor.visitAssignExpr(*this);
+    boost::any accept(CallVisitor visitor){
+        return visitor.visitCallExpr(*this);
     }
 };
 
@@ -168,6 +168,9 @@ class Get: public Expr {
      
         Expr obj;
         Token name;
+    boost::any accept(GetVisitor visitor){
+        return visitor.visitGetExpr(*this);
+    }
 };
 
   
@@ -179,6 +182,9 @@ class Grouping: public Expr {
 
      
         Expr expression;
+    boost::any accept(GroupingVisitor visitor){
+        return visitor.visitGroupingExpr(*this);
+    }
 };
 
 
@@ -190,6 +196,9 @@ class Literal: public Expr {
 
      
         boost::any value;
+    boost::any accept(LiteralVisitor visitor){
+        return visitor.visitLiteralExpr(*this);
+    }
 };
 
   
