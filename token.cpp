@@ -65,6 +65,7 @@ class Token {
             this->intValue = src.getIntVal();
             this->floatValue = src.getFloatVal();
             this->line = src.getLine();
+            return *this;
         }
 
         string getVal() const { return value; }
