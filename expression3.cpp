@@ -129,14 +129,14 @@ class EXPLIST {
 
 class VALUELIST {
     private:
-        EXP head;
+        S_EXP head;
         VALUELIST *tail;
     public:
         VALUELIST() {
             
         }
 
-        VALUELIST(EXP head, VALUELIST *tail) {
+        VALUELIST(S_EXP head, VALUELIST *tail) {
             this->head = head;
             this->tail = tail;
         }
@@ -156,14 +156,14 @@ class VALUELIST {
 
 class NAMELIST {
     private:
-        EXP head;
+        string head;
         NAMELIST *tail;
     public:
         NAMELIST() {
 
         }
 
-        NAMELIST(EXP head, NAMELIST *tail) {
+        NAMELIST(string head, NAMELIST *tail) {
             this->head = head;
             this->tail = tail;
         }
