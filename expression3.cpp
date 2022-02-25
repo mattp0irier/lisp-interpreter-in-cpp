@@ -1,4 +1,5 @@
 #include <string>
+#include <typeinfo>
 using namespace std;
 //trevor
 class S_EXP {
