@@ -7,7 +7,7 @@ class S_EXP {
         string type;
 
         S_EXP(){
-            type = "empty type";
+            type = "NIL";
         }
 
         S_EXP(string type){
@@ -76,25 +76,27 @@ class EXP {
 };
 
 class VALEXP: public EXP {
-    S_EXP sxp;
-    VALEXP(S_EXP sxp) {
-        this->sxp = sxp;
-    }
+    public:
+        S_EXP sxp;
+        VALEXP(S_EXP sxp) {
+            this->sxp = sxp;
+        }
 };
 
 class VAREXP: public EXP {
-    string varble;
-    VAREXP(string variable) {
-        this->varble = variable;
-    }
+    public:
+        string varble;
+        VAREXP(string variable) {
+            this->varble = variable;
+        }
 };
 
 class APEXP: public EXP {
     private:
         string optr;
-        EXPLIST args;
+        EXPLIST *args;
     public:
-        APEXP(string optr, EXPLIST args) {
+        APEXP(string optr, EXPLIST *args) {
             this->optr = optr;
             this->args = args;
         }

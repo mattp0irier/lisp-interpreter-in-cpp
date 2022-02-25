@@ -46,57 +46,57 @@ class Parser {
             }
         }
 
-        EXP parseExp() {
+        EXP *parseExp() {
             string nm;
-            EXPLIST el;
+            EXPLIST *el;
             if (tokenList[pos].getType() == LEFT_PAREN) { // APEXP
                 pos++;
                 if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
                     pos++;
                     S_EXP nil = S_EXP("(");
-                    return VALEXP(nil);
+                    return new VALEXP(nil);
                 }
                 nm = parseName();
                 el = parseEL();
-                return APEXP(nm, el);
+                return new APEXP(nm, el);
             }
             else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN || tokenList[pos].getType() == RIGHT_PAREN)
-                return VALEXP(parseVal());
+                return new VALEXP(*(parseVal()));
             else
-                return VAREXP(parseName());
+                return new VAREXP(parseName());
         }
 
-        EXPLIST parseEL() {
+        EXPLIST *parseEL() {
             if (tokenList[pos].getType() == END_OF_FILE) {
                 // ERROR("Expected ) found EOF");
-                return null;
+                return NULL;
             }
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
-                return null;
+                return NULL;
             }
             else {
-                EXP e = parseExp();
-                EXPLIST el = parseEL();
-                return EXPLIST(e, el);
+                EXP *e = parseExp();
+                EXPLIST *el = parseEL();
+                return new EXPLIST(*e, el);
             }
         }
 
-        SEXP parseList() {
-            SEXP car, cdr;
+        S_EXP *parseList() {
+            S_EXP *car, *cdr;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
-                return NIL;
+                return new S_EXP();
                 // return mkSExp(NILSXP);
             }
             else {
                 car = parseSExp();
                 cdr = parseList();
-                return new LISTSXP(car, cdr);
+                return new LIST_SXP(car, cdr);
             }
         }
 
-        SEXP parseInt() {
+        S_EXP *parseInt() {
             int value;
             if (tokenList[pos].getType() == MINUS && tokenList[pos+1].getType() == INTEGER) {
                 value = -1 * tokenList[pos+1].getIntVal();
@@ -114,18 +114,18 @@ class Parser {
                 value = tokenList[pos].getIntVal();
                 pos += 1;
             }
-            return new NUMSXP(value);
+            return new NUM_SXP(value);
         }
 
-        SEXP parseSym() {
+        S_EXP *parseSym() {
             string symbolname = parseName();
-            return new SYMSXP(symbolname);
+            return new SYM_SXP(symbolname);
         }
 
-        SEXP parseSExp() {
+        S_EXP *parseSExp() {
             if (tokenList[pos].getType() == T) {
                 pos++;
-                return TRUE;
+                return new S_EXP("TRUE");
             }
             if (tokenList[pos].getType() == LEFT_PAREN) {
                 pos++;
@@ -135,7 +135,7 @@ class Parser {
                 return parseInt();
             return parseSym();
         }
-        SEXP parseVal() {
+        S_EXP *parseVal() {
             // if (userinput(pos, "parseSExp") == Token.TIC)
             //     pos++;
             return parseSExp();
