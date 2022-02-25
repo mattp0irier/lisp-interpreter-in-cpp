@@ -101,15 +101,15 @@ class Interpreter {
             bool result;
             switch (op.getVal()[0]) {
                 case '<':
-                    if (op.getVal()[1] == '=') result = n1 <= n2;
+                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 <= n2;
                     else result = n1 < n2;
                     break;
                 case '>':
-                    if (op.getVal()[1] == '=') result = n1 >= n2;
+                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 >= n2;
                     else result = n1 > n2; 
                     break;;
                 case '=':
-                    if (op.getVal()[1] == '=') result = n1 == n2;
+                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 == n2;
                     else result = false;
                     break;
                 default:
@@ -155,24 +155,24 @@ class Interpreter {
             }
         }
 
-        S_EXP apply(Token op, SEXP s1, SEXP s2) {
-            S_EXP result = NIL;
+        S_EXP apply(Token op, S_EXP* s1, S_EXP* s2) {
+            S_EXP result = nil;
             switch (op.getVal()) {
                 case "CONS":
-                    result = new LISTSXP(s1, s2);
+                    result = new LIST_SXP(s1, s2);
                     break;
                 case "EQ?":
                 case "=":
-                    if (s1 == NIL && s2 == NIL) {
+                    if (s1 == nil && s2 == nil) {
                         result = TRUE;
                     } else if (s1.type == "Number" && s2.type == "Number") {
-                        NUMSXP n1 = (NUMSXP)s1;
-                        NUMSXP n2 = (NUMSXP)s2;
+                        NUM_SXP n1 = (NUM_SXP)s1;
+                        NUM_SXP n2 = (NUM_SXP)s2;
                         if (n1.intval == n2.intval)
                             result = TRUE;
                     } else if (s1.type == "Symbol" && s2.type == "Symbol") {
-                        SYMSXP n1 = (SYMSXP)s1;
-                        SYMSXP n2 = (SYMSXP)s2;
+                        SYM_SXP n1 = (SYM_SXP*)s1;
+                        SYM_SXP n2 = (SYM_SXP*)s2;
                         if (n1.symval == n2.symval)
                             result = TRUE;
                     }
