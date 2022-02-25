@@ -126,3 +126,68 @@ class EXPLIST {
         }
 
 };
+
+class VALUELIST {
+    private:
+        EXP head;
+        VALUELIST *tail;
+    public:
+        VALUELIST() {
+            
+        }
+
+        VALUELIST(EXP head, VALUELIST *tail) {
+            this->head = head;
+            this->tail = tail;
+        }
+
+        VALUELIST(const VALUELIST &src){
+            this->head = src.head;
+            this->tail = src.tail;
+        }
+
+        VALUELIST &operator= (const VALUELIST &src) {
+            this->head = src.head;
+            this->tail = src.tail;
+            return *this;
+        }
+
+};
+
+class NAMELIST {
+    private:
+        EXP head;
+        NAMELIST *tail;
+    public:
+        NAMELIST() {
+
+        }
+
+        NAMELIST(EXP head, NAMELIST *tail) {
+            this->head = head;
+            this->tail = tail;
+        }
+
+        NAMELIST(const NAMELIST &src){
+            this->head = src.head;
+            this->tail = src.tail;
+        }
+
+        NAMELIST &operator= (const NAMELIST &src) {
+            this->head = src.head;
+            this->tail = src.tail;
+            return *this;
+        }
+
+};
+
+class ENV {
+    public:
+        NAMELIST *vars;
+        VALUELIST *values;
+
+        ENV(NAMELIST *vars, VALUELIST *values){
+            this->vars = vars;
+            this->values = values;
+        }
+};
