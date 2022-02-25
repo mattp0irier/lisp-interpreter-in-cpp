@@ -75,8 +75,8 @@ class EXP {
 };
 
 class VALEXP: public EXP {
-    SEXP sxp;
-    VALEXP(SEXP sxp) {
+    S_EXP sxp;
+    VALEXP(S_EXP sxp) {
         this->sxp = sxp;
     }
 };
@@ -104,8 +104,24 @@ class EXPLIST {
         EXP head;
         EXPLIST *tail;
     public:
+        EXPLIST() {
+            
+        }
+
         EXPLIST(EXP head, EXPLIST *tail) {
             this->head = head;
             this->tail = tail;
         }
+
+        EXPLIST(const EXPLIST &src){
+            this->head = src.head;
+            this->tail = src.tail;
+        }
+
+        EXPLIST &operator= (const EXPLIST &src) {
+            this->head = src.head;
+            this->tail = src.tail;
+            return *this;
+        }
+
 };
