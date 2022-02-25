@@ -127,25 +127,27 @@ class Interpreter {
 
         S_EXP applyValueOp(Token op, VALUELIST vl) {
             S_EXP result = nil;
-            S_EXP s1, s2 = nil;
+            S_EXP *s1 = &nil;
+            S_EXP *s2 = &nil;
             if (op.arity != 0 && op.arity != lengthVL(vl)) {
-                ERROR("Wrong number of arguments to " + op.text + " expected " + op.arity + " but found " + lengthVL(vl));
-                return NIL;
+                ERROR("Wrong number of arguments to " + op.getVal() + " expected " + op.arity + " but found " + lengthVL(vl));
+                return nil;
             }
             s1 = vl.head; // 1st actual
             if (op.arity == 2)
                 s2 = vl.tail.head; // 2nd actual
-            if (op.optype == Token.ARITHMATIC || op.optype == Token.RELATIONAL) {
+            if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE ||
+                op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN) {
                 if (s1.type == "Number" && s2.type == "Number") {
-                    NUMSXP n1 = (NUMSXP) s1;
-                    NUMSXP n2 = (NUMSXP) s2;
-                    if (op.optype == Token.ARITHMATIC)
+                    NUM_SXP *n1 = (NUM_SXP*) s1;
+                    NUM_SXP *n2 = (NUM_SXP*) s2;
+                    if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE)
                         result = applyArithOp(op, n1.intval, n2.intval);
                     else
                         result = applyRelOp(op, n1.intval, n2.intval);
                 }
                 else {
-                    ERROR("Non-arithmatic arguments to " + op.text);
+                    ERROR("Non-arithmatic arguments to " + op.getVal());
                 }
             }
             else if (op.arity == 2) {

@@ -136,9 +136,11 @@ class APEXP: public EXP {
 
 class VALUELIST {
     private:
+        
+    public:
         S_EXP head;
         VALUELIST *tail;
-    public:
+
         VALUELIST() {
             
         }
@@ -163,9 +165,11 @@ class VALUELIST {
 
 class NAMELIST {
     private:
+
+    public:
         string head;
         NAMELIST *tail;
-    public:
+
         NAMELIST() {
 
         }
