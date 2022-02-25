@@ -75,13 +75,30 @@ class Interpreter {
 
         NUMSXP applyArithOp(Token op, int n1, int n2) {
             int result = 0;
-            result = switch (op.text) {
-            case ("+") -> n1 + n2; case ("-") -> n1 - n2; case ("*") -> n1 * n2; case ("/") -> n1 / n2; case ("%") -> n1 % n2; default -> 0;
-            };
-            return new NUMSXP(result); }
+            switch (op.getVal()) {
+                case "+":
+                    result = n1 + n2;
+                    break;
+                case "-":
+                    result = n1 - n2;
+                    break;
+                case "*":
+                    result = n1 * n2;
+                    break;
+                case "/":
+                    result = n1 / n2;
+                    break;
+                case "%":
+                    result = n1 % n2;
+                    break;
+                default:
+                    break;
+            }
+            return new NUMSXP(result);
+        }
             
-        SEXP applyRelOp(Token op, int n1, int n2) {
-            boolean result;
+        S_EXP applyRelOp(Token op, int n1, int n2) {
+            bool result;
             switch (op.getVal()) {
                 case "<":
                     result = n1 < n2;
@@ -108,9 +125,9 @@ class Interpreter {
                 return NIL;
         }
 
-        SEXP applyValueOp(Token op, VALUELIST vl) {
-            SEXP result = nil;
-            SEXP s1, s2 = nil;
+        S_EXP applyValueOp(Token op, VALUELIST vl) {
+            S_EXP result = nil;
+            S_EXP s1, s2 = nil;
             if (op.arity != 0 && op.arity != lengthVL(vl)) {
                 ERROR("Wrong number of arguments to " + op.text + " expected " + op.arity + " but found " + lengthVL(vl));
                 return NIL;
@@ -139,9 +156,9 @@ class Interpreter {
             }
         }
 
-        SEXP apply(Token op, SEXP s1, SEXP s2) {
-            SEXP result = NIL;
-            switch (op.text) {
+        S_EXP apply(Token op, SEXP s1, SEXP s2) {
+            S_EXP result = NIL;
+            switch (op.getVal()) {
                 case "CONS":
                     result = new LISTSXP(s1, s2);
                     break;
