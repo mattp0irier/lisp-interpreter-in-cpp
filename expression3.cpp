@@ -1,6 +1,11 @@
 #include <string>
 #include <typeinfo>
+
 using namespace std;
+
+#ifndef _EXPR_
+#define _EXPR_
+
 //trevor
 class S_EXP {
     public:
@@ -91,17 +96,6 @@ class VAREXP: public EXP {
         }
 };
 
-class APEXP: public EXP {
-    private:
-        string optr;
-        EXPLIST *args;
-    public:
-        APEXP(string optr, EXPLIST *args) {
-            this->optr = optr;
-            this->args = args;
-        }
-};
-
 class EXPLIST {
     private:
         EXP head;
@@ -127,6 +121,17 @@ class EXPLIST {
             return *this;
         }
 
+};
+
+class APEXP: public EXP {
+    private:
+        string optr;
+        EXPLIST *args;
+    public:
+        APEXP(string optr, EXPLIST *args) {
+            this->optr = optr;
+            this->args = args;
+        }
 };
 
 class VALUELIST {
@@ -193,3 +198,5 @@ class ENV {
             this->values = values;
         }
 };
+
+#endif

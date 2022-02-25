@@ -59,7 +59,7 @@ void run(string line){
 
     Parser parser(tokens);
     Interpreter interpreter;
-    EXP currentExpression = parser.getNextExpression();
+    EXP *currentExpression = parser.getNextExpression();
     while(currentExpression != NULL) {
         interpreter.eval(currentExpression);
     }

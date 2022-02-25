@@ -6,6 +6,9 @@
 
 using namespace std;
 
+#ifndef _PARSER_
+#define _PARSER_
+
 class Parser {
     private:
         vector<Token> tokenList;
@@ -54,7 +57,7 @@ class Parser {
                 if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
                     pos++;
                     S_EXP nil = S_EXP("(");
-                    return new VALEXP(nil);
+                    return NULL;
                 }
                 nm = parseName();
                 el = parseEL();
@@ -147,8 +150,10 @@ class Parser {
             int pos = 0;
         }
 
-        EXP getNextExpression() {
-            // do things
+        EXP *getNextExpression() {
+            return parseExp();
         }
 
 };
+
+#endif
