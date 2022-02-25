@@ -32,12 +32,12 @@ class Parser {
             return name;
         }
 
-        NAMELIST parseNL() {
+        NAMELIST *parseNL() {
             string nm;
-            NAMELIST nl;
+            NAMELIST *nl;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
-                return null;
+                return NULL;
             }
             else {
                 nm = parseName();
