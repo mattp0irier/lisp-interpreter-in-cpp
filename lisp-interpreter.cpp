@@ -59,9 +59,9 @@ void run(string line){
 
     Parser parser(tokens);
     Interpreter interpreter;
-    EXP currentExpression = parser.getNextExpression();
+    EXP *currentExpression = parser.getNextExpression();
     while(currentExpression != NULL) {
-        interpreter.evaluate(currentExpression);
+        interpreter.evaluate(*currentExpression);
     }
     // Expr expression = parser.parse();
 //     cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
