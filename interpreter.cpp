@@ -51,7 +51,7 @@ class Interpreter {
                     break;
                 case SET:
                     s = eval(args.tail->head, rho);
-                    varble = ((VAREXP)(args.head)).varble;
+                    varble = ((VAREXP *)(args.head))->varble;
                     if (isBound(varble, rho))
                         assign(varble, s, rho);
                     else if (isBound(varble, globalEnv))
@@ -73,56 +73,53 @@ class Interpreter {
             return s;
         }
 
-        NUMSXP applyArithOp(Token op, int n1, int n2) {
+        NUM_SXP *applyArithOp(Token op, int n1, int n2) {
             int result = 0;
-            switch (op.getVal()) {
-                case "+":
+            switch (op.getVal()[0]) {
+                case '+':
                     result = n1 + n2;
                     break;
-                case "-":
+                case '-':
                     result = n1 - n2;
                     break;
-                case "*":
+                case '*':
                     result = n1 * n2;
                     break;
-                case "/":
+                case '/':
                     result = n1 / n2;
                     break;
-                case "%":
+                case '%':
                     result = n1 % n2;
                     break;
                 default:
                     break;
             }
-            return new NUMSXP(result);
+            return new NUM_SXP(result);
         }
             
         S_EXP applyRelOp(Token op, int n1, int n2) {
             bool result;
-            switch (op.getVal()) {
-                case "<":
-                    result = n1 < n2;
+            switch (op.getVal()[0]) {
+                case '<':
+                    if (op.getVal()[1] == '=') result = n1 <= n2;
+                    else result = n1 < n2;
                     break;
-                case ">":
-                    result = n1 > n2; 
-                    break;
-                case "<=":
-                    result = n1 <= n2;
-                    break;
-                case ">=":
-                    result = n1 >= n2;
-                    break;
-                case "=":
-                    result = n1 == n2;
+                case '>':
+                    if (op.getVal()[1] == '=') result = n1 >= n2;
+                    else result = n1 > n2; 
+                    break;;
+                case '=':
+                    if (op.getVal()[1] == '=') result = n1 == n2;
+                    else result = false;
                     break;
                 default:
                     result = false;
                     break;
             }
             if (result)
-                return TRUE;
+                return S_EXP("TRUE");
             else
-                return NIL;
+                return nil;
         }
 
         S_EXP applyValueOp(Token op, VALUELIST vl) {
