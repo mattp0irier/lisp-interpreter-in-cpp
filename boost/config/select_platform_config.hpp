@@ -35,7 +35,7 @@
 
 #elif defined(__CYGWIN__)
 // cygwin is not win32:
-#  define BOOST_PLATFORM_CONFIG "boost/config/platform/cygwin.hpp"
+#  define BOOST_PLATFORM_CONFIG "config/platform/cygwin.hpp"
 
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 // win32:

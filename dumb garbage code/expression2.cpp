@@ -2,9 +2,28 @@
 #include <vector>
 #include <string>
 #include "token.cpp"
-#include "boost/any.hpp"
+#include "any.hpp"
 
 using namespace std;
+
+#ifndef _EXPRCLASS_
+#define _EXPRCLASS_
+
+class Visitor;
+class Interpreter;
+class Expr;
+class Assign;
+class Binary;
+class Call;
+class Get;
+class Grouping;
+class Literal;
+class Logical;
+class Set;
+class This;
+class Unary;
+class Variable;
+
 
 class Visitor {
     public:
@@ -28,7 +47,7 @@ class Visitor {
 class Interpreter: public Visitor {
     public:
     boost::any visitAssignExpr(Assign expr){
-
+        return NULL;
     }
 
     boost::any visitBinaryExpr(Binary expr){
@@ -55,11 +74,11 @@ class Interpreter: public Visitor {
     }
 
     boost::any visitCallExpr(Call expr){
-        
+        return NULL;
     }
 
     boost::any visitGetExpr(Get expr){
-        
+        return NULL;
     }
 
     boost::any visitGroupingExpr(Grouping expr){
@@ -71,15 +90,15 @@ class Interpreter: public Visitor {
     }
 
     boost::any visitLogicalExpr(Logical expr){
-        
+        return NULL;
     }
 
     boost::any visitSetExpr(Set expr){
-        
+        return NULL;
     }
 
     boost::any visitThisExpr(This expr){
-        
+        return NULL;
     }
 
     boost::any visitUnaryExpr(Unary expr){
@@ -93,10 +112,11 @@ class Interpreter: public Visitor {
     }
 
     boost::any visitVariableExpr(Variable expr){
-        
+        return NULL;
     }
 
 };
+
 
 class Expr {
     public:
@@ -279,3 +299,6 @@ class Variable: public Expr {
         return visitor.visitVariableExpr(*this);
     }
 };
+
+
+#endif

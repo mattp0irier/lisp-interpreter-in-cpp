@@ -34,7 +34,7 @@
 // we get those definitions)
 // (again do not rely on this header being included since users can short-circuit this 
 //  header if they know whose std lib they are using.)
-#include <boost/config/no_tr1/utility.hpp>
+#include "no_tr1/utility.hpp"
 
 #if defined(__LIBCOMO__)
 // Comeau STL:
@@ -50,7 +50,7 @@
 
 #elif defined(__GLIBCPP__) || defined(__GLIBCXX__)
 // GNU libstdc++ 3
-#  define BOOST_STDLIB_CONFIG "boost/config/stdlib/libstdcpp3.hpp"
+#  define BOOST_STDLIB_CONFIG "config/stdlib/libstdcpp3.hpp"
 
 #elif defined(__STL_CONFIG_H)
 // generic SGI STL

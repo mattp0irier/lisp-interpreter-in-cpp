@@ -47,7 +47,7 @@
 
 # elif defined __GNUC__
 //  GNU C++:
-#   define BOOST_COMPILER_CONFIG "boost/config/compiler/gcc.hpp"
+#   define BOOST_COMPILER_CONFIG "config/compiler/gcc.hpp"
 
 #elif defined __KCC
 //  Kai C++
