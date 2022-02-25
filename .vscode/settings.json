@@ -32,6 +32,7 @@
         "__tree": "cpp",
         "__tuple": "cpp",
         "array": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "*.ipp": "cpp"
     }
 }
