@@ -97,10 +97,10 @@ class VAREXP: public EXP {
 };
 
 class EXPLIST {
-    private:
+    public:
         EXP head;
         EXPLIST *tail;
-    public:
+
         EXPLIST() {
             
         }

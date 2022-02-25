@@ -12,44 +12,46 @@ class Interpreter {
         //     FUNDEF fun = fetchFun(nm);
         //     if (fun == null) {
         //         ERROR("Undefined function: " + nm);
-        //         return NIL;
+        //         return nil;
         //     }
         //     if (lengthNL(fun.formals) != lengthVL(actuals)) {
         //         ERROR("Wrong number of arguments to: " + nm);
-        //         return NIL;
+        //         return nil;
         //     }
         //     ENV rho = new ENV(fun.formals, actuals);
         //     return eval(fun.body, rho);
         // }
+        S_EXP nil = S_EXP("(");
 
-        VALUELIST evalList(EXPLIST el, ENV rho) {
-            if (el == null)
-                return null;
-            SEXP h = eval(el.head, rho);
-            VALUELIST t = evalList(el.tail, rho);
+        VALUELIST *evalList(EXPLIST *el, ENV rho) {
+            if (el == NULL)
+                return NULL;
+            S_EXP h = eval(el->head, rho);
+            VALUELIST *t = evalList(el->tail, rho);
             return new VALUELIST(h, t);
         }
 
-        SEXP applyCtrlOp(Token controlOP, EXPLIST args, ENV rho) {
-            SEXP s = NIL;
-            switch (controlOP.text) {
-                case "IF":
+        S_EXP applyCtrlOp(Token controlOP, EXPLIST args, ENV rho) {
+            S_EXP s = nil;
+            string varble;
+            switch (controlOP.getType()) {
+                case IF:
                     if (isTrueVal(eval(args.head, rho)))
-                        return eval(args.tail.head, rho);
+                        return eval(args.tail->head, rho);
                     else
-                        return eval(args.tail.tail.head, rho);
+                        return eval(args.tail->tail->head, rho);
                     break;
-                case "WHILE":
+                case WHILE:
                     s = eval(args.head, rho);
-                    while (s != NIL) {
-                        s = eval(args.tail.head, rho);
+                    while (s != nil) {
+                        s = eval(args.tail->head, rho);
                         s = eval(args.head, rho);
                     }
                     return s;
                     break;
-                case "SET":
-                    s = eval(args.tail.head, rho);
-                    String varble = ((VAREXP)(args.head)).varble;
+                case SET:
+                    s = eval(args.tail->head, rho);
+                    varble = ((VAREXP)(args.head)).varble;
                     if (isBound(varble, rho))
                         assign(varble, s, rho);
                     else if (isBound(varble, globalEnv))
@@ -58,7 +60,7 @@ class Interpreter {
                         bindVar(varble, s, globalEnv);
                     return s;
                     break;
-                case "BEGIN": 
+                case BEGIN: 
                     while (args.tail != null) {
                         s = eval(args.head, rho);
                         args = args.tail;
@@ -83,15 +85,15 @@ class Interpreter {
             };
             if (result)
             return TRUE; else
-            return NIL;
+            return nil;
         }
 
         SEXP applyValueOp(Token op, VALUELIST vl) {
-            SEXP result = NIL;
-            SEXP s1, s2 = NIL;
+            SEXP result = nil;
+            SEXP s1, s2 = nil;
             if (op.arity != 0 && op.arity != lengthVL(vl)) {
                 ERROR("Wrong number of arguments to " + op.text + " expected " + op.arity + " but found " + lengthVL(vl));
-                return NIL; }
+                return nil; }
 s1 = vl.head; // 1st actual if (op.arity == 2)
 s2 = vl.tail.head; // 2nd actual
 if (op.optype == Token.ARITHMATIC || op.optype == Token.RELATIONAL) {
@@ -107,10 +109,10 @@ else
 result = apply(op, s1); return result;
 }
 
-        SEXP apply(Token op, SEXP s1, SEXP s2) { SEXP result = NIL;
+        SEXP apply(Token op, SEXP s1, SEXP s2) { SEXP result = nil;
 switch (op.text) {
 case ("CONS") -> result = new LISTSXP(s1, s2); case ("EQ?"), ("=") -> {
-if (s1 == NIL && s2 == NIL) { result = TRUE;
+if (s1 == nil && s2 == nil) { result = TRUE;
 } else if (s1.type == "Number" && s2.type == "Number") { NUMSXP n1 = (NUMSXP) s1;
 NUMSXP n2 = (NUMSXP) s2;
 if (n1.intval == n2.intval)
@@ -121,9 +123,9 @@ result = TRUE; }
 } }
 return result; }
 
-SEXP apply(Token op, SEXP s1) { SEXP result = NIL;
+SEXP apply(Token op, SEXP s1) { SEXP result = nil;
 switch (op.text) {
-case ("NOT") -> { if (s1 == NIL)
+case ("NOT") -> { if (s1 == nil)
 result = TRUE; }
 case ("CAR") -> {
 if (s1.type == "List") {
@@ -135,7 +137,7 @@ if (s1.type == "List") {
 LISTSXP concell = (LISTSXP) s1;
 result = concell.cdrval; } else
 ERROR("cdr applied to non-list"); }
-case ("NIL?"), ("NULL?") -> { if (s1 == NIL)
+case ("nil?"), ("NULL?") -> { if (s1 == nil)
 result = TRUE; }
 case ("NUMBER?") -> {
 if (s1.type == "Number")
@@ -157,7 +159,7 @@ return result; }
         }
 
         // unsure about void type
-        void eval(EXP expression) {
+        S_EXP eval(EXP expression, ENV rho) {
             Token op;
             if (e instanceof VALEXP s) {
                 return s.sxp;
@@ -185,6 +187,6 @@ return result; }
                     }
                 }
             }
-            return NIL;
+            return nil;
         }
 };
