@@ -235,7 +235,7 @@ class Interpreter {
         }
 
         // unsure about void type
-        S_EXP eval(EXP expression, ENV rho) {
+        S_EXP eval(EXP *expression, ENV rho) {
             Token op;
             if (e instanceof VALEXP s) {
                 return s.sxp;

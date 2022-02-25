@@ -61,7 +61,7 @@ void run(string line){
     Interpreter interpreter;
     EXP *currentExpression = parser.getNextExpression();
     while(currentExpression != NULL) {
-        interpreter.eval(currentExpression);
+        interpreter.eval(currentExpression, environment);
     }
     // Expr expression = parser.parse();
 //     cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
