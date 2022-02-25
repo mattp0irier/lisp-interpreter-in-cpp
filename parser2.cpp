@@ -11,29 +11,30 @@ class Parser {
         vector<Token> tokenList;
         int pos;
         
-        string parseDef() {
-            expect(Token.OPEN_PAR, "parseDef");
-            expect(Token.DEFINE, "parseDef");
-            String fname = parseName(); // function name expect(Token.OPEN_PAR,"parseDef"); // skip ( NAMELIST nl = parseNL();
-            ;                           // formal parameters
-            EXP e = parseExp();         // body expect(Token.CLOSE_PAR,"parseDef"); // skip ) newFunDef(fname, nl, e);
-            return fname;
-        }
+        // string parseDef() {
+        //     expect(Token.OPEN_PAR, "parseDef");
+        //     expect(Token.DEFINE, "parseDef");
+        //     string fname = parseName(); // function name expect(Token.OPEN_PAR,"parseDef"); // skip ( NAMELIST nl = parseNL();
+        //     ;                           // formal parameters
+        //     EXP e = parseExp();         // body expect(Token.CLOSE_PAR,"parseDef"); // skip ) newFunDef(fname, nl, e);
+        //     return fname;
+        // }
 
         string parseName() {
             // needed to broaden the definition of name to include builtins
-            if (userinput(pos, "parseName").type == Token.NUMBER) {
-                ERROR("Expected name, instead read :", userinput(pos, "parseName"));
-                return "error";
-                String name = userinput(pos, "parseName").text;
+            if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT) {
+                // ERROR("Expected name, instead read :", userinput(pos, "parseName"));
+                // return "error";
+                string name = tokenList[pos].getVal();
                 pos++;
                 // install(name);
                 return name;
             }
+
             NAMELIST parseNL() {
-                String nm;
+                string nm;
                 NAMELIST nl;
-                if (userinput(pos, "parseNL") == Token.CLOSE_PAR) {
+                if (tokenList[pos].getType() == RIGHT_PAREN) {
                     pos++;
                     return null;
                 }
@@ -45,11 +46,11 @@ class Parser {
             }
 
             EXP parseExp() {
-                String nm;
+                string nm;
                 EXPLIST el;
-                if (userinput(pos, "parseExp") == Token.OPEN_PAR) { // APEXP
+                if (tokenList[pos].getType() == LEFT_PAREN) { // APEXP
                     pos++;
-                    if (userinput(pos, "parseExp") == Token.CLOSE_PAR) { // NIL
+                    if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
                         pos++;
                         return new VALEXP(NIL);
                     }
@@ -64,11 +65,11 @@ class Parser {
             }
 
             EXPLIST parseEL() {
-                if (userinput(pos, "parseEL") == Token.EOF) {
+                if (tokenList[pos].getType() == END_OF_FILE) {
                     ERROR("Expected ) found EOF");
                     return null;
                 }
-                if (userinput(pos, "parseEL") == Token.CLOSE_PAR) {
+                if (tokenList[pos].getType() == RIGHT_PAREN) {
                     pos++;
                     return null;
                 }
