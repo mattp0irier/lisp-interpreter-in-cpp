@@ -77,13 +77,33 @@ class Interpreter {
             case ("+") -> n1 + n2; case ("-") -> n1 - n2; case ("*") -> n1 * n2; case ("/") -> n1 / n2; case ("%") -> n1 % n2; default -> 0;
             };
             return new NUMSXP(result); }
-            SEXP applyRelOp(Token op, int n1, int n2) { boolean result;
-            result = switch (op.text) {
-            case ("<") -> n1 < n2; case (">") -> n1 > n2; case ("<=") -> n1 <= n2; case (">=") -> n1 >= n2; case ("=") -> n1 == n2; default -> false;
-            };
+            
+        SEXP applyRelOp(Token op, int n1, int n2) {
+            boolean result;
+            switch (op.getVal()) {
+                case "<":
+                    result = n1 < n2;
+                    break;
+                case ">":
+                    result = n1 > n2; 
+                    break;
+                case "<=":
+                    result = n1 <= n2;
+                    break;
+                case ">=":
+                    result = n1 >= n2;
+                    break;
+                case "=":
+                    result = n1 == n2;
+                    break;
+                default:
+                    result = false;
+                    break;
+            }
             if (result)
-            return TRUE; else
-            return NIL;
+                return TRUE;
+            else
+                return NIL;
         }
 
         SEXP applyValueOp(Token op, VALUELIST vl) {
@@ -91,65 +111,105 @@ class Interpreter {
             SEXP s1, s2 = NIL;
             if (op.arity != 0 && op.arity != lengthVL(vl)) {
                 ERROR("Wrong number of arguments to " + op.text + " expected " + op.arity + " but found " + lengthVL(vl));
-                return NIL; }
-s1 = vl.head; // 1st actual if (op.arity == 2)
-s2 = vl.tail.head; // 2nd actual
-if (op.optype == Token.ARITHMATIC || op.optype == Token.RELATIONAL) {
-if (s1.type == "Number" && s2.type == "Number") { NUMSXP n1 = (NUMSXP) s1;
-NUMSXP n2 = (NUMSXP) s2;
-if (op.optype == Token.ARITHMATIC)
-result = applyArithOp(op, n1.intval, n2.intval);
-else
-result = applyRelOp(op, n1.intval, n2.intval); } else
-ERROR("Non-arithmatic arguments to " + op.text); } else if (op.arity == 2)
-result = apply(op, s1, s2);
-else
-result = apply(op, s1); return result;
-}
+                return NIL;
+            }
+            s1 = vl.head; // 1st actual
+            if (op.arity == 2)
+                s2 = vl.tail.head; // 2nd actual
+            if (op.optype == Token.ARITHMATIC || op.optype == Token.RELATIONAL) {
+                if (s1.type == "Number" && s2.type == "Number") {
+                    NUMSXP n1 = (NUMSXP) s1;
+                    NUMSXP n2 = (NUMSXP) s2;
+                    if (op.optype == Token.ARITHMATIC)
+                        result = applyArithOp(op, n1.intval, n2.intval);
+                    else
+                        result = applyRelOp(op, n1.intval, n2.intval);
+                }
+                else {
+                    ERROR("Non-arithmatic arguments to " + op.text);
+                }
+            }
+            else if (op.arity == 2) {
+                result = apply(op, s1, s2);
+            }
+            else {
+                result = apply(op, s1); return result;
+            }
+        }
 
-        SEXP apply(Token op, SEXP s1, SEXP s2) { SEXP result = NIL;
-switch (op.text) {
-case ("CONS") -> result = new LISTSXP(s1, s2); case ("EQ?"), ("=") -> {
-if (s1 == NIL && s2 == NIL) { result = TRUE;
-} else if (s1.type == "Number" && s2.type == "Number") { NUMSXP n1 = (NUMSXP) s1;
-NUMSXP n2 = (NUMSXP) s2;
-if (n1.intval == n2.intval)
-result = TRUE;
-} else if (s1.type == "Symbol" && s2.type == "Symbol") {
-SYMSXP n1 = (SYMSXP) s1; SYMSXP n2 = (SYMSXP) s2; if (n1.symval == n2.symval)
-result = TRUE; }
-} }
-return result; }
+        SEXP apply(Token op, SEXP s1, SEXP s2) {
+            SEXP result = NIL;
+            switch (op.text) {
+                case "CONS":
+                    result = new LISTSXP(s1, s2);
+                    break;
+                case "EQ?":
+                case "=":
+                    if (s1 == NIL && s2 == NIL) {
+                        result = TRUE;
+                    } else if (s1.type == "Number" && s2.type == "Number") {
+                        NUMSXP n1 = (NUMSXP)s1;
+                        NUMSXP n2 = (NUMSXP)s2;
+                        if (n1.intval == n2.intval)
+                            result = TRUE;
+                    } else if (s1.type == "Symbol" && s2.type == "Symbol") {
+                        SYMSXP n1 = (SYMSXP)s1;
+                        SYMSXP n2 = (SYMSXP)s2;
+                        if (n1.symval == n2.symval)
+                            result = TRUE;
+                    }
+                    break;
+            }
+            return result;
+        }
 
-SEXP apply(Token op, SEXP s1) { SEXP result = NIL;
-switch (op.text) {
-case ("NOT") -> { if (s1 == NIL)
-result = TRUE; }
-case ("CAR") -> {
-if (s1.type == "List") {
-LISTSXP concell = (LISTSXP) s1;
-result = concell.carval; } else
-ERROR("car applied to non-list"); }
-case ("CDR") -> {
-if (s1.type == "List") {
-LISTSXP concell = (LISTSXP) s1;
-result = concell.cdrval; } else
-ERROR("cdr applied to non-list"); }
-case ("NIL?"), ("NULL?") -> { if (s1 == NIL)
-result = TRUE; }
-case ("NUMBER?") -> {
-if (s1.type == "Number")
-result = TRUE; }
-case ("SYMBOL?") -> {
-if (s1.type == "Symbol")
-result = TRUE; }
-case ("LIST?") -> {
-if (s1.type == "List")
-result = TRUE; }
-case ("PRINT") -> { System.out.println(s1.toString());
-result = s1; }
-}
-return result; }
+        SEXP apply(Token op, SEXP s1) {
+            SEXP result = NIL;
+            switch (op.text) {
+                case "NOT":
+                    if (s1 == NIL)
+                        result = TRUE;
+                    break;
+                case "CAR":
+                    if (s1.type == "List") {
+                        LISTSXP concell = (LISTSXP) s1;
+                        result = concell.carval;
+                    }
+                    else
+                        ERROR("car applied to non-list");
+                    break;
+                case "CDR":
+                    if (s1.type == "List") {
+                        LISTSXP concell = (LISTSXP) s1;
+                        result = concell.cdrval;
+                    }
+                    else
+                        ERROR("cdr applied to non-list");
+                    break;
+                case "NIL?":
+                case "NULL?":
+                    if (s1 == NIL)
+                        result = TRUE;
+                    break;
+                case "NUMBER?":
+                    if (s1.type == "Number")
+                        result = TRUE;
+                    break;
+                case "SYMBOL?":
+                    if (s1.type == "Symbol")
+                        result = TRUE;
+                    break;
+                case ("LIST?"):
+                    if (s1.type == "List")
+                        result = TRUE;
+                    break;
+                case ("PRINT"):
+                    System.out.println(s1.toString());
+                    result = s1;
+                    break;
+            }
+            return result;
+        }
 
     public:
         Interpreter() {
