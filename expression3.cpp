@@ -35,6 +35,7 @@ class NUM_SXP: public S_EXP {
         }
 
         string toString(){
+            cout <<"This is a number" << endl;
             return to_string(intVal);
         }
 };
@@ -79,6 +80,8 @@ class LIST_SXP: public S_EXP {
 //matt
 
 class EXP {
+    public:
+    string name = "garbage";
 };
 
 class VALEXP: public EXP {
@@ -86,6 +89,7 @@ class VALEXP: public EXP {
         S_EXP *sxp;
         VALEXP(S_EXP *sxp) {
             this->sxp = sxp;
+            name = "valexp";
         }
 };
 
@@ -94,6 +98,7 @@ class VAREXP: public EXP {
         string varble;
         VAREXP(string variable) {
             this->varble = variable;
+            name = "varexp";
         }
 };
 

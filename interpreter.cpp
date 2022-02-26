@@ -1,6 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <typeinfo>
+#include <string.h>
 #include "token.cpp"
 #include "expression3.cpp"
 
@@ -242,7 +244,9 @@ class Interpreter {
 
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
-            if (instanceof<VALEXP>(expression)) {
+            VALEXP *valCheck = NULL;
+            cout << expression->name << endl;
+            if (strcmp(typeid(*expression).name(), typeid(*valCheck).name()) == 0) {
                 VALEXP* exp = (VALEXP*)expression;
                 return exp->sxp;
             }
@@ -273,6 +277,7 @@ class Interpreter {
                     }
                 }
             }
+            cout << "nil" << endl;
             return nil;
         }
 
