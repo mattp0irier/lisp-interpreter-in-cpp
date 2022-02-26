@@ -83,8 +83,8 @@ class EXP {
 
 class VALEXP: public EXP {
     public:
-        S_EXP sxp;
-        VALEXP(S_EXP sxp) {
+        S_EXP *sxp;
+        VALEXP(S_EXP *sxp) {
             this->sxp = sxp;
         }
 };
@@ -222,6 +222,11 @@ VALUELIST *findVar(string name, ENV *rho) {
         }
     }
     return values;
+}
+
+S_EXP *fetch(string name, ENV *rho) {
+    VALUELIST *vl = findVar(name, rho);
+    return vl->head;
 }
 
 void bindVar(string name, S_EXP *s, ENV *rho) {

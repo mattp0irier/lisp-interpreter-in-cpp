@@ -64,7 +64,7 @@ class Parser {
                 return new APEXP(tokenList[pos], el);
             }
             else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN || tokenList[pos].getType() == RIGHT_PAREN)
-                return new VALEXP(*(parseVal()));
+                return (VALEXP *)(parseVal());
             else
                 return new VAREXP(parseName());
         }
