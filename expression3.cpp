@@ -125,12 +125,12 @@ class EXPLIST {
 };
 
 class APEXP: public EXP {
-    private:
-        string optr;
-        EXPLIST *args;
     public:
-        APEXP(string optr, EXPLIST *args) {
-            this->optr = optr;
+        Token op;
+        EXPLIST *args;
+
+        APEXP(Token op, EXPLIST *args) {
+            this->op = op;
             this->args = args;
         }
 };

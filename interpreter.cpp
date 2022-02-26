@@ -8,6 +8,11 @@ using namespace std;
 
 ENV *globalEnv = emptyEnv();
 
+template<typename Base, typename T>
+inline bool instanceof(const T*) {
+    return is_base_of<Base, T>::value;
+}
+
 class Interpreter {
     private:
         // SEXP applyUserFun(String nm, VALUELIST actuals) {
@@ -239,29 +244,32 @@ class Interpreter {
         // unsure about void type
         S_EXP eval(EXP *expression, ENV *rho) {
             Token op;
-            if (e instanceof VALEXP s) {
-                return s.sxp;
+            if (instanceof<VALEXP>(expression)) {
+                VALEXP* exp = (VALEXP*)expression;
+                return exp->sxp;
             }
-            else if (e instanceof VAREXP v) {
-                if (isBound(v.varble, rho)) {
-                    return fetch(v.varble, rho);
+            else if (instanceof<VAREXP>(expression)) {
+                VAREXP* exp = (VAREXP*)expression;
+                if (isBound(exp->varble, rho)) {
+                    return fetch(exp->varble, rho);
                 }
-                if (isBound(v.varble, globalEnv)) {
-                    return fetch(v.varble, globalEnv);
+                if (isBound(exp->varble, globalEnv)) {
+                    return fetch(exp->varble, globalEnv);
                 }
-                ERROR("Undefined variable " + v.varble);
+                // ERROR("Undefined variable " + v.varble);
             }
-            else if (e instanceof APEXP a) {
-                op = Token.builtin(a.optr);
-                if (op == null) {
-                    return applyUserFun(a.optr, evalList(a.args, rho));
+            else if (instanceof<APEXP>(expression)) {
+                APEXP* exp = (APEXP*)expression;
+                op = exp->op;
+                if (op.getType() == IDENTIFIER) {
+                    return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
-                    if (op.optype == Token.CONTROL) {
-                        return applyCtrlOp(op, a.args, rho);
+                    if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {
+                        return applyCtrlOp(op, exp->args, rho);
                     }
                     else {
-                        return applyValueOp(op, evalList(a.args, rho));
+                        return applyValueOp(op, evalList(exp->args, rho));
                     }
                 }
             }

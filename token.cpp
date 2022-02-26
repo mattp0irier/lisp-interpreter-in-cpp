@@ -84,6 +84,78 @@ class Token {
         int getLine() const { return line; }
         int getArity() const { return arity; }
 
+        // static Token builtin(String optr) {
+        //     Token operation;
+        //     switch (optr.toLowerCase()) {
+        //         case ";":
+        //             return (Token.SEMI);
+        //         // this should not occur case "\'": {
+        //             return (Token.TIC);
+        //         // static final Token TIC = makeBuiltIn("\'");
+        //         case "$":
+        //             return (Token.EOF);
+        //         case "(":
+        //             return (Token.OPEN_PAR);
+        //         case ")":
+        //             return (Token.CLOSE_PAR);
+        //         case "+":
+        //             return (Token.PLUS);
+        //         case "-":
+        //             return (Token.MINUS);
+        //         case "*":
+        //             return (Token.MULT);
+        //         case "/":
+        //             return (Token.DIV);
+        //         case "%":
+        //             return (Token.MOD);
+        //         case "=":
+        //             return (Token.EQ);
+        //         case "<=":
+        //             return (Token.LTEQ);
+        //         case "<":
+        //             return (Token.LT);
+        //         case ">=":
+        //             return (Token.GTEQ);
+        //         case ">":
+        //             return (Token.GT);
+        //         case ("print"):
+        //             return (Token.PRINT);
+        //         // case ("cond") -> {return foundToken(Token.COND); }
+        //         case ("set"):
+        //             return (Token.SET);
+        //         case ("not"):
+        //             return (Token.NOT);
+        //         case ("nil?"):
+        //             return (Token.NIL_PRED);
+        //         case ("atom?"):
+        //             return (Token.ATOM_PRED);
+        //         case ("list?"): {
+        //             return (Token.LIST_PRED);
+        //         case ("symbol?"):
+        //             return (Token.SYMBOL_PRED);
+        //         case ("number?"):
+        //             return (Token.NUMBER_PRED);
+        //         case ("eq?"):
+        //             return (Token.EQ);
+        //         case ("quit"):
+        //             return (Token.QUIT);
+        //         case ("define"):
+        //             return (Token.DEFINE);
+        //         case ("if"):
+        //             return (Token.IF);
+        //         case ("while"):
+        //             return (Token.WHILE);
+        //         case ("begin"):
+        //             return (Token.BEGIN);
+        //         case ("cons"):
+        //             return (Token.CONS);
+        //         case ("car"):
+        //             return (Token.CAR);
+        //         case ("cdr"):
+        //             return (Token.CDR);
+        //         default:
+        //             return NULL;
+        //     }
 };
 
 #endif
