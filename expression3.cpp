@@ -139,14 +139,14 @@ class VALUELIST {
     private:
         
     public:
-        S_EXP head;
+        S_EXP *head;
         VALUELIST *tail;
 
         VALUELIST() {
             
         }
 
-        VALUELIST(S_EXP head, VALUELIST *tail) {
+        VALUELIST(S_EXP *head, VALUELIST *tail) {
             this->head = head;
             this->tail = tail;
         }
@@ -224,12 +224,12 @@ VALUELIST *findVar(string name, ENV *rho) {
     return values;
 }
 
-void bindVar(string name, S_EXP s, ENV *rho) {
+void bindVar(string name, S_EXP *s, ENV *rho) {
     rho->vars = new NAMELIST(name, rho->vars);
     rho->values = new VALUELIST(s, rho->values);
 }
 
-void assign(string name, S_EXP s, ENV *rho) {
+void assign(string name, S_EXP *s, ENV *rho) {
     VALUELIST *location = findVar(name, rho);
     location->head = s;
 }
