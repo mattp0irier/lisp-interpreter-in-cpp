@@ -261,7 +261,9 @@ class Interpreter {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
-                    return applyUserFun(op.getVal(), evalList(exp->args, rho));
+                    cout << "USER FUNCTION" << endl;
+                    return nil;
+                   // return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
                     if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {

@@ -60,8 +60,10 @@ void run(string line){
     Parser parser(tokens);
     Interpreter interpreter;
     EXP *currentExpression = parser.getNextExpression();
+    S_EXP *result;
     while(currentExpression != NULL) {
-        interpreter.eval(currentExpression, environment);
+        result = interpreter.eval(currentExpression, emptyEnv());
+        cout << result->toString() << endl;
     }
     // Expr expression = parser.parse();
 //     cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
