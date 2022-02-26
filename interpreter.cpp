@@ -240,7 +240,6 @@ class Interpreter {
 
         }
 
-        // unsure about void type
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
             if (instanceof<VALEXP>(expression)) {
