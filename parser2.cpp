@@ -73,7 +73,7 @@ class Parser {
             }
             else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN || tokenList[pos].getType() == RIGHT_PAREN) {
                 // cout << "found val exp at token " << tokenList[pos].getVal() << endl;
-                return (VALEXP *)(parseVal());
+                return new VALEXP(parseVal());
             }
             else {
                 cout << "found var exp" << endl;

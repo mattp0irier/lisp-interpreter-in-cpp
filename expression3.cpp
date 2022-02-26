@@ -88,6 +88,7 @@ class VALEXP: public EXP {
     public:
         S_EXP *sxp;
         VALEXP(S_EXP *sxp) {
+            cout << "in valexp constructor" << endl;
             this->sxp = sxp;
             name = "valexp";
         }
@@ -96,8 +97,8 @@ class VALEXP: public EXP {
 class VAREXP: public EXP {
     public:
         string varble;
-        VAREXP(string variable) {
-            this->varble = variable;
+        VAREXP(string varble) {
+            this->varble = varble;
             name = "varexp";
         }
 };
