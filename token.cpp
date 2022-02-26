@@ -158,4 +158,17 @@ class Token {
         //     }
 };
 
+void ERROR(string msg, Token token){
+    if (token.getLine() == -1){
+        cout << "ERROR:: " + msg + " " + to_string(token.getType()) << endl;
+    }
+    else {
+        cout << "ERROR:: Error on line " + to_string(token.getLine()) + " " + msg << endl;
+    }
+}
+
+void ERROR(string msg) {
+    cout << "ERROR:: " + msg << endl;
+}
+
 #endif
