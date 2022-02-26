@@ -57,13 +57,17 @@ void run(string line){
     vector<Token> tokens = scanner.scanTokens();
     scanner.printTokens();
 
-    Parser parser(tokens);
+    Parser *parser = new Parser(tokens);
+    cout << "parser created" << endl;
     Interpreter interpreter;
-    EXP *currentExpression = parser.getNextExpression();
+    cout << "interpreter created" << endl;
+    EXP *currentExpression = parser->getNextExpression();
+    cout << "expression created" << endl;
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
         cout << result->toString() << endl;
+        currentExpression = parser->getNextExpression();
     }
     // Expr expression = parser.parse();
 //     cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
