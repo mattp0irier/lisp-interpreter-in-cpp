@@ -81,7 +81,7 @@ class Parser {
             else {
                 EXP *e = parseExp();
                 EXPLIST *el = parseEL();
-                return new EXPLIST(*e, el);
+                return new EXPLIST(e, el);
             }
         }
 

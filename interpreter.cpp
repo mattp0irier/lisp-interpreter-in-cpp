@@ -6,6 +6,8 @@
 
 using namespace std;
 
+ENV *globalEnv = emptyEnv();
+
 class Interpreter {
     private:
         // SEXP applyUserFun(String nm, VALUELIST actuals) {
@@ -21,9 +23,9 @@ class Interpreter {
         //     ENV rho = new ENV(fun.formals, actuals);
         //     return eval(fun.body, rho);
         // }
-        S_EXP nil = S_EXP("(");
+        S_EXP nil = S_EXP("()");
 
-        VALUELIST *evalList(EXPLIST *el, ENV rho) {
+        VALUELIST *evalList(EXPLIST *el, ENV *rho) {
             if (el == NULL)
                 return NULL;
             S_EXP h = eval(el->head, rho);
@@ -31,27 +33,27 @@ class Interpreter {
             return new VALUELIST(h, t);
         }
 
-        S_EXP applyCtrlOp(Token controlOP, EXPLIST args, ENV rho) {
+        S_EXP applyCtrlOp(Token controlOP, EXPLIST *args, ENV *rho) {
             S_EXP s = nil;
             string varble;
             switch (controlOP.getType()) {
                 case IF:
-                    if (isTrueVal(eval(args.head, rho)))
-                        return eval(args.tail->head, rho);
+                    if (isTrueVal(eval(args->head, rho)))
+                        return eval(args->tail->head, rho);
                     else
-                        return eval(args.tail->tail->head, rho);
+                        return eval(args->tail->tail->head, rho);
                     break;
                 case WHILE:
-                    s = eval(args.head, rho);
-                    while (s != nil) {
-                        s = eval(args.tail->head, rho);
-                        s = eval(args.head, rho);
+                    s = eval(args->head, rho);
+                    while (s.toString() != "()") {
+                        s = eval(args->tail->head, rho);
+                        s = eval(args->head, rho);
                     }
                     return s;
                     break;
                 case SET:
-                    s = eval(args.tail->head, rho);
-                    varble = ((VAREXP *)(args.head))->varble;
+                    s = eval(args->tail->head, rho);
+                    varble = ((VAREXP *)(args->head))->varble;
                     if (isBound(varble, rho))
                         assign(varble, s, rho);
                     else if (isBound(varble, globalEnv))
@@ -61,12 +63,12 @@ class Interpreter {
                     return s;
                     break;
                 case BEGIN: 
-                    while (args.tail != null) {
-                        s = eval(args.head, rho);
-                        args = args.tail;
+                    while (args->tail != NULL) {
+                        s = eval(args->head, rho);
+                        args = args->tail;
                     }
                     // very strange this
-                    s = eval(args.head, rho);
+                    s = eval(args->head, rho);
                     return s;
                     break;
             }
@@ -235,7 +237,7 @@ class Interpreter {
         }
 
         // unsure about void type
-        S_EXP eval(EXP *expression, ENV rho) {
+        S_EXP eval(EXP *expression, ENV *rho) {
             Token op;
             if (e instanceof VALEXP s) {
                 return s.sxp;
@@ -264,5 +266,13 @@ class Interpreter {
                 }
             }
             return nil;
+        }
+
+        bool isTrueVal (S_EXP s_exp) {
+            return !(s_exp.toString() == "()");
+        }
+
+        bool isBound (string name, ENV *rho){
+            return (findVar(name, rho) != NULL);
         }
 };

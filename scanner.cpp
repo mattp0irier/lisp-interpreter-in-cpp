@@ -48,54 +48,54 @@ class Scanner {
             return index >= input.length();
         }
 
-        void addToken(TokenType type, string value) {
-            tokens.push_back(Token(type, value, currentLine));
+        void addToken(TokenType type, string value, int arity) {
+            tokens.push_back(Token(type, value, currentLine, arity));
             // cout << "added string token" << endl;
         }
 
-        void addToken(TokenType type, int value) {
+        void addToken(TokenType type, int value, int arity) {
             // cout << "adding token 2" << endl;
-            tokens.push_back(Token(type, value, currentLine));
+            tokens.push_back(Token(type, value, currentLine, arity));
             // cout <<"pushback complete"<<endl;
         }
 
-        void addToken(TokenType type, double value) {
-            tokens.push_back(Token(type, value, currentLine));
+        void addToken(TokenType type, double value, int arity) {
+            tokens.push_back(Token(type, value, currentLine, arity));
         }
 
         void scanToken() {
             char c = getNextChar();
             switch (c) {
             case '(':
-                addToken(LEFT_PAREN, string(1, c));
+                addToken(LEFT_PAREN, string(1, c), 0);
                 break;
             case ')':
-                addToken(RIGHT_PAREN, string(1, c));
+                addToken(RIGHT_PAREN, string(1, c), 0);
                 break;
             case '+':
-                addToken(PLUS, string(1, c));
+                addToken(PLUS, string(1, c), 2);
                 break;
             case '-':
-                addToken(MINUS, string(1, c));
+                addToken(MINUS, string(1, c), 2);
                 break;
             case '*':
-                addToken(MULTIPLY, string(1, c));
+                addToken(MULTIPLY, string(1, c), 2);
                 break;
             case '/':
-                addToken(DIVIDE, string(1, c));
+                addToken(DIVIDE, string(1, c), 2);
                 break;
             case '=':
-                addToken(EQUAL, string(1, c));
+                addToken(EQUAL, string(1, c), 2);
                 break;
             case '<':
-                addToken(LESS_THAN, string(1, c));
+                addToken(LESS_THAN, string(1, c), 2);
                 break;
             case '>':
-                addToken(GREATER_THAN, string(1, c));
+                addToken(GREATER_THAN, string(1, c), 2);
                 break;
             case 'T':
                 if (isalpha(peek())) getIdentifier();
-                else addToken(T, string(1, c));
+                else addToken(T, string(1, c), 0);
                 break;
             // ignore whitespace
             case ' ':
@@ -132,9 +132,9 @@ class Scanner {
             if (peek() == '.' && isdigit(peekNext())) {
                 getNextChar();
                 while (isdigit(peek())) getNextChar();
-                addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)));
+                addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)), 0);
             }
-            else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)));
+            else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)), 0);
         }
 
         void getIdentifier() {
@@ -156,7 +156,7 @@ class Scanner {
             else {
                 type = IDENTIFIER;
             } 
-            addToken(type, idName);
+            addToken(type, idName, 0);
         }
 
         void getString() {
@@ -170,7 +170,7 @@ class Scanner {
                 return;
             }
             getNextChar();
-            addToken(STRING, input.substr(startIndex+1, index-startIndex-2));
+            addToken(STRING, input.substr(startIndex+1, index-startIndex-2), 0);
         }
 
 
@@ -188,7 +188,7 @@ class Scanner {
                 scanToken();
             }
 
-            addToken(END_OF_FILE, -1);
+            addToken(END_OF_FILE, -1, -1);
             return tokens;
         }
 

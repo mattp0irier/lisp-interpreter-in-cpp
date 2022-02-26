@@ -30,27 +30,34 @@ class Token {
         int intValue = 0;
         double floatValue = 0;
         int line = 0;
+        int arity = 0;
 
     public:
         Token(){
             type = END_OF_FILE;
             intValue = -1;
             line = -1;
+            arity = -1;
         }
-        Token(TokenType type, string value, int line) {
+        Token(TokenType type, string value, int line, int arity) {
             this->type = type;
             this->value = value;
             this->line = line;
+            this->arity = arity;
+
         }
-        Token(TokenType type, int intValue, int line) {
+        Token(TokenType type, int intValue, int line, int arity) {
             this->type = type;
             this->intValue = intValue;
             this->line = line;
+            this->arity = arity;
+
         }
-        Token(TokenType type, double floatValue, int line) {
+        Token(TokenType type, double floatValue, int line, int arity) {
             this->type = type;
             this->floatValue = floatValue;
             this->line = line;
+            this->arity = arity;
         }
         Token(const Token &src){
             this->type = src.getType();
@@ -58,6 +65,7 @@ class Token {
             this->intValue = src.getIntVal();
             this->floatValue = src.getFloatVal();
             this->line = src.getLine();
+            this->arity = src.getArity();
         }
         Token &operator= (const Token &src) {
             this->type = src.getType();
@@ -65,6 +73,7 @@ class Token {
             this->intValue = src.getIntVal();
             this->floatValue = src.getFloatVal();
             this->line = src.getLine();
+            this->arity = src.getArity();
             return *this;
         }
 
@@ -73,6 +82,7 @@ class Token {
         double getFloatVal() const { return floatValue; }
         TokenType getType() const { return type; }
         int getLine() const { return line; }
+        int getArity() const { return arity; }
 
 };
 

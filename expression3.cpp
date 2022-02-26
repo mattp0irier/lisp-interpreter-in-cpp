@@ -1,5 +1,6 @@
 #include <string>
 #include <typeinfo>
+#include <memory>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ class S_EXP {
         string type;
 
         S_EXP(){
-            type = "NIL";
+            type = "()";
         }
 
         S_EXP(string type){
@@ -98,14 +99,14 @@ class VAREXP: public EXP {
 
 class EXPLIST {
     public:
-        EXP head;
+        EXP *head;
         EXPLIST *tail;
 
         EXPLIST() {
             
         }
 
-        EXPLIST(EXP head, EXPLIST *tail) {
+        EXPLIST(EXP *head, EXPLIST *tail) {
             this->head = head;
             this->tail = tail;
         }
@@ -202,5 +203,53 @@ class ENV {
             this->values = values;
         }
 };
+
+ENV *emptyEnv(){
+    return new ENV(NULL, NULL);
+}
+
+VALUELIST *findVar(string name, ENV *rho) {
+    NAMELIST *nl = rho->vars;
+    VALUELIST *values = rho->values;
+    bool found = false;
+    while (nl != NULL && !found){
+        if (nl->head == name){
+            found = true;
+        }
+        else {
+            nl = nl->tail;
+            values = values->tail;
+        }
+    }
+    return values;
+}
+
+void bindVar(string name, S_EXP s, ENV *rho) {
+    rho->vars = new NAMELIST(name, rho->vars);
+    rho->values = new VALUELIST(s, rho->values);
+}
+
+void assign(string name, S_EXP s, ENV *rho) {
+    VALUELIST *location = findVar(name, rho);
+    location->head = s;
+}
+
+int lengthVL(VALUELIST *vl){
+    int len = 0;
+    while (vl != NULL){
+        vl = vl->tail;
+        len++;
+    }
+    return len;
+}
+
+int lengthNL(NAMELIST *nl){
+    int len = 0;
+    while (nl != NULL) {
+        nl = nl->tail;
+        len++;
+    }
+    return len;
+}
 
 #endif
