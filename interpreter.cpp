@@ -8,6 +8,9 @@
 
 using namespace std;
 
+#ifndef _INTERPRETER_
+#define _INTERPRETER_
+
 ENV *globalEnv = emptyEnv();
 
 template<typename Base, typename T>
@@ -140,7 +143,7 @@ class Interpreter {
         }
 
         S_EXP *applyValueOp(Token op, VALUELIST *vl) {
-            cout << "in apply val op" << endl;
+            // cout << "in apply val op" << endl;
             S_EXP *result = nil;
             S_EXP *s1 = nil;
             S_EXP *s2 = nil;
@@ -201,49 +204,51 @@ class Interpreter {
 
         S_EXP *apply(Token op, S_EXP *s1) {
             S_EXP *result = nil;
-            string opVal = op.getVal();
-
-            if (opVal == "NOT") {
-                if (s1 == nil)
-                    result = TRUE;
+            switch(op.getType()) {
+                // case NOT:
+                //     if (s1 == nil)
+                //         result = TRUE;
+                //     break;
+                case CAR:
+                    if (s1->type == "List") {
+                        LIST_SXP *concell = (LIST_SXP *)s1;
+                        result = concell->carVal;
+                    }
+                    else
+                        ERROR("car applied to non-list");
+                    break;
+                case CDR:
+                    if (s1->type == "List") {
+                        LIST_SXP *concell = (LIST_SXP *)s1;
+                        result = concell->cdrVal;
+                    }
+                    else
+                        ERROR("cdr applied to non-list");
+                    break;
+                case IS_NULL:
+                    if (s1 == nil)
+                        result = TRUE;
+                    break;
+                case IS_NUMBER:
+                    if (s1->type == "Number")
+                        result = TRUE;
+                    break;
+                case IS_SYMBOL:
+                    if (s1->type == "Symbol" || s1->type == "TRUE")
+                        result = TRUE;
+                    break;
+                case IS_LIST:
+                    if (s1->type == "List")
+                        result = TRUE;
+                    break;
+                case PRINT:
+                    cout << s1->toString() << endl;
+                    result = s1;
+                    break;
+                default:
+                    ERROR("invalid apply");
+                    break;
             }
-            else if (opVal == "CAR"){
-                if (s1->type == "List") {
-                    LIST_SXP *concell = (LIST_SXP *)s1;
-                    result = concell->carVal;
-                }
-                else
-                    ERROR("car applied to non-list");
-            }
-            else if (opVal == "CDR"){
-                if (s1->type == "List") {
-                    LIST_SXP *concell = (LIST_SXP *)s1;
-                    result = concell->cdrVal;
-                }
-                else
-                    ERROR("cdr applied to non-list");
-            }
-            else if (opVal == "NIL?" || opVal == "NULL?") {
-                if (s1 == nil)
-                    result = TRUE;
-            }
-            else if (opVal == "NUMBER?"){
-                if (s1->type == "Number")
-                    result = TRUE;
-            }
-            else if (opVal == "SYMBOL?"){
-                if (s1->type == "Symbol")
-                    result = TRUE;
-            }
-            else if (opVal == "LIST?"){
-                if (s1->type == "List")
-                    result = TRUE;
-            }
-            else if (opVal == "PRINT"){
-                cout << s1->toString() << endl;
-                result = s1;
-            }
-
             return result;
         }
 
@@ -285,7 +290,7 @@ class Interpreter {
                     }
                 }
             }
-            cout << "nil" << endl;
+            // cout << "nil" << endl;
             return nil;
         }
 
@@ -297,3 +302,5 @@ class Interpreter {
             return (findVar(name, rho) != NULL);
         }
 };
+
+#endif

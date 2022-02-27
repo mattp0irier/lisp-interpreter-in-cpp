@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 void runFile(string filename){
     ifstream input(filename);
     string str;
-    int i = 0;
+    int i = 1;
     while (getline(input, str)) {
         cout << "\nLINE " << i << ":\n\tINPUT: " << str << "\n\tOUTPUT: "; 
         if (str.length()) run(str);
@@ -49,7 +49,6 @@ void runPrompt(){
         if (line.length() == 0) break;
         run(line);
     }
-
     return;
 
 }

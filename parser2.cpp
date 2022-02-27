@@ -9,6 +9,8 @@ using namespace std;
 #ifndef _PARSER_
 #define _PARSER_
 
+EXP *nil = new EXP();
+
 class Parser {
     private:
         vector<Token> tokenList;
@@ -62,8 +64,7 @@ class Parser {
                 pos++;
                 if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
                     pos++;
-                    S_EXP nil = S_EXP("()");
-                    return NULL;
+                    return nil;
                 }
                 posOfToken = parseName();
                 el = parseEL();

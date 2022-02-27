@@ -13,16 +13,13 @@
 (if T 1 0)
 
 (null? ())
-(atom? ())
 (list? ())
 (number? ())
 (symbol? ())
 
-(atom? t)
 (symbol? t)
 
 (null? 1)
-(atom? 1)
 (list? 1)
 (number? 1)
 (symbol? 1)

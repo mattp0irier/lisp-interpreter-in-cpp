@@ -82,6 +82,9 @@ class LIST_SXP: public S_EXP {
 class EXP {
     public:
     string name;
+    EXP(){
+        name = "()";
+    }
 };
 
 class VALEXP: public EXP {
