@@ -63,6 +63,7 @@ void run(string line){
     cout << "interpreter created" << endl;
     EXP *currentExpression = parser->getNextExpression();
     cout << "expression created" << endl;
+    cout << currentExpression->name << endl;
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());

@@ -88,9 +88,9 @@ class VALEXP: public EXP {
     public:
         S_EXP *sxp;
         VALEXP(S_EXP *sxp) {
-            cout << "in valexp constructor" << endl;
             this->sxp = sxp;
             name = "valexp";
+            cout << name << endl;
         }
 };
 
