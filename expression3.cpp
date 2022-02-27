@@ -35,7 +35,7 @@ class NUM_SXP: public S_EXP {
         }
 
         string toString(){
-            cout << "This is a number" << endl;
+            // cout << "This is a number" << endl;
             return to_string(intVal);
         }
 };
@@ -90,7 +90,6 @@ class VALEXP: public EXP {
         VALEXP(S_EXP *sxp) {
             this->sxp = sxp;
             this->name = "valexp";
-            cout << name << endl;
         }
 };
 

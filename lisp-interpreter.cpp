@@ -33,9 +33,11 @@ int main(int argc, char *argv[]){
 void runFile(string filename){
     ifstream input(filename);
     string str;
-    while (input) {
-        getline(input, str);
+    int i = 0;
+    while (getline(input, str)) {
+        cout << "\nLINE " << i << ":\n\tINPUT: " << str << "\n\tOUTPUT: "; 
         if (str.length()) run(str);
+        i++;
     }
 }
 

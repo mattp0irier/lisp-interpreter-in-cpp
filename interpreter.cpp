@@ -47,11 +47,9 @@ class Interpreter {
             switch (controlOP.getType()) {
                 case IF:
                     if (isTrueVal(eval(args->head, rho))){
-                        cout <<"true" << endl;
                         return eval(args->tail->head, rho);
                     }
                     else{
-                        cout << "false" << endl;
                         return eval(args->tail->tail->head, rho);
                     }
                     break;
@@ -82,6 +80,8 @@ class Interpreter {
                     // very strange this
                     s = eval(args->head, rho);
                     return s;
+                    break;
+                default:
                     break;
             }
             return s;
