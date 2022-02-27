@@ -81,16 +81,20 @@ class LIST_SXP: public S_EXP {
 
 class EXP {
     public:
-    string name = "garbage";
+    string name;
+    EXP(){
+        cout << "poop" << endl;
+        name = "garbage";
+    }
 };
 
 class VALEXP: public EXP {
     public:
         S_EXP *sxp;
         VALEXP(S_EXP *sxp) {
-            cout << "in valexp constructor" << endl;
             this->sxp = sxp;
             name = "valexp";
+            cout << name << endl;
         }
 };
 

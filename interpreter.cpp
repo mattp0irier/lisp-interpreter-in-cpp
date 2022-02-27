@@ -244,7 +244,6 @@ class Interpreter {
 
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
-            cout << expression->name << endl;
             if (instanceof<VALEXP>(expression)) {
                 VALEXP* exp = (VALEXP*)expression;
                 return exp->sxp;
