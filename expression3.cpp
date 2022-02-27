@@ -35,7 +35,7 @@ class NUM_SXP: public S_EXP {
         }
 
         string toString(){
-            cout <<"This is a number" << endl;
+            cout << "This is a number" << endl;
             return to_string(intVal);
         }
 };
@@ -82,10 +82,6 @@ class LIST_SXP: public S_EXP {
 class EXP {
     public:
     string name;
-    EXP(){
-        cout << "poop" << endl;
-        name = "garbage";
-    }
 };
 
 class VALEXP: public EXP {
@@ -113,10 +109,12 @@ class EXPLIST {
         EXPLIST *tail;
 
         EXPLIST() {
-            
+            head = NULL;
+            tail = NULL;
         }
 
         EXPLIST(EXP *head, EXPLIST *tail) {
+            cout << head << " " << tail << endl;
             this->head = head;
             this->tail = tail;
         }
@@ -132,6 +130,18 @@ class EXPLIST {
             return *this;
         }
 
+        void toString() {
+            EXPLIST *cur = this;
+            while (cur != NULL){
+                cout << cur->head->name << endl;
+                if (cur->tail != NULL && cur->tail->head != NULL){
+                    cur = tail;
+                }
+                else break;
+            }
+            cout << "done" << endl;
+        }
+
 };
 
 class APEXP: public EXP {
@@ -142,6 +152,11 @@ class APEXP: public EXP {
         APEXP(Token op, EXPLIST *args) {
             this->op = op;
             this->args = args;
+            this->name = "apexp";
+            cout << endl << "new ap expression with op " << op.getType() << endl;
+            cout << "args are:" << endl;
+            args->toString();
+            cout << endl;
         }
 };
 
