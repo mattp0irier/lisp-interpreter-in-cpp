@@ -196,6 +196,7 @@ class Scanner {
         }
 
         void getString() {
+            cout << "getString" << endl;
             while (peek() != '\"' && !done()) {
                 if (peek() == '\n') currentLine++;
                 getNextChar();

@@ -130,6 +130,9 @@ class Parser {
             else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos+1].getType() == RIGHT_PAREN)) {
                 return new VALEXP(parseVal());
             }
+            else if (tokenList[pos].getType() == STRING){
+                return new STREXP(tokenList[parseName()].getVal());
+            }
             else {
                 return new VAREXP(tokenList[parseName()].getVal());
             }

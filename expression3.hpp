@@ -119,6 +119,16 @@ class VAREXP: public EXP {
         }
 };
 
+class STREXP: public EXP {
+    public:
+        string strVal;
+
+        STREXP(string strVal){
+            this->name = "strexp";
+            this->strVal = strVal;
+        }
+};
+
 class EXPLIST {
     public:
         EXP *head;

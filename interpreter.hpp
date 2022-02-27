@@ -55,6 +55,7 @@ class Interpreter {
                 case SET:
                     varble = ((VAREXP *)(args->head))->varble;
                     if (args->tail->head->name == "valexp") s = eval(args->tail->head, rho);
+                    else if (args->tail->head->name == "strexp") s = eval(args->tail->head, rho);
                     else if (args->tail->head->name == "varexp"){
                         if (isBound(((VAREXP *)(args->tail->head))->varble, rho)){
                             s = eval(args->tail->head, rho);
@@ -273,6 +274,9 @@ class Interpreter {
             if (expression->name == "valexp") {
                 VALEXP* exp = (VALEXP*)expression;
                 return exp->sxp;
+            }
+            else if (expression->name == "strexp"){
+                return new SYM_SXP(((STREXP *)expression)->strVal);
             }
             else if (expression->name == "varexp") {
                 VAREXP* exp = (VAREXP*)expression;
