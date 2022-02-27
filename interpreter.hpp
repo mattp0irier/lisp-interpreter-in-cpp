@@ -64,6 +64,9 @@ class Interpreter {
                         }
                         else s = new SYM_SXP(((VAREXP *)(args->tail->head))->varble);
                     }
+                    else if (args->tail->head->name == "apexp") {
+                        s = eval(args->tail->head, rho);
+                    }
                     else {
                         cout << "please don't be here" << endl;
                     }
@@ -201,6 +204,9 @@ class Interpreter {
                         if (n1->symVal == n2->symVal)
                             result = TRUE;
                     }
+                    break;
+                default:
+                    ERROR("incorrect op type for apply function");
                     break;
             }
             return result;
