@@ -143,13 +143,13 @@ class Interpreter {
             s1 = vl->head; // 1st actual
             if (op.getArity() == 2)
                 s2 = vl->tail->head; // 2nd actual
-                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MODULO ||
+                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD ||
                     op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN || op.getType() == LTE || op.getType() == GTE) {
                     if (s1->type == "Number" && s2->type == "Number") {
                         NUM_SXP *n1 = (NUM_SXP*) s1;
                         NUM_SXP *n2 = (NUM_SXP*) s2;
 
-                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MODULO) {
+                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
                             result = applyArithOp(op, n1->intVal, n2->intVal);
                         }
                         else
