@@ -140,6 +140,7 @@ class Interpreter {
         }
 
         S_EXP *applyValueOp(Token op, VALUELIST *vl) {
+            cout << "in apply val op" << endl;
             S_EXP *result = nil;
             S_EXP *s1 = nil;
             S_EXP *s2 = nil;
@@ -150,21 +151,21 @@ class Interpreter {
             s1 = vl->head; // 1st actual
             if (op.getArity() == 2)
                 s2 = vl->tail->head; // 2nd actual
-                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD ||
-                    op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN || op.getType() == LTE || op.getType() == GTE) {
-                    if (s1->type == "Number" && s2->type == "Number") {
-                        NUM_SXP *n1 = (NUM_SXP*) s1;
-                        NUM_SXP *n2 = (NUM_SXP*) s2;
+            if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD ||
+                op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN || op.getType() == LTE || op.getType() == GTE) {
+                if (s1->type == "Number" && s2->type == "Number") {
+                    NUM_SXP *n1 = (NUM_SXP*) s1;
+                    NUM_SXP *n2 = (NUM_SXP*) s2;
 
-                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
-                            result = applyArithOp(op, n1->intVal, n2->intVal);
-                        }
-                        else
-                            result = applyRelOp(op, n1->intVal, n2->intVal);
+                    if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
+                        result = applyArithOp(op, n1->intVal, n2->intVal);
                     }
-                    else {
-                        ERROR("Non-arithmatic arguments to " + op.getVal());
-                    }
+                    else
+                        result = applyRelOp(op, n1->intVal, n2->intVal);
+                }
+                else {
+                    ERROR("Non-arithmatic arguments to " + op.getVal());
+                }
             }
             else if (op.getArity() == 2) {
                 result = apply(op, s1, s2);
