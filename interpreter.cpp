@@ -37,8 +37,11 @@ class Interpreter {
         VALUELIST *evalList(EXPLIST *el, ENV *rho) {
             if (el == NULL)
                 return NULL;
+            cout << "in evalLst" << endl;
             S_EXP *h = eval(el->head, rho);
+            cout << "c" << endl;
             VALUELIST *t = evalList(el->tail, rho);
+            cout << "d" << endl;
             return new VALUELIST(h, t);
         }
 
@@ -244,12 +247,25 @@ class Interpreter {
 
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
-            cout << expression->name << endl;
-            if (instanceof<VALEXP>(expression)) {
+            cout << "A" << endl;
+            //APEXP* expression2 = (APEXP*)expression;
+            void *expression2;
+            if (expression->name == "valexp") expression2 = (VALEXP *)expression;
+            else if (expression->name == "varexp") expression2 = (VAREXP *)expression;
+            else if (expression->name == "apexp") expression2 = (APEXP *)expression;
+            else expression2 = (EXP *) expression;
+            cout << "B" << endl;
+            if (instanceof<VALEXP>(expression2)) {
+                cout << "C" << endl;
                 VALEXP* exp = (VALEXP*)expression;
+                cout << "D" << endl;
+                S_EXP* testing = exp->sxp;
+                cout << "E" << endl;
+                cout << exp->sxp->type << endl;
+                cout << "F" << endl;
                 return exp->sxp;
             }
-            else if (instanceof<VAREXP>(expression)) {
+            else if (instanceof<VAREXP>(expression2)) {
                 VAREXP* exp = (VAREXP*)expression;
                 if (isBound(exp->varble, rho)) {
                     return fetch(exp->varble, rho);
@@ -259,7 +275,7 @@ class Interpreter {
                 }
                 // ERROR("Undefined variable " + v.varble);
             }
-            else if (instanceof<APEXP>(expression)) {
+            else if (instanceof<APEXP>(expression2)) {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
