@@ -84,9 +84,4 @@ void run(string line){
         }
         currentExpression = parser->getNextExpression();
     }
-    // Expr expression = parser.parse();
-//     cout << boost::any_cast<double>(interpreter.evaluate(parser.parse())) << endl;
-//    Expression *exprTree = toExprTree(tokens, 0);
-//    exprTree->print();
-//     cout << endl;
 }
