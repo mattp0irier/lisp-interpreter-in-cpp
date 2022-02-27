@@ -67,13 +67,19 @@ void run(string line){
             NUM_SXP* n = (NUM_SXP*)result;
             cout << n->toString() << endl;
         }
-        else if (result->type == "Number") {
+        else if (result->type == "Symbol") {
             SYM_SXP* n = (SYM_SXP*)result;
             cout << n->toString() << endl;
         }
         else if (result->type == "List") {
             LIST_SXP* n = (LIST_SXP*)result;
             cout << n->toString() << endl;
+        }
+        else if (result->type == "TRUE"){
+            cout << result->type << endl;
+        }
+        else if (result->type == "()"){
+            cout << result->type << endl;
         }
         else {
             cout << "error" << endl;

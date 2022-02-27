@@ -32,7 +32,6 @@ class Interpreter {
         // }
         S_EXP *nil = new S_EXP("()");
         S_EXP *TRUE = new S_EXP("TRUE");
-        S_EXP *FALSE = new S_EXP("FALSE");
 
         VALUELIST *evalList(EXPLIST *el, ENV *rho) {
             if (el == NULL)
@@ -121,10 +120,10 @@ class Interpreter {
                     break;;
                 case '=':
                     if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 == n2;
-                    else result = false;
+                    else result = nil;
                     break;
                 default:
-                    result = false;
+                    result = nil;
                     break;
             }
             if (result)
