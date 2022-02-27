@@ -20,7 +20,7 @@ class S_EXP {
             this->type = type;
         }
 
-        string toString() {
+        string toString(){
             return type;
         }
 };
