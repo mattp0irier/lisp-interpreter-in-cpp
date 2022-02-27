@@ -76,7 +76,10 @@ class Scanner {
                 addToken(PLUS, string(1, c), 2);
                 break;
             case '-':
-                if (isdigit(peek())) getNumber();
+                if (isdigit(peek())){ 
+                    getNumber();
+                    break;
+                }
                 addToken(MINUS, string(1, c), 2);
                 break;
             case '*':
