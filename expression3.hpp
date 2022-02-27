@@ -66,15 +66,22 @@ class LIST_SXP: public S_EXP {
         }
 
         string toString(){
-            string list;
+            string list = "(";
             if (carVal->type == "Number"){
-                list += "(" + to_string(((NUM_SXP *)carVal)->intVal);
+                list += to_string(((NUM_SXP *)carVal)->intVal);
             }
-            S_EXP *temp = cdrVal;
-            while (temp->type == "List") {
-                LIST_SXP *temp2 = (LIST_SXP *)temp;
-                list += " " + temp2->carVal->toString();
-                temp = temp2->cdrVal;
+            else if (carVal->type == "Symbol"){
+                list += ((SYM_SXP *)carVal)->symVal;
+            }
+            if (cdrVal->type == "List") {
+                LIST_SXP *temp = (LIST_SXP *)cdrVal;
+                list += " " + temp->toString();
+            }
+            else if (cdrVal->type == "Number"){
+                list += " " + to_string(((NUM_SXP *)cdrVal)->intVal);
+            }
+            else if (carVal->type == "Symbol"){
+                list += " " + ((SYM_SXP *)cdrVal)->symVal;
             }
             list += ")";
             return list;
