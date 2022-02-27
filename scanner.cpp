@@ -76,6 +76,7 @@ class Scanner {
                 addToken(PLUS, string(1, c), 2);
                 break;
             case '-':
+                if (isdigit(peek())) getNumber();
                 addToken(MINUS, string(1, c), 2);
                 break;
             case '*':
@@ -132,14 +133,21 @@ class Scanner {
         }
 
         void getNumber() {
+            bool neg = false;
+            if (peek() == '-') { 
+                neg = true;
+                getNextChar();
+            }
             while (isdigit(peek())) {
                 getNextChar();
             }
             if (peek() == '.' && isdigit(peekNext())) {
                 getNextChar();
                 while (isdigit(peek())) getNextChar();
-                addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)), 0);
+                if (neg) addToken(FLOAT, -1*(double)stof(input.substr(startIndex, index-startIndex)), 0);
+                else addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)), 0);
             }
+            if (neg) addToken(INTEGER, -1*stoi(input.substr(startIndex, index-startIndex)), 0);
             else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)), 0);
         }
 
