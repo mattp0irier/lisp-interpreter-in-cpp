@@ -16,14 +16,33 @@ class Parser {
         vector<Token> tokenList;
         int pos;
         
-        // string parseDef() {
-        //     expect(Token.OPEN_PAR, "parseDef");
-        //     expect(Token.DEFINE, "parseDef");
-        //     string fname = parseName(); // function name expect(Token.OPEN_PAR,"parseDef"); // skip ( NAMELIST nl = parseNL();
-        //     ;                           // formal parameters
-        //     EXP e = parseExp();         // body expect(Token.CLOSE_PAR,"parseDef"); // skip ) newFunDef(fname, nl, e);
-        //     return fname;
-        // }
+        string parseDef() {
+            if(tokenList[pos].getType() == LEFT_PAREN) {
+                pos++;
+                if(tokenList[pos].getType() == DEFINE) {
+                    pos++;
+                    string fname = tokenList[parseName()].getVal();
+                    if(tokenList[pos].getType() == LEFT_PAREN) pos++;
+                    else {
+                        ERROR("expected (");
+                        return "error";
+                    }
+                    NAMELIST* nl = parseNL();     
+                    EXP* e = parseExp();
+                    if(tokenList[pos].getType() == RIGHT_PAREN) pos++;
+                    else {
+                        ERROR("expected )");
+                        return "error";
+                    }
+                    newFunDef(fname, nl, e);
+                    return fname;
+                }
+            }
+            else {
+                ERROR("Parse define error");
+            }
+            return "error";
+        }
 
         int parseName() {
             // cout << "in parse name" << endl;
