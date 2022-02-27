@@ -46,8 +46,8 @@ class Interpreter {
             string varble;
             switch (controlOP.getType()) {
                 case IF:
-                    if (isTrueVal(eval(args->head, rho)))
-                        return eval(args->tail->head, rho);
+                    if (isTrueVal(eval(args->head, rho))) {
+                        return eval(args->tail->head, rho); }
                     else
                         return eval(args->tail->tail->head, rho);
                     break;
