@@ -24,10 +24,10 @@ class Parser {
         // }
 
         int parseName() {
-            cout << "in parse name" << endl;
+            // cout << "in parse name" << endl;
             // needed to broaden the definition of name to include builtins
             if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT) {
-                // ERROR("Expected name, instead read :", userinput(pos, "parseName"));
+                ERROR("Expected name, instead read :", tokenList[pos]);
                 return -1;
             }
             string name = tokenList[pos].getVal();
@@ -51,19 +51,16 @@ class Parser {
         }
 
         EXP *parseExp() {
-            cout << "in parseExp with pos " << pos << endl;
+            // cout << "in parseExp with pos " << pos << endl;
             // string nm;
             EXPLIST *el;
             int posOfToken;
             if (tokenList[pos].getType() == END_OF_FILE) {
-                cout << "found EOF at pos " << pos << endl;
                 return NULL;
             }
             else if (tokenList[pos].getType() == LEFT_PAREN) { // APEXP
-                cout << "found left paren" << endl;
                 pos++;
                 if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
-                    cout << "found nil" << endl;
                     pos++;
                     S_EXP nil = S_EXP("()");
                     return NULL;
@@ -73,32 +70,26 @@ class Parser {
                 return new APEXP(tokenList[posOfToken], el);
             }
             else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T/* || (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos].getType() == RIGHT_PAREN)*/) {
-                cout << "found val exp at token " << tokenList[pos].getIntVal() << endl;
                 return new VALEXP(parseVal());
             }
             else {
-                cout << "found var exp" << endl;
                 // return new VAREXP(parseName());
                 return NULL;
             }
         }
 
         EXPLIST *parseEL() {
-            cout << "in parse expression list" << endl;
             if (tokenList[pos].getType() == END_OF_FILE) {
-                // ERROR("Expected ) found EOF");
+                ERROR("Expected ) found EOF");
                 return NULL;
             }
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
-                cout << "found the end " << endl;
                 return NULL;
             }
             else {
                 EXP *e = parseExp();
-                cout << "created one exp with name " << e->name << endl;
                 EXPLIST *el = parseEL();
-                if (el != NULL) el->toString();
                 return new EXPLIST(e, el);
             }
         }

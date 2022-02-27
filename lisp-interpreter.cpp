@@ -55,15 +55,11 @@ void runPrompt(){
 void run(string line){
     Scanner scanner(line);
     vector<Token> tokens = scanner.scanTokens();
-    scanner.printTokens();
+    // scanner.printTokens();
 
     Parser *parser = new Parser(tokens);
-    cout << "parser created" << endl;
     Interpreter interpreter;
-    cout << "interpreter created" << endl;
     EXP *currentExpression = parser->getNextExpression();
-    cout << "expression created" << endl;
-    cout << currentExpression->name << endl;
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
