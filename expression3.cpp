@@ -114,7 +114,6 @@ class EXPLIST {
         }
 
         EXPLIST(EXP *head, EXPLIST *tail) {
-            cout << head << " " << tail << endl;
             this->head = head;
             this->tail = tail;
         }
@@ -153,10 +152,6 @@ class APEXP: public EXP {
             this->op = op;
             this->args = args;
             this->name = "apexp";
-            cout << endl << "new ap expression with op " << op.getType() << endl;
-            cout << "args are:" << endl;
-            args->toString();
-            cout << endl;
         }
 };
 

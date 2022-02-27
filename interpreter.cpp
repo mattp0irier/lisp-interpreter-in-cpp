@@ -37,11 +37,8 @@ class Interpreter {
         VALUELIST *evalList(EXPLIST *el, ENV *rho) {
             if (el == NULL)
                 return NULL;
-            cout << "in evalLst" << endl;
             S_EXP *h = eval(el->head, rho);
-            cout << "c" << endl;
             VALUELIST *t = evalList(el->tail, rho);
-            cout << "d" << endl;
             return new VALUELIST(h, t);
         }
 
@@ -173,7 +170,6 @@ class Interpreter {
         }
 
         S_EXP *apply(Token op, S_EXP* s1, S_EXP* s2) {
-            cout << "in APPLY" << endl;
             S_EXP *result = nil;
             string opValue = op.getVal();
                 if (opValue == "CONS")
@@ -251,16 +247,8 @@ class Interpreter {
 
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
-            cout << "A" << endl;
-            //APEXP* expression2 = (APEXP*)expression;
             if (expression->name == "valexp") {
-                cout << "C" << endl;
                 VALEXP* exp = (VALEXP*)expression;
-                cout << "D" << endl;
-                S_EXP* testing = exp->sxp;
-                cout << "E" << endl;
-                cout << exp->sxp->type << endl;
-                cout << "F" << endl;
                 return exp->sxp;
             }
             else if (expression->name == "varexp") {
