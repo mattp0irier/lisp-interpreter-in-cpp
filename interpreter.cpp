@@ -102,9 +102,9 @@ class Interpreter {
                 case DIVIDE:
                     result = n1 / n2;
                     break;
-                // case '%':
-                //     result = n1 % n2;
-                //     break;
+                case MOD:
+                    result = n1 % n2;
+                    break;
                 default:
                     break;
             }
@@ -113,18 +113,21 @@ class Interpreter {
             
         S_EXP *applyRelOp(Token op, int n1, int n2) {
             bool result;
-            switch (op.getVal()[0]) {
-                case '<':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 <= n2;
-                    else result = n1 < n2;
+            switch (op.getType()) {
+                case LESS_THAN:
+                    result = n1 < n2;
                     break;
-                case '>':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 >= n2;
-                    else result = n1 > n2; 
-                    break;;
-                case '=':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 == n2;
-                    else result = nil;
+                case LTE:
+                    result = n1 <= n2;
+                    break;
+                case GREATER_THAN:
+                    result = n1 > n2;
+                    break;
+                case GTE:
+                    result = n1 >= n2;
+                    break;
+                case EQUAL:
+                    result = n1 == n2;
                     break;
                 default:
                     result = nil;
@@ -147,13 +150,13 @@ class Interpreter {
             s1 = vl->head; // 1st actual
             if (op.getArity() == 2)
                 s2 = vl->tail->head; // 2nd actual
-                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE ||
-                    op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN) {
+                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD ||
+                    op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN || op.getType() == LTE || op.getType() == GTE) {
                     if (s1->type == "Number" && s2->type == "Number") {
                         NUM_SXP *n1 = (NUM_SXP*) s1;
                         NUM_SXP *n2 = (NUM_SXP*) s2;
 
-                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE) {
+                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
                             result = applyArithOp(op, n1->intVal, n2->intVal);
                         }
                         else

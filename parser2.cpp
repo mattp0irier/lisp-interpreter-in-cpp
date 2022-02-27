@@ -69,7 +69,7 @@ class Parser {
                 el = parseEL();
                 return new APEXP(tokenList[posOfToken], el);
             }
-            else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T/* || (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos].getType() == RIGHT_PAREN)*/) {
+            else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos+1].getType() == RIGHT_PAREN)) {
                 return new VALEXP(parseVal());
             }
             else {
