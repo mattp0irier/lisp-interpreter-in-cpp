@@ -9,8 +9,8 @@ using namespace std;
 enum TokenType {
     // 1-Character Tokens
     LEFT_PAREN, RIGHT_PAREN,
-    PLUS, MINUS, MULTIPLY, DIVIDE,
-    EQUAL, LESS_THAN, GREATER_THAN, T, NIL,
+    PLUS, MINUS, MULTIPLY, DIVIDE, MOD,
+    EQUAL, LESS_THAN, GREATER_THAN, LTE, GTE, T, NIL,
 
     // Literals
     IDENTIFIER, STRING, INTEGER, FLOAT,

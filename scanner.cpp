@@ -88,10 +88,12 @@ class Scanner {
                 addToken(EQUAL, string(1, c), 2);
                 break;
             case '<':
-                addToken(LESS_THAN, string(1, c), 2);
+                if (peek() == '=') {addToken(LTE, string(2, c), 2); index++;}
+                else addToken(LESS_THAN, string(1, c), 2);
                 break;
             case '>':
-                addToken(GREATER_THAN, string(1, c), 2);
+                if (peek() == '=') {addToken(GTE, string(2, c), 2); index++;}
+                else addToken(GREATER_THAN, string(1, c), 2);
                 break;
             case 'T':
                 if (isalpha(peek())) getIdentifier();
