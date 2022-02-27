@@ -13,7 +13,7 @@ class S_EXP {
         string type;
 
         S_EXP(){
-            type = "()";
+            this->type = "()";
         }
 
         S_EXP(string type){
@@ -30,7 +30,7 @@ class NUM_SXP: public S_EXP {
         int intVal;
     
         NUM_SXP(int intVal){
-            type = "Number";
+            this->type = "Number";
             this->intVal = intVal;
         }
 
@@ -45,7 +45,7 @@ class SYM_SXP: public S_EXP {
         string symVal;
 
         SYM_SXP(string symVal){
-            type = "Symbol";
+            this->type = "Symbol";
             this->symVal = symVal;
         }
 
@@ -59,7 +59,7 @@ class LIST_SXP: public S_EXP {
         S_EXP *carVal, *cdrVal;
 
         LIST_SXP(S_EXP *carVal, S_EXP *cdrVal) {
-            type = "List";
+            this->type = "List";
             this->carVal = carVal;
             this->cdrVal = cdrVal;
         }
@@ -89,7 +89,7 @@ class VALEXP: public EXP {
         S_EXP *sxp;
         VALEXP(S_EXP *sxp) {
             this->sxp = sxp;
-            name = "valexp";
+            this->name = "valexp";
             cout << name << endl;
         }
 };
@@ -99,7 +99,7 @@ class VAREXP: public EXP {
         string varble;
         VAREXP(string varble) {
             this->varble = varble;
-            name = "varexp";
+            this->name = "varexp";
         }
 };
 
@@ -109,8 +109,8 @@ class EXPLIST {
         EXPLIST *tail;
 
         EXPLIST() {
-            head = NULL;
-            tail = NULL;
+            this->head = NULL;
+            this->tail = NULL;
         }
 
         EXPLIST(EXP *head, EXPLIST *tail) {
