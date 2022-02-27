@@ -44,7 +44,7 @@ class Parser {
                 return NULL;
             }
             else {
-                nm = parseName();
+                nm = tokenList[parseName()].getVal();
                 nl = parseNL();
                 return new NAMELIST(nm, nl);
             }
@@ -73,8 +73,7 @@ class Parser {
                 return new VALEXP(parseVal());
             }
             else {
-                // return new VAREXP(parseName());
-                return NULL;
+                return new VAREXP(tokenList[parseName()].getVal());
             }
         }
 
