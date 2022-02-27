@@ -46,10 +46,14 @@ class Interpreter {
             string varble;
             switch (controlOP.getType()) {
                 case IF:
-                    if (isTrueVal(eval(args->head, rho)))
+                    if (isTrueVal(eval(args->head, rho))){
+                        cout <<"true" << endl;
                         return eval(args->tail->head, rho);
-                    else
+                    }
+                    else{
+                        cout << "false" << endl;
                         return eval(args->tail->tail->head, rho);
+                    }
                     break;
                 case WHILE:
                     s = eval(args->head, rho);
@@ -127,7 +131,7 @@ class Interpreter {
                     break;
             }
             if (result)
-                return new S_EXP("TRUE");
+                return TRUE;
             else
                 return nil;
         }

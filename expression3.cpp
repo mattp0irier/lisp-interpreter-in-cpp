@@ -21,7 +21,7 @@ class S_EXP {
         }
 
         string toString(){
-            
+            return type;
         }
 };
 
