@@ -84,6 +84,9 @@ class Scanner {
             case '/':
                 addToken(DIVIDE, string(1, c), 2);
                 break;
+            case '%':
+                addToken(MOD, string(1, c), 2);
+                break;
             case '=':
                 addToken(EQUAL, string(1, c), 2);
                 break;

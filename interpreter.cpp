@@ -98,9 +98,9 @@ class Interpreter {
                 case DIVIDE:
                     result = n1 / n2;
                     break;
-                // case '%':
-                //     result = n1 % n2;
-                //     break;
+                case MOD:
+                    result = n1 % n2;
+                    break;
                 default:
                     break;
             }
@@ -109,18 +109,21 @@ class Interpreter {
             
         S_EXP *applyRelOp(Token op, int n1, int n2) {
             bool result;
-            switch (op.getVal()[0]) {
-                case '<':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 <= n2;
-                    else result = n1 < n2;
+            switch (op.getType()) {
+                case LESS_THAN:
+                    result = n1 < n2;
                     break;
-                case '>':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 >= n2;
-                    else result = n1 > n2; 
-                    break;;
-                case '=':
-                    if (op.getVal().length() > 1 && op.getVal()[1] == '=') result = n1 == n2;
-                    else result = nil;
+                case LTE:
+                    result = n1 <= n2;
+                    break;
+                case GREATER_THAN:
+                    result = n1 > n2;
+                    break;
+                case GTE:
+                    result = n1 >= n2;
+                    break;
+                case EQUAL:
+                    result = n1 == n2;
                     break;
                 default:
                     result = nil;
