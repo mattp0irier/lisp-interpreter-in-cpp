@@ -188,6 +188,7 @@ class Interpreter {
             switch (op.getType()) {
                 case CONS:
                     cout << "making a new list" << endl;
+                    cout << s1->type << " " << s2->type << endl;
                     result = new LIST_SXP(s1, s2);
                     break;
                 case EQUAL:
