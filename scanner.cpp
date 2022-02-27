@@ -98,6 +98,7 @@ class Scanner {
                 if (peek() == '=') {addToken(GTE, string(2, c), 2); index++;}
                 else addToken(GREATER_THAN, string(1, c), 2);
                 break;
+            case 't':
             case 'T':
                 if (isalpha(peek())) getIdentifier();
                 else addToken(T, string(1, c), 0);
