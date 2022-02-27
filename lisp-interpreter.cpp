@@ -2,10 +2,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "scanner.cpp"
-#include "expression3.cpp"
-#include "parser2.cpp"
-#include "interpreter.cpp"
+#include "scanner.hpp"
+#include "expression3.hpp"
+#include "parser2.hpp"
+#include "interpreter.hpp"
 
 
 using namespace std;

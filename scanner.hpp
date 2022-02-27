@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <map>
 #include <cctype>
-#include "token.cpp"
+#include "token.hpp"
 
 using namespace std;
 

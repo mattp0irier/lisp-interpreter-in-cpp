@@ -3,8 +3,9 @@
 #include <iostream>
 #include <typeinfo>
 #include <string.h>
-#include "token.cpp"
-#include "expression3.cpp"
+#include "token.hpp"
+#include "expression3.hpp"
+#include "parser2.hpp"
 
 using namespace std;
 

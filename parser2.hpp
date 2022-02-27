@@ -1,16 +1,15 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "token.cpp"
-#include "expression3.cpp"
+#include "token.hpp"
+#include "expression3.hpp"
 
 using namespace std;
-
-EXP *nil = new EXP();
 
 #ifndef _PARSER_
 #define _PARSER_
 
+EXP *nil = new EXP();
 
 class FUNDEF {
     public:
