@@ -147,19 +147,19 @@ class Interpreter {
             s1 = vl->head; // 1st actual
             if (op.getArity() == 2)
                 s2 = vl->tail->head; // 2nd actual
-            if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE ||
-                op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN) {
-                if (s1->type == "Number" && s2->type == "Number") {
-                    NUM_SXP *n1 = (NUM_SXP*) s1;
-                    NUM_SXP *n2 = (NUM_SXP*) s2;
-                    if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE)
-                        result = applyArithOp(op, n1->intVal, n2->intVal);
-                    else
-                        result = applyRelOp(op, n1->intVal, n2->intVal);
-                }
-                else {
-                    ERROR("Non-arithmatic arguments to " + op.getVal());
-                }
+                if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE ||
+                    op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN) {
+                    if (s1->type == "Number" && s2->type == "Number") {
+                        NUM_SXP *n1 = (NUM_SXP*) s1;
+                        NUM_SXP *n2 = (NUM_SXP*) s2;
+                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE)
+                            result = applyArithOp(op, n1->intVal, n2->intVal);
+                        else
+                            result = applyRelOp(op, n1->intVal, n2->intVal);
+                    }
+                    else {
+                        ERROR("Non-arithmatic arguments to " + op.getVal());
+                    }
             }
             else if (op.getArity() == 2) {
                 result = apply(op, s1, s2);
@@ -249,13 +249,7 @@ class Interpreter {
             Token op;
             cout << "A" << endl;
             //APEXP* expression2 = (APEXP*)expression;
-            void *expression2;
-            if (expression->name == "valexp") expression2 = (VALEXP *)expression;
-            else if (expression->name == "varexp") expression2 = (VAREXP *)expression;
-            else if (expression->name == "apexp") expression2 = (APEXP *)expression;
-            else expression2 = (EXP *) expression;
-            cout << "B" << endl;
-            if (instanceof<VALEXP>(expression2)) {
+            if (expression->name == "valexp") {
                 cout << "C" << endl;
                 VALEXP* exp = (VALEXP*)expression;
                 cout << "D" << endl;
@@ -265,7 +259,7 @@ class Interpreter {
                 cout << "F" << endl;
                 return exp->sxp;
             }
-            else if (instanceof<VAREXP>(expression2)) {
+            else if (expression->name == "varexp") {
                 VAREXP* exp = (VAREXP*)expression;
                 if (isBound(exp->varble, rho)) {
                     return fetch(exp->varble, rho);
@@ -275,7 +269,7 @@ class Interpreter {
                 }
                 // ERROR("Undefined variable " + v.varble);
             }
-            else if (instanceof<APEXP>(expression2)) {
+            else if (expression->name == "apexp") {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
