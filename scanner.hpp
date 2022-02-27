@@ -28,7 +28,26 @@ class Scanner {
             {"symbol?", IS_SYMBOL},
             {"list?", IS_LIST},
             {"null?", IS_NULL},
-            {"print", PRINT}
+            {"print", PRINT},
+            {"define", DEFINE},
+            {"call", CALL}
+        };
+
+        map<TokenType, int> arityMap = {
+            {IF, 3},
+            {WHILE, 2},
+            {SET, 2},
+            {BEGIN, -2},
+            {CONS, 2},
+            {CAR, 1},
+            {CDR, 1},
+            {IS_NUMBER, 1},
+            {IS_SYMBOL, 1},
+            {IS_LIST, 1},
+            {IS_NULL, 1},
+            {PRINT, 1},
+            {DEFINE, 2},
+            {IDENTIFIER, 0}
         };
 
         char getNextChar() {
@@ -173,7 +192,7 @@ class Scanner {
             else {
                 type = IDENTIFIER;
             } 
-            addToken(type, idName, 0);
+            addToken(type, idName, arityMap[type]);
         }
 
         void getString() {
@@ -181,7 +200,7 @@ class Scanner {
                 if (peek() == '\n') currentLine++;
                 getNextChar();
             }
-            cout << "while loop broke at index " << index << endl;
+            //cout << "while loop broke at index " << index << endl;
             if (done()) {
                 cout << "Error: Unterminated String" << endl;
                 return;

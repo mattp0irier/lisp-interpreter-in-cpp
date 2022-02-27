@@ -41,7 +41,7 @@ FUNDEF *fetchFun(string name){
 
 
 class Parser {
-    private:
+    public:
         vector<Token> tokenList;
         int pos;
         
@@ -64,6 +64,12 @@ class Parser {
                         return "error";
                     }
                     newFunDef(fname, nl, e);
+                    cout << "Function list after that call: " << endl;
+                    FUNDEF *functions = fundefs;
+                    while (functions != NULL){
+                        cout << functions->funName << endl;
+                        functions = functions->next;
+                    }
                     return fname;
                 }
             }
@@ -201,7 +207,7 @@ class Parser {
             return parseSExp();
         }
 
-    public:
+
         Parser(vector<Token> tokenList) {
             this->tokenList = tokenList;
             pos = 0;
@@ -214,7 +220,7 @@ class Parser {
             if (fetchFun(name) == NULL){
                 fundefs = new FUNDEF(name, nl, e, fundefs);
             }
-            ERROR(name + "already installed\n");
+            else ERROR(name + " already installed\n");
         }
 };
 

@@ -53,8 +53,20 @@ class Interpreter {
                     return s;
                     break;
                 case SET:
-                    s = eval(args->tail->head, rho);
                     varble = ((VAREXP *)(args->head))->varble;
+                    if (args->tail->head->name == "valexp") s = eval(args->tail->head, rho);
+                    else if (args->tail->head->name == "varexp"){
+                        if (isBound(((VAREXP *)(args->tail->head))->varble, rho)){
+                            s = eval(args->tail->head, rho);
+                        }
+                        else if (isBound(((VAREXP *)(args->tail->head))->varble, globalEnv)){
+                            s = eval(args->tail->head, globalEnv);
+                        }
+                        else s = new SYM_SXP(((VAREXP *)(args->tail->head))->varble);
+                    }
+                    else {
+                        cout << "please don't be here" << endl;
+                    }
                     if (isBound(varble, rho))
                         assign(varble, s, rho);
                     else if (isBound(varble, globalEnv))
@@ -131,7 +143,7 @@ class Interpreter {
         }
 
         S_EXP *applyValueOp(Token op, VALUELIST *vl) {
-            // cout << "in apply val op" << endl;
+            cout << "in apply val op" << endl;
             S_EXP *result = nil;
             S_EXP *s1 = nil;
             S_EXP *s2 = nil;
@@ -168,11 +180,14 @@ class Interpreter {
         }
 
         S_EXP *apply(Token op, S_EXP* s1, S_EXP* s2) {
+            cout << "applying" << endl;
             S_EXP *result = nil;
-            string opValue = op.getVal();
-                if (opValue == "CONS")
+            switch (op.getType()) {
+                case CONS:
+                    cout << "making a new list" << endl;
                     result = new LIST_SXP(s1, s2);
-                else if (opValue == "EQ?" || opValue == "=") {
+                    break;
+                case EQUAL:
                     if (s1 == nil && s2 == nil) {
                         result = TRUE;
                     } else if (s1->type == "Number" && s2->type == "Number") {
@@ -186,7 +201,8 @@ class Interpreter {
                         if (n1->symVal == n2->symVal)
                             result = TRUE;
                     }
-                }
+                    break;
+            }
             return result;
         }
 
@@ -259,26 +275,29 @@ class Interpreter {
                 if (isBound(exp->varble, globalEnv)) {
                     return fetch(exp->varble, globalEnv);
                 }
-                // ERROR("Undefined variable " + v.varble);
+                ERROR("Undefined variable " + exp->varble);
+                return nil;
+                //return new SYM_SXP(exp->varble);
             }
             else if (expression->name == "apexp") {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
                     cout << "USER FUNCTION" << endl;
-                    return nil;
-                   // return applyUserFun(op.getVal(), evalList(exp->args, rho));
+                    return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
                     if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {
+                        cout << "applyCtrlOp" << endl;
                         return applyCtrlOp(op, exp->args, rho);
                     }
                     else {
+                        cout << "applyValueOp" << endl;
                         return applyValueOp(op, evalList(exp->args, rho));
                     }
                 }
             }
-            // cout << "nil" << endl;
+            cout << "no expression match for " << expression->name << endl;
             return nil;
         }
 

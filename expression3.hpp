@@ -66,7 +66,10 @@ class LIST_SXP: public S_EXP {
         }
 
         string toString(){
-            string list = "(" + carVal->toString();
+            string list;
+            if (carVal->type == "Number"){
+                list += "(" + to_string(((NUM_SXP *)carVal)->intVal());
+            }
             S_EXP *temp = cdrVal;
             while (temp->type == "List") {
                 LIST_SXP *temp2 = (LIST_SXP *)temp;
@@ -85,6 +88,9 @@ class EXP {
     string name;
     EXP(){
         name = "()";
+    }
+    EXP(string name){
+        this->name = name;
     }
 };
 

@@ -60,7 +60,16 @@ void run(string line){
 
     Parser *parser = new Parser(tokens);
     Interpreter interpreter;
-    EXP *currentExpression = parser->getNextExpression();
+    EXP *currentExpression;
+    string resultString;
+    //scanner.printTokens();
+    if (tokens[1].getType() != DEFINE) 
+        currentExpression = parser->getNextExpression();
+    else {
+        resultString = parser->parseDef();
+        //cout << "Created function " << resultString << endl;
+        currentExpression = parser->getNextExpression();
+    }
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
@@ -83,6 +92,7 @@ void run(string line){
             cout << result->type << endl;
         }
         else {
+            cout << result->type << endl;
             cout << "error" << endl;
         }
         currentExpression = parser->getNextExpression();
