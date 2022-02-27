@@ -20,19 +20,6 @@ inline bool instanceof(const T*) {
 
 class Interpreter {
     private:
-        // SEXP applyUserFun(String nm, VALUELIST actuals) {
-        //     FUNDEF fun = fetchFun(nm);
-        //     if (fun == null) {
-        //         ERROR("Undefined function: " + nm);
-        //         return nil;
-        //     }
-        //     if (lengthNL(fun.formals) != lengthVL(actuals)) {
-        //         ERROR("Wrong number of arguments to: " + nm);
-        //         return nil;
-        //     }
-        //     ENV rho = new ENV(fun.formals, actuals);
-        //     return eval(fun.body, rho);
-        // }
         S_EXP *nil = new S_EXP("()");
         S_EXP *TRUE = new S_EXP("TRUE");
 
@@ -301,6 +288,21 @@ class Interpreter {
         bool isBound (string name, ENV *rho){
             return (findVar(name, rho) != NULL);
         }
+        
+        S_EXP *applyUserFun(string name, VALUELIST *actuals){
+            FUNDEF *fun = fetchFun(name);
+            if (fun == NULL){
+                ERROR("Undefined function " + name + "\n");
+                return nil;
+            }
+            if (lengthNL(fun->formals) != lengthVL(actuals)) {
+                ERROR("Wrong number of arguments to " + name + "\n");
+                return nil;
+            }
+            ENV *rho = new ENV(fun->formals, actuals);
+            return eval(fun->body, rho);
+        }
+
 };
 
 #endif

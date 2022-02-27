@@ -6,10 +6,40 @@
 
 using namespace std;
 
+EXP *nil = new EXP();
+
 #ifndef _PARSER_
 #define _PARSER_
 
-EXP *nil = new EXP();
+
+class FUNDEF {
+    public:
+        string funName;
+        NAMELIST *formals;
+        EXP *body;
+        FUNDEF *next;
+
+        FUNDEF(string funName, NAMELIST *formals, EXP *body, FUNDEF *next){
+            this->funName = funName;
+            this->formals = formals;
+            this->body = body;
+            this->next = next;
+        }
+};
+
+FUNDEF *fundefs = NULL;
+
+FUNDEF *fetchFun(string name){
+    FUNDEF *f = fundefs;
+    while (f != NULL){
+        if (f->funName == name){
+            return f;
+        }
+        f = f->next;
+    }
+    return NULL;
+}
+
 
 class Parser {
     private:
@@ -181,7 +211,12 @@ class Parser {
         EXP* getNextExpression() {
             return parseExp();
         }
-
+        void newFunDef(string name, NAMELIST *nl, EXP *e) {
+            if (fetchFun(name) == NULL){
+                fundefs = new FUNDEF(name, nl, e, fundefs);
+            }
+            ERROR(name + "already installed\n");
+        }
 };
 
 #endif

@@ -7,6 +7,7 @@ using namespace std;
 #ifndef _EXPR_
 #define _EXPR_
 
+
 //trevor
 class S_EXP {
     public:
@@ -229,6 +230,7 @@ class ENV {
 ENV *emptyEnv(){
     return new ENV(NULL, NULL);
 }
+
 
 VALUELIST *findVar(string name, ENV *rho) {
     NAMELIST *nl = rho->vars;
