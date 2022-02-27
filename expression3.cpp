@@ -17,11 +17,11 @@ class S_EXP {
         }
 
         S_EXP(string type){
-            type = type;
+            this->type = type;
         }
 
         string toString(){
-            return type;
+            
         }
 };
 
@@ -31,7 +31,7 @@ class NUM_SXP: public S_EXP {
     
         NUM_SXP(int intVal){
             type = "Number";
-            intVal = intVal;
+            this->intVal = intVal;
         }
 
         string toString(){
@@ -46,7 +46,7 @@ class SYM_SXP: public S_EXP {
 
         SYM_SXP(string symVal){
             type = "Symbol";
-            symVal = symVal;
+            this->symVal = symVal;
         }
 
         string toString(){

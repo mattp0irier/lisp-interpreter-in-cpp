@@ -67,7 +67,21 @@ void run(string line){
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
-        cout << result->toString() << endl;
+        if (result->type == "Number") {
+            NUM_SXP* n = (NUM_SXP*)result;
+            cout << n->toString() << endl;
+        }
+        else if (result->type == "Number") {
+            SYM_SXP* n = (SYM_SXP*)result;
+            cout << n->toString() << endl;
+        }
+        else if (result->type == "List") {
+            LIST_SXP* n = (LIST_SXP*)result;
+            cout << n->toString() << endl;
+        }
+        else {
+            cout << "error" << endl;
+        }
         currentExpression = parser->getNextExpression();
     }
     // Expr expression = parser.parse();

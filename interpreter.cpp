@@ -89,22 +89,22 @@ class Interpreter {
 
         NUM_SXP *applyArithOp(Token op, int n1, int n2) {
             int result = 0;
-            switch (op.getVal()[0]) {
-                case '+':
+            switch (op.getType()) {
+                case PLUS:
                     result = n1 + n2;
                     break;
-                case '-':
+                case MINUS:
                     result = n1 - n2;
                     break;
-                case '*':
+                case MULTIPLY:
                     result = n1 * n2;
                     break;
-                case '/':
+                case DIVIDE:
                     result = n1 / n2;
                     break;
-                case '%':
-                    result = n1 % n2;
-                    break;
+                // case '%':
+                //     result = n1 % n2;
+                //     break;
                 default:
                     break;
             }
@@ -152,8 +152,10 @@ class Interpreter {
                     if (s1->type == "Number" && s2->type == "Number") {
                         NUM_SXP *n1 = (NUM_SXP*) s1;
                         NUM_SXP *n2 = (NUM_SXP*) s2;
-                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE)
+
+                        if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE) {
                             result = applyArithOp(op, n1->intVal, n2->intVal);
+                        }
                         else
                             result = applyRelOp(op, n1->intVal, n2->intVal);
                     }
@@ -165,11 +167,13 @@ class Interpreter {
                 result = apply(op, s1, s2);
             }
             else {
-                result = apply(op, s1); return result;
+                result = apply(op, s1);
             }
+            return result;
         }
 
         S_EXP *apply(Token op, S_EXP* s1, S_EXP* s2) {
+            cout << "in APPLY" << endl;
             S_EXP *result = nil;
             string opValue = op.getVal();
                 if (opValue == "CONS")
