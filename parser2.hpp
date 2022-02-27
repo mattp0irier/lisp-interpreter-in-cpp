@@ -80,7 +80,7 @@ class Parser {
         }
 
         int parseName() {
-            // cout << "in parse name" << endl;
+            cout << "in parse name" << endl;
             // needed to broaden the definition of name to include builtins
             if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT) {
                 ERROR("Expected name, instead read :", tokenList[pos]);
@@ -107,7 +107,7 @@ class Parser {
         }
 
         EXP *parseExp() {
-            // cout << "in parseExp with pos " << pos << endl;
+            cout << "in parseExp with pos " << pos << endl;
             // string nm;
             EXPLIST *el;
             int posOfToken;
@@ -119,6 +119,9 @@ class Parser {
                 if (tokenList[pos].getType() == RIGHT_PAREN) { // NIL
                     pos++;
                     return nil;
+                }
+                else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == STRING) {
+                    return new VALEXP(parseList());
                 }
                 posOfToken = parseName();
                 el = parseEL();
@@ -149,6 +152,7 @@ class Parser {
         }
 
         S_EXP *parseList() {
+            cout << "in parse list" << endl;
             S_EXP *car, *cdr;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
