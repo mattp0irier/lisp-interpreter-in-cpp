@@ -80,7 +80,7 @@ class Parser {
         }
 
         int parseName() {
-            cout << "in parse name" << endl;
+            // cout << "in parse name" << endl;
             // needed to broaden the definition of name to include builtins
             if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT) {
                 ERROR("Expected name, instead read :", tokenList[pos]);
@@ -107,7 +107,7 @@ class Parser {
         }
 
         EXP *parseExp() {
-            cout << "in parseExp with pos " << pos << endl;
+            // cout << "in parseExp with pos " << pos << endl;
             // string nm;
             EXPLIST *el;
             int posOfToken;
