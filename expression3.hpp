@@ -66,6 +66,7 @@ class LIST_SXP: public S_EXP {
         }
 
         string toString(){
+            cout << carVal->type << " " << cdrVal->type << endl;
             string list = "(";
             if (carVal->type == "Number"){
                 list += to_string(((NUM_SXP *)carVal)->intVal);
@@ -73,7 +74,11 @@ class LIST_SXP: public S_EXP {
             else if (carVal->type == "Symbol"){
                 list += ((SYM_SXP *)carVal)->symVal;
             }
-            if (cdrVal->type == "List") {
+            if (cdrVal->type == "()") {
+                list += ")";
+                return list;
+            }
+            else if (cdrVal->type == "List") {
                 LIST_SXP *temp = (LIST_SXP *)cdrVal;
                 list += " " + temp->toString();
             }
