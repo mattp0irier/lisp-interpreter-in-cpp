@@ -79,13 +79,14 @@ class Interpreter {
                         bindVar(varble, s, globalEnv);
                     return s;
                     break;
-                case BEGIN: 
+                case BEGIN:
+                    s = eval(args->head, rho);
+                    cout << "output: " << s->toString() << endl;
                     while (args->tail != NULL) {
+                        cout << "output: " << s->toString() << endl;
                         s = eval(args->head, rho);
                         args = args->tail;
                     }
-                    // very strange this
-                    s = eval(args->head, rho);
                     return s;
                     break;
                 default:
