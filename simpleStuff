@@ -1,11 +1,4 @@
 (define newLine () (print ""))
-(define testOp (expr expected) 
-    (begin
-        (print expected)
-        (print expr)
-        (newline)
-    )
-)
 
 (print "Basic Arith Ops")
 (newline)
@@ -26,8 +19,19 @@
 (/ 81 9)
 (newline)
 
+(print "Expected value: ERROR")
+(/ 81 0)
+(newline)
+
 (print "Expected value: 3")
 (% 7 4)
+(newline)
+
+(print "Expected value: -3")
+(% -7 4)
+(newline)
+
+(print "Basic Rel Ops")
 (newline)
 
 (print "Expected value: T")
@@ -47,15 +51,19 @@
 (newline)
 
 (print "Expected value: ()")
-(>= 3 4)
-(newline)
-
-(print "Expected value: ()")
 (> 3 4)
 (newline)
 
 (print "Expected value: T")
 (> 4 3)
+(newline)
+
+(print "Expected value: ()")
+(>= 3 4)
+(newline)
+
+(print "Expected value: T")
+(>= 4 4)
 (newline)
 
 (print "Expected value: T")
@@ -70,4 +78,81 @@
 (= -3 -3)
 (newline)
 
-(testOp (+ 5 3) "expected: 8")
+(print "Basic ? Ops")
+(newline)
+
+(print "Expected value: T")
+(null? ())
+(newline)
+
+(print "Expected value: T")
+(list? ())
+(newline)
+
+(print "Expected value: ()")
+(number? ())
+(newline)
+
+(print "Expected value: T")
+(symbol? ())
+(newline)
+
+(print "Expected value: ()")
+(null? t)
+(newline)
+
+(print "Expected value: ()")
+(list? t)
+(newline)
+
+(print "Expected value: ()")
+(number? t)
+(newline)
+
+(print "Expected value: T")
+(symbol? t)
+(newline)
+
+(print "Expected value: ()")
+(null? 1)
+(newline)
+
+(print "Expected value: ()")
+(list? 1)
+(newline)
+
+(print "Expected value: T")
+(number? 1)
+(newline)
+
+(print "Expected value: T")
+(symbol? 1)
+(newline)
+
+(print "define atom? function")
+(define atom? (a)
+    (if (list? a) (if (null? a) T ()) T)
+)
+
+(print "test atom? function")
+(newline)
+
+(print "expected output: T")
+(atom? 1)
+(newline)
+
+(print "expected output: T")
+(atom? T)
+(newline)
+
+(print "expected output: T")
+(atom? ())
+(newline)
+
+(print "expected output: T")
+(atom? "this")
+(newline)
+
+(print "expected output: ()")
+(atom? (1 3))
+(newline)

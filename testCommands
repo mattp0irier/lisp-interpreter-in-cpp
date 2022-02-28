@@ -16,6 +16,9 @@
 (number? ())
 (symbol? ())
 
+(null? t)
+(list? t)
+(number? t)
 (symbol? t)
 
 (null? 1)
