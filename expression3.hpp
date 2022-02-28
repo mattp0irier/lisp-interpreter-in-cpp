@@ -7,12 +7,12 @@ using namespace std;
 #ifndef _EXPR_
 #define _EXPR_
 
-
-//trevor
+// General S-Expression Class
 class S_EXP {
     public:
         string type;
 
+        // Default type is ()
         S_EXP(){
             this->type = "()";
         }
@@ -26,10 +26,14 @@ class S_EXP {
         }
 };
 
+// Number S-Expression stores a number
 class NUM_SXP: public S_EXP {
     public:
+
+        // May be integer or floating point
         int intVal;
         double doubleVal;
+        // type2 denotes what kind of number is stored, must be checked before accessing
         string type2;
     
         NUM_SXP(int intVal){
@@ -44,6 +48,7 @@ class NUM_SXP: public S_EXP {
             this->doubleVal = doubleVal;
         }
 
+        // toString handles either kind of number
         string toString(){
             if (type2 == "Integer")
                 return to_string(intVal);
@@ -56,6 +61,7 @@ class NUM_SXP: public S_EXP {
         }
 };
 
+//Symbol S-Expression stores symbols and string literals
 class SYM_SXP: public S_EXP {
     public:
         string symVal;
@@ -70,8 +76,10 @@ class SYM_SXP: public S_EXP {
         }
 };
 
+// List S-Expression
 class LIST_SXP: public S_EXP {
     public:
+        // Every list has a car and cdr
         S_EXP *carVal, *cdrVal;
 
         LIST_SXP(S_EXP *carVal, S_EXP *cdrVal) {
@@ -80,19 +88,26 @@ class LIST_SXP: public S_EXP {
             this->cdrVal = cdrVal;
         }
 
+        // Combine list into a string
         string toString(){
-            cout << carVal->type << " " << cdrVal->type << endl;
+            // cout << carVal->type << " " << cdrVal->type << endl;
             string list = "(";
+
+            // car must be an atom: either Number or Symbol
             if (carVal->type == "Number"){
                 list += to_string(((NUM_SXP *)carVal)->intVal);
             }
             else if (carVal->type == "Symbol"){
                 list += ((SYM_SXP *)carVal)->symVal;
             }
+
+            // cdr may be nil, another List, or an atom
             if (cdrVal->type == "()") {
                 list += ")";
                 return list;
             }
+
+            // Necessary to cast pointer into the specific S-Expression derived class before accessing data
             else if (cdrVal->type == "List") {
                 LIST_SXP *temp = (LIST_SXP *)cdrVal;
                 list += " " + temp->toString();
@@ -108,8 +123,7 @@ class LIST_SXP: public S_EXP {
         }
 };
 
-//matt
-
+// General Expression Class
 class EXP {
     public:
     string name;
@@ -121,6 +135,7 @@ class EXP {
     }
 };
 
+// Value Expression Class: contains an S-Expression for a number or some literal value
 class VALEXP: public EXP {
     public:
         S_EXP *sxp;
@@ -130,6 +145,7 @@ class VALEXP: public EXP {
         }
 };
 
+// Variable Expression Class: contains the name of some variable
 class VAREXP: public EXP {
     public:
         string varble;
@@ -139,6 +155,7 @@ class VAREXP: public EXP {
         }
 };
 
+// String Expression Class: contains a string literal
 class STREXP: public EXP {
     public:
         string strVal;
@@ -149,6 +166,7 @@ class STREXP: public EXP {
         }
 };
 
+// Expression List Class: Used to store arguments for user functions or some other series of expressions
 class EXPLIST {
     public:
         EXP *head;
@@ -175,6 +193,7 @@ class EXPLIST {
             return *this;
         }
 
+        // this prints the expression list
         void toString() {
             EXPLIST *cur = this;
             while (cur != NULL){
@@ -184,11 +203,12 @@ class EXPLIST {
                 }
                 else break;
             }
-            //cout << "done" << endl;
         }
 
 };
 
+
+// Arithmetic Progression Expression: stores some math operation
 class APEXP: public EXP {
     public:
         Token op;
@@ -201,6 +221,7 @@ class APEXP: public EXP {
         }
 };
 
+// Value lists: used to store variable values in an environment
 class VALUELIST {
     private:
         
@@ -230,6 +251,7 @@ class VALUELIST {
 
 };
 
+// Name lists: used to store variable names in an environment
 class NAMELIST {
     private:
 
@@ -259,6 +281,7 @@ class NAMELIST {
 
 };
 
+// Environment Class: stores variable names and values
 class ENV {
     public:
         NAMELIST *vars;
@@ -270,15 +293,19 @@ class ENV {
         }
 };
 
+// Create an empty environment
 ENV *emptyEnv(){
     return new ENV(NULL, NULL);
 }
 
-
+// findVar: return the value of a given variable name, or null if it isn't in the environment
 VALUELIST *findVar(string name, ENV *rho) {
+    // pull names and values from environment
     NAMELIST *nl = rho->vars;
     VALUELIST *values = rho->values;
     bool found = false;
+
+    // iterate through the namelist
     while (nl != NULL && !found){
         if (nl->head == name){
             found = true;
@@ -291,21 +318,25 @@ VALUELIST *findVar(string name, ENV *rho) {
     return values;
 }
 
+// fetch: get the value of a named variable
 S_EXP *fetch(string name, ENV *rho) {
     VALUELIST *vl = findVar(name, rho);
     return vl->head;
 }
 
+// bindVar: declare a new variable in environment rho
 void bindVar(string name, S_EXP *s, ENV *rho) {
     rho->vars = new NAMELIST(name, rho->vars);
     rho->values = new VALUELIST(s, rho->values);
 }
 
+// assign: update a variable in environment rho
 void assign(string name, S_EXP *s, ENV *rho) {
     VALUELIST *location = findVar(name, rho);
     location->head = s;
 }
 
+// lengthVL: return the length of a valuelist
 int lengthVL(VALUELIST *vl){
     int len = 0;
     while (vl != NULL){
@@ -315,6 +346,7 @@ int lengthVL(VALUELIST *vl){
     return len;
 }
 
+// lengthNL: return the length of a namelist
 int lengthNL(NAMELIST *nl){
     int len = 0;
     while (nl != NULL) {
