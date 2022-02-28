@@ -12,80 +12,92 @@ using namespace std;
 #ifndef _INTERPRETER_
 #define _INTERPRETER_
 
+// global envirmonment created
 ENV *globalEnv = emptyEnv();
 
-template<typename Base, typename T>
-inline bool instanceof(const T*) {
-    return is_base_of<Base, T>::value;
-}
-
+// Interpreter class: evaluates expressions and returns output
 class Interpreter {
     private:
+        // define singleton nil and true values
         S_EXP *nil = new S_EXP("()");
         S_EXP *TRUE = new S_EXP("TRUE");
 
+        // evalList: takes expression list as input and evaluates each expression recursively
         VALUELIST *evalList(EXPLIST *el, ENV *rho) {
+            // recursive break statement
             if (el == NULL)
                 return NULL;
-            S_EXP *h = eval(el->head, rho);
-            VALUELIST *t = evalList(el->tail, rho);
+            
+            S_EXP *h = eval(el->head, rho); // evaluate head
+            VALUELIST *t = evalList(el->tail, rho); // evaluate rest of list
             return new VALUELIST(h, t);
         }
 
+        // applyCtrlOp: evaluate if, while, set, and begin operations
         S_EXP *applyCtrlOp(Token controlOP, EXPLIST *args, ENV *rho) {
             S_EXP *s = nil;
             string varble;
+
+            // switch statement on TokenType
             switch (controlOP.getType()) {
                 case IF:
+                    // if conditional statement evaluates to true
                     if (isTrueVal(eval(args->head, rho))){
-                        return eval(args->tail->head, rho);
+                        return eval(args->tail->head, rho); // return true branch
                     }
                     else{
-                        return eval(args->tail->tail->head, rho);
+                        return eval(args->tail->tail->head, rho); // else return false branch
                     }
                     break;
                 case WHILE:
                     s = eval(args->head, rho);
+                    // while conditional statement does not evaluate to nil
                     while (s->toString() != "()") {
-                        s = eval(args->tail->head, rho);
-                        s = eval(args->head, rho);
+                        s = eval(args->tail->head, rho); // evaluate expression branch
+                        s = eval(args->head, rho); // evaluate conditional branch
                     }
                     return s;
                     break;
                 case SET:
                     varble = ((VAREXP *)(args->head))->varble;
+
+                    // evaluate set argument properly based on type of expression
                     if (args->tail->head->name == "valexp") s = eval(args->tail->head, rho);
                     else if (args->tail->head->name == "strexp") s = eval(args->tail->head, rho);
                     else if (args->tail->head->name == "varexp"){
+                        // check if var exists in local environment
                         if (isBound(((VAREXP *)(args->tail->head))->varble, rho)){
-                            s = eval(args->tail->head, rho);
+                            s = eval(args->tail->head, rho); // updates if exists
                         }
+                        // check if var exists in global environment
                         else if (isBound(((VAREXP *)(args->tail->head))->varble, globalEnv)){
-                            s = eval(args->tail->head, globalEnv);
+                            s = eval(args->tail->head, globalEnv); 
                         }
+                        // create new var since it doesn't exist
                         else s = new SYM_SXP(((VAREXP *)(args->tail->head))->varble);
                     }
                     else if (args->tail->head->name == "apexp") {
                         s = eval(args->tail->head, rho);
                     }
                     else {
+                        // we really should never be here
                         cout << "please don't be here" << endl;
                     }
                     if (isBound(varble, rho))
-                        assign(varble, s, rho);
+                        assign(varble, s, rho); // updates if exists
                     else if (isBound(varble, globalEnv))
-                        assign(varble, s, globalEnv);
+                        assign(varble, s, globalEnv); // updates if exists
                     else
-                        bindVar(varble, s, globalEnv);
+                        bindVar(varble, s, rho); // bind variable since didn't exist
                     return s;
                     break;
                 case BEGIN:
+                    // while there are args, evaluate each expression
                     while (args != NULL) {
                         s = eval(args->head, rho);
-                        //cout << "output: " << s->toString() << endl;
                         args = args->tail;
                     }
-                    return s;
+                    return s; // return result of last expression
                     break;
                 default:
                     break;
@@ -93,6 +105,7 @@ class Interpreter {
             return s;
         }
 
+        // applyArithOp: evaluate int arithmetic operations
         NUM_SXP *applyArithOp(Token op, int n1, int n2) {
             int result = 0;
             switch (op.getType()) {
@@ -117,6 +130,7 @@ class Interpreter {
             return new NUM_SXP(result);
         }
             
+        // applyArithOp: evaluate double arithmetic operations
         NUM_SXP *applyArithOp(Token op, double n1, double n2) {
             double result = 0;
             switch (op.getType()) {
@@ -142,6 +156,7 @@ class Interpreter {
             return new NUM_SXP(result);
         }
 
+        // applyRelOp: apply relational operations on integers
         S_EXP *applyRelOp(Token op, int n1, int n2) {
             bool result;
             switch (op.getType()) {
@@ -170,6 +185,7 @@ class Interpreter {
                 return nil;
         }
 
+        // applyRelOp: apply relational operations on integers
         S_EXP *applyRelOp(Token op, double n1, double n2) {
             bool result;
             switch (op.getType()) {
@@ -201,24 +217,30 @@ class Interpreter {
                 return nil;
         }
 
+        // applyValueOp: checks for correct arguments and calls corresponding function to evaluate operation
         S_EXP *applyValueOp(Token op, VALUELIST *vl) {
-            //cout << "in apply val op" << endl;
             S_EXP *result = nil;
             S_EXP *s1 = nil;
             S_EXP *s2 = nil;
+
+            // check for correct number of arguments
             if (op.getArity() != 0 && op.getArity() != lengthVL(vl)) {
                 ERROR("Wrong number of arguments to " + op.getVal() + " expected " + to_string(op.getArity()) + " but found " + to_string(lengthVL(vl)));
                 return nil;
             }
-            s1 = vl->head; // 1st actual
+
+            s1 = vl->head; // get 1st value
             if (op.getArity() == 2)
-                s2 = vl->tail->head; // 2nd actual
+                s2 = vl->tail->head; // get 2nd value if operation needs it
+            // check for correct operation type
             if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD ||
                 op.getType() == EQUAL || op.getType() == LESS_THAN || op.getType() == GREATER_THAN || op.getType() == LTE || op.getType() == GTE) {
+                // check for numbers being provided as arguments
                 if (s1->type == "Number" && s2->type == "Number") {
                     NUM_SXP *n1 = (NUM_SXP*) s1;
                     NUM_SXP *n2 = (NUM_SXP*) s2;
 
+                    // if arithmatic op, call applyArithOp
                     if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
                         if (n1->type2 == n2->type2){
                             if (n1->type2 == "Integer")
@@ -234,7 +256,8 @@ class Interpreter {
                                 result = applyArithOp(op, (int)(n1->doubleVal), n2->intVal);
                         }
                     }
-                    else
+                    // else relational op, call applyRelOp
+                    else {
                         if (n1->type2 == n2->type2){
                             if (n1->type2 == "Integer")
                                 result = applyRelOp(op, n1->intVal, n2->intVal);
@@ -249,11 +272,13 @@ class Interpreter {
                             else
                                 result = applyRelOp(op, (int)(n1->doubleVal), n2->intVal);
                         }
+                    }
                 }
                 else {
                     ERROR("Non-arithmatic arguments to " + op.getVal());
                 }
             }
+            // if non value op, call apply with correct number of parameters
             else if (op.getArity() == 2) {
                 result = apply(op, s1, s2);
             }
@@ -263,25 +288,32 @@ class Interpreter {
             return result;
         }
 
+        // apply: evaluates functions with two params
         S_EXP *apply(Token op, S_EXP* s1, S_EXP* s2) {
-            //cout << "applying" << endl;
             S_EXP *result = nil;
+
+            // switch on operation TokenType
             switch (op.getType()) {
                 case CONS:
-                    cout << "making a new list" << endl;
-                    cout << s1->type << " " << s2->type << endl;
                     result = new LIST_SXP(s1, s2);
                     break;
                 case EQUAL:
+                    // if both nil, equal
                     if (s1 == nil && s2 == nil) {
                         result = TRUE;
+
+                    // if both numbers, check equality
                     } else if (s1->type == "Number" && s2->type == "Number") {
                         NUM_SXP *n1 = (NUM_SXP *)s1;
                         NUM_SXP *n2 = (NUM_SXP *)s2;
+
+                        // check for both ints or both floats
                         if (n1->type2 != n2->type2){
                             cout << "Cannot compare float and int" << endl;
                             break;
                         }
+
+                        // otherwise perform comparison
                         else {
                             if (n1->type2 == "Integer"){
                                 if (n1->intVal == n2->intVal)
@@ -307,14 +339,14 @@ class Interpreter {
             return result;
         }
 
+        // apply: evaluates functions with one param
         S_EXP *apply(Token op, S_EXP *s1) {
             S_EXP *result = nil;
+
+            // switch on operation TokenType
             switch(op.getType()) {
-                // case NOT:
-                //     if (s1 == nil)
-                //         result = TRUE;
-                //     break;
                 case CAR:
+                    // check for list type
                     if (s1->type == "List") {
                         LIST_SXP *concell = (LIST_SXP *)s1;
                         result = concell->carVal;
@@ -323,6 +355,7 @@ class Interpreter {
                         ERROR("car applied to non-list");
                     break;
                 case CDR:
+                    // check for list type
                     if (s1->type == "List") {
                         LIST_SXP *concell = (LIST_SXP *)s1;
                         result = concell->cdrVal;
@@ -347,6 +380,7 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case PRINT:
+                    // check for type and cast if necessary
                     if (s1->type == "Symbol"){
                         cout << ((SYM_SXP *)s1)->symVal << endl;
                     }
@@ -366,19 +400,27 @@ class Interpreter {
         }
 
     public:
+        // Interpreter: empty interpreter constructor
         Interpreter() {
 
         }
 
+        // eval: evaluates provided EXP and returns S_EXP of result
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
+
+            // if valexp, cast and return
             if (expression->name == "valexp") {
                 VALEXP* exp = (VALEXP*)expression;
                 return exp->sxp;
             }
+
+            // if strexp (string literal), cast and return
             else if (expression->name == "strexp"){
                 return new SYM_SXP(((STREXP *)expression)->strVal);
             }
+
+            // if varexp, lookup variable in local and global environments and get value
             else if (expression->name == "varexp") {
                 VAREXP* exp = (VAREXP*)expression;
                 if (isBound(exp->varble, rho)) {
@@ -389,48 +431,54 @@ class Interpreter {
                 }
                 ERROR("Undefined variable " + exp->varble);
                 return nil;
-                //return new SYM_SXP(exp->varble);
             }
+
+            // if apexp, check for identifier of userfun, otherwise check control op and value op
             else if (expression->name == "apexp") {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
-                    //cout << "USER FUNCTION" << endl;
                     return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
                     if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {
-                        //cout << "applyCtrlOp" << endl;
                         return applyCtrlOp(op, exp->args, rho);
                     }
                     else {
-                        //cout << "applyValueOp" << endl;
                         return applyValueOp(op, evalList(exp->args, rho));
                     }
                 }
             }
-            // cout << "no expression match for " << expression->name << endl;
-            return nil;
+            return nil; // if fall through
         }
 
+        // isTrueVal: checks that S_EXP does not evaluate to () [nil]
         bool isTrueVal (S_EXP *s_exp) {
             return !(s_exp->toString() == "()");
         }
 
+        // isBound: checks if variable exists in lookup table
         bool isBound (string name, ENV *rho){
             return (findVar(name, rho) != NULL);
         }
         
+        // applyUserFun: if userfun found and matched, evaluate
         S_EXP *applyUserFun(string name, VALUELIST *actuals){
             FUNDEF *fun = fetchFun(name);
+
+            // check if function defined
             if (fun == NULL){
                 ERROR("Undefined function " + name + "\n");
                 return nil;
             }
+
+            // check if correct number of arguments
             if (lengthNL(fun->formals) != lengthVL(actuals)) {
                 ERROR("Wrong number of arguments to " + name + "\n");
                 return nil;
             }
+
+            // evaluate
             ENV *rho = new ENV(fun->formals, actuals);
             return eval(fun->body, rho);
         }
