@@ -64,12 +64,12 @@ class Parser {
                         return "error";
                     }
                     newFunDef(fname, nl, e);
-                    cout << "Function list after that call: " << endl;
+                    /*cout << "Function list after that call: " << endl;
                     FUNDEF *functions = fundefs;
                     while (functions != NULL){
                         cout << functions->funName << endl;
                         functions = functions->next;
-                    }
+                    }*/
                     return fname;
                 }
             }
@@ -155,7 +155,7 @@ class Parser {
         }
 
         S_EXP *parseList() {
-            cout << "in parse list" << endl;
+            //cout << "in parse list" << endl;
             S_EXP *car, *cdr;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;

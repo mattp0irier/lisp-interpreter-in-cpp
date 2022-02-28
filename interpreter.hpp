@@ -82,7 +82,7 @@ class Interpreter {
                 case BEGIN:
                     while (args != NULL) {
                         s = eval(args->head, rho);
-                        cout << "output: " << s->toString() << endl;
+                        //cout << "output: " << s->toString() << endl;
                         args = args->tail;
                     }
                     return s;
@@ -202,7 +202,7 @@ class Interpreter {
         }
 
         S_EXP *applyValueOp(Token op, VALUELIST *vl) {
-            cout << "in apply val op" << endl;
+            //cout << "in apply val op" << endl;
             S_EXP *result = nil;
             S_EXP *s1 = nil;
             S_EXP *s2 = nil;
@@ -395,16 +395,16 @@ class Interpreter {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
-                    cout << "USER FUNCTION" << endl;
+                    //cout << "USER FUNCTION" << endl;
                     return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
                     if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {
-                        cout << "applyCtrlOp" << endl;
+                        //cout << "applyCtrlOp" << endl;
                         return applyCtrlOp(op, exp->args, rho);
                     }
                     else {
-                        cout << "applyValueOp" << endl;
+                        //cout << "applyValueOp" << endl;
                         return applyValueOp(op, evalList(exp->args, rho));
                     }
                 }
