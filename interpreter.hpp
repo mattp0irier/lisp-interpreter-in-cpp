@@ -409,7 +409,7 @@ class Interpreter {
                     }
                 }
             }
-            cout << "no expression match for " << expression->name << endl;
+            // cout << "no expression match for " << expression->name << endl;
             return nil;
         }
 
