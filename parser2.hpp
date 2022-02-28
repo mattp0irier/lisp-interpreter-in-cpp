@@ -170,24 +170,29 @@ class Parser {
         }
 
         S_EXP *parseInt() {
-            int value;
+            double value;
             if (tokenList[pos].getType() == MINUS && tokenList[pos+1].getType() == INTEGER) {
-                value = -1 * tokenList[pos+1].getIntVal();
+                value = (double)(-1 * tokenList[pos+1].getIntVal());
                 pos += 2;
+                return new NUM_SXP((int)value);
             }
             else if (tokenList[pos].getType() == MINUS && tokenList[pos+1].getType() == FLOAT) {
                 value = -1 * tokenList[pos+1].getFloatVal();
                 pos += 2;
+                return new NUM_SXP(value);
             }
             else if (tokenList[pos].getType() == FLOAT) {
                 value = tokenList[pos].getFloatVal();
                 pos += 1;
+                return new NUM_SXP(value);
             }
             else {
-                value = tokenList[pos].getIntVal();
+                value = (double)(tokenList[pos].getIntVal());
                 pos += 1;
+                return new NUM_SXP((int)value);
             }
-            return new NUM_SXP(value);
+            cout << "Should not be in this part of ParseInt()" << endl;
+            //return new NUM_SXP(value);
         }
 
         S_EXP *parseSym() {

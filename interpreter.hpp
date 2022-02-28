@@ -117,6 +117,31 @@ class Interpreter {
             return new NUM_SXP(result);
         }
             
+        NUM_SXP *applyArithOp(Token op, double n1, double n2) {
+            double result = 0;
+            switch (op.getType()) {
+                case PLUS:
+                    result = n1 + n2;
+                    break;
+                case MINUS:
+                    result = n1 - n2;
+                    break;
+                case MULTIPLY:
+                    result = n1 * n2;
+                    break;
+                case DIVIDE:
+                    result = n1 / n2;
+                    break;
+                case MOD:
+                    ERROR("Cannot perform modular division on floating point");
+                    result = -1.0;
+                    break;
+                default:
+                    break;
+            }
+            return new NUM_SXP(result);
+        }
+
         S_EXP *applyRelOp(Token op, int n1, int n2) {
             bool result;
             switch (op.getType()) {
@@ -133,6 +158,37 @@ class Interpreter {
                     result = n1 >= n2;
                     break;
                 case EQUAL:
+                    result = n1 == n2;
+                    break;
+                default:
+                    result = nil;
+                    break;
+            }
+            if (result)
+                return TRUE;
+            else
+                return nil;
+        }
+
+        S_EXP *applyRelOp(Token op, double n1, double n2) {
+            bool result;
+            switch (op.getType()) {
+                case LESS_THAN:
+                    result = n1 < n2;
+                    break;
+                case LTE:
+                    ERROR("Warning: equality check is not recommended for floating point values");
+                    result = n1 <= n2;
+                    break;
+                case GREATER_THAN:
+                    result = n1 > n2;
+                    break;
+                case GTE:
+                    ERROR("Warning: equality check is not recommended for floating point values");
+                    result = n1 >= n2;
+                    break;
+                case EQUAL:
+                    ERROR("Warning: equality check is not recommended for floating point values");
                     result = n1 == n2;
                     break;
                 default:
@@ -164,10 +220,35 @@ class Interpreter {
                     NUM_SXP *n2 = (NUM_SXP*) s2;
 
                     if (op.getType() == PLUS || op.getType() == MINUS || op.getType() == MULTIPLY || op.getType() == DIVIDE || op.getType() == MOD) {
-                        result = applyArithOp(op, n1->intVal, n2->intVal);
+                        if (n1->type2 == n2->type2){
+                            if (n1->type2 == "Integer")
+                                result = applyArithOp(op, n1->intVal, n2->intVal);
+                            else
+                                result = applyArithOp(op, n1->doubleVal, n2->doubleVal);
+                        }
+                        else{
+                            if (n1->type2 == "Integer"){
+                                result = applyArithOp(op, n1->intVal, (int)(n2->doubleVal));
+                            }
+                            else
+                                result = applyArithOp(op, (int)(n1->doubleVal), n2->intVal);
+                        }
                     }
                     else
-                        result = applyRelOp(op, n1->intVal, n2->intVal);
+                        if (n1->type2 == n2->type2){
+                            if (n1->type2 == "Integer")
+                                result = applyRelOp(op, n1->intVal, n2->intVal);
+                            else
+                                result = applyRelOp(op, n1->doubleVal, n2->doubleVal);
+                        }
+                        else{
+                            ERROR("Comparing unequal types, converting both values to int");
+                            if (n1->type2 == "Integer"){
+                                result = applyRelOp(op, n1->intVal, (int)(n2->doubleVal));
+                            }
+                            else
+                                result = applyRelOp(op, (int)(n1->doubleVal), n2->intVal);
+                        }
                 }
                 else {
                     ERROR("Non-arithmatic arguments to " + op.getVal());
@@ -183,7 +264,7 @@ class Interpreter {
         }
 
         S_EXP *apply(Token op, S_EXP* s1, S_EXP* s2) {
-            cout << "applying" << endl;
+            //cout << "applying" << endl;
             S_EXP *result = nil;
             switch (op.getType()) {
                 case CONS:
@@ -197,8 +278,21 @@ class Interpreter {
                     } else if (s1->type == "Number" && s2->type == "Number") {
                         NUM_SXP *n1 = (NUM_SXP *)s1;
                         NUM_SXP *n2 = (NUM_SXP *)s2;
-                        if (n1->intVal == n2->intVal)
-                            result = TRUE;
+                        if (n1->type2 != n2->type2){
+                            cout << "Cannot compare float and int" << endl;
+                            break;
+                        }
+                        else {
+                            if (n1->type2 == "Integer"){
+                                if (n1->intVal == n2->intVal)
+                                    result = TRUE;
+                            }
+                            else {
+                                cout << "Warning: Equality comparison between floats" << endl;
+                                if (n1->doubleVal == n2->doubleVal)
+                                    result = TRUE;
+                            }
+                        }
                     } else if (s1->type == "Symbol" && s2->type == "Symbol") {
                         SYM_SXP *n1 = (SYM_SXP*)s1;
                         SYM_SXP *n2 = (SYM_SXP*)s2;

@@ -29,15 +29,30 @@ class S_EXP {
 class NUM_SXP: public S_EXP {
     public:
         int intVal;
+        double doubleVal;
+        string type2;
     
         NUM_SXP(int intVal){
             this->type = "Number";
+            this->type2 = "Integer";
             this->intVal = intVal;
         }
 
+        NUM_SXP(double doubleVal){
+            this->type = "Number";
+            this->type2 = "Float";
+            this->doubleVal = doubleVal;
+        }
+
         string toString(){
-            // cout << "This is a number" << endl;
-            return to_string(intVal);
+            if (type2 == "Integer")
+                return to_string(intVal);
+            else if (type2 == "Float")
+                return to_string(doubleVal);
+            else{
+                cout << "This number isn't an integer or a float. what?" << endl;
+                return "oops";
+            }
         }
 };
 

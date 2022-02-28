@@ -169,8 +169,10 @@ class Scanner {
                 if (neg) addToken(FLOAT, -1*(double)stof(input.substr(startIndex, index-startIndex)), 0);
                 else addToken(FLOAT, (double)stof(input.substr(startIndex, index-startIndex)), 0);
             }
-            if (neg) addToken(INTEGER, -1*stoi(input.substr(startIndex, index-startIndex)), 0);
-            else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)), 0);
+            else{
+                if (neg) addToken(INTEGER, -1*stoi(input.substr(startIndex, index-startIndex)), 0);
+                else addToken(INTEGER, stoi(input.substr(startIndex, index-startIndex)), 0);
+            }
         }
 
         void getIdentifier() {
