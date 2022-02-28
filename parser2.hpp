@@ -274,7 +274,7 @@ class Parser {
 
         // getNextExpression: either pulls a define statement or a full expression
         EXP* getNextExpression() {
-            if (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos+1].getType() == DEFINE) {
+            while (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos+1].getType() == DEFINE) {
                 parseDef();
             }
             return parseExp();

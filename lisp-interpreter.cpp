@@ -101,7 +101,7 @@ void run(string line){
                 cout << n->toString() << endl;
             }
             else if (result->type == "TRUE"){
-                cout << result->type << endl;
+                cout << "T" << endl;
             }
             else if (result->type == "()"){
                 cout << result->type << endl;
