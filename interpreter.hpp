@@ -119,6 +119,11 @@ class Interpreter {
                     result = n1 * n2;
                     break;
                 case DIVIDE:
+                    if(n2 == 0) {
+                        ERROR("Cannot divide by 0");
+                        result = -1;
+                        break;
+                    }
                     result = n1 / n2;
                     break;
                 case MOD:
@@ -144,6 +149,11 @@ class Interpreter {
                     result = n1 * n2;
                     break;
                 case DIVIDE:
+                    if(n2 == 0) {
+                        ERROR("Cannot divide by 0");
+                        result = -1;
+                        break;
+                    }
                     result = n1 / n2;
                     break;
                 case MOD:
