@@ -80,11 +80,9 @@ class Interpreter {
                     return s;
                     break;
                 case BEGIN:
-                    s = eval(args->head, rho);
-                    cout << "output: " << s->toString() << endl;
-                    while (args->tail != NULL) {
-                        cout << "output: " << s->toString() << endl;
+                    while (args != NULL) {
                         s = eval(args->head, rho);
+                        cout << "output: " << s->toString() << endl;
                         args = args->tail;
                     }
                     return s;
@@ -255,7 +253,12 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case PRINT:
-                    cout << s1->toString() << endl;
+                    if (s1->type == "Symbol"){
+                        cout << ((SYM_SXP *)s1)->symVal << endl;
+                    }
+                    else {
+                        cout << s1->toString() << endl;
+                    }
                     result = s1;
                     break;
                 default:
