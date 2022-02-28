@@ -350,6 +350,9 @@ class Interpreter {
                     if (s1->type == "Symbol"){
                         cout << ((SYM_SXP *)s1)->symVal << endl;
                     }
+                    else if (s1->type == "Number"){
+                        cout << ((NUM_SXP *)s1)->toString() << endl;
+                    }
                     else {
                         cout << s1->toString() << endl;
                     }

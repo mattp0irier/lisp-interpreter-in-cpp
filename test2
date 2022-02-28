@@ -1,0 +1,9 @@
+(define func (a b) ( begin 
+    (set c (+ a b))
+    (print c)
+    (if (< a b) a b)
+)
+)
+
+(func 4 5)
+(func 1 3)
