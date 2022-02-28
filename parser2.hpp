@@ -226,6 +226,9 @@ class Parser {
         }
 
         EXP* getNextExpression() {
+            if (tokenList[pos].getType() == LEFT_PAREN && tokenList[pos+1].getType() == DEFINE) {
+                parseDef();
+            }
             return parseExp();
         }
         void newFunDef(string name, NAMELIST *nl, EXP *e) {

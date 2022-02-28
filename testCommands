@@ -23,3 +23,7 @@
 (list? 1)
 (number? 1)
 (symbol? 1)
+
+(define atom? (a) (if (list? a) () T))
+
+(atom? 1)

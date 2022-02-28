@@ -33,12 +33,14 @@ int main(int argc, char *argv[]){
 void runFile(string filename){
     ifstream input(filename);
     string str;
-    int i = 1;
+    string allInput = "";
+    // int i = 1;
     while (getline(input, str)) {
-        cout << "\nLINE " << i << ":\n\tINPUT: " << str << "\n\tOUTPUT: "; 
-        if (str.length()) run(str);
-        i++;
+        // cout << "\nLINE " << i << ":\n\tINPUT: " << str << "\n\tOUTPUT: "; 
+        if (str.length()) allInput += str;
+        // i++;
     }
+    run(allInput);
 }
 
 void runPrompt(){
@@ -56,20 +58,14 @@ void runPrompt(){
 void run(string line){
     Scanner scanner(line);
     vector<Token> tokens = scanner.scanTokens();
-    // scanner.printTokens();
+    scanner.printTokens();
 
     Parser *parser = new Parser(tokens);
     Interpreter interpreter;
     EXP *currentExpression;
     string resultString;
     //scanner.printTokens();
-    if (tokens[1].getType() != DEFINE) 
-        currentExpression = parser->getNextExpression();
-    else {
-        resultString = parser->parseDef();
-        //cout << "Created function " << resultString << endl;
-        currentExpression = parser->getNextExpression();
-    }
+    currentExpression = parser->getNextExpression();
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
