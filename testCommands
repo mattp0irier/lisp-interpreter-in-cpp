@@ -8,7 +8,7 @@
 (> 4 3)
 (= 4 4)
 (= 3 4)
-
+(+ 4 (* 4 (/ 10 5)))
 
 (if T 1 0)
 
@@ -24,6 +24,24 @@
 (number? 1)
 (symbol? 1)
 
-(define atom? (a) (if (list? a) () T))
+(print "define is_atom function")
+(define atom? (a)
+    (if (list? a) () T)
+)
 
+(print "test is_atom function")
+(print "")
+(print "expected output: true")
 (atom? 1)
+(print "")
+(print "expected output: true")
+(atom? T)
+(print "")
+(print "expected output: true")
+(atom? ())
+(print "")
+(print "expected output: true")
+(atom? "this")
+(print "")
+(print "expected output: ()")
+(atom? (1 3))
