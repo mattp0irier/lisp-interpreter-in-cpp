@@ -372,7 +372,7 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_SYMBOL:
-                    if (s1->type == "Symbol" || s1->type == "TRUE")
+                    if (s1->type == "Symbol" || s1->type == "TRUE" || s1->type == "Number")
                         result = TRUE;
                     break;
                 case IS_LIST:
