@@ -58,7 +58,7 @@ void runPrompt(){
 void run(string line){
     Scanner scanner(line);
     vector<Token> tokens = scanner.scanTokens();
-    scanner.printTokens();
+    //scanner.printTokens();
 
     Parser *parser = new Parser(tokens);
     Interpreter interpreter;
