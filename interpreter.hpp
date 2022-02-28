@@ -356,7 +356,7 @@ class Interpreter {
                     else {
                         cout << s1->toString() << endl;
                     }
-                    result = s1;
+                    result = NULL;
                     break;
                 default:
                     ERROR("invalid apply");

@@ -69,27 +69,29 @@ void run(string line){
     S_EXP *result;
     while(currentExpression != NULL) {
         result = interpreter.eval(currentExpression, emptyEnv());
-        if (result->type == "Number") {
-            NUM_SXP* n = (NUM_SXP*)result;
-            cout << n->toString() << endl;
-        }
-        else if (result->type == "Symbol") {
-            SYM_SXP* n = (SYM_SXP*)result;
-            cout << n->toString() << endl;
-        }
-        else if (result->type == "List") {
-            LIST_SXP* n = (LIST_SXP*)result;
-            cout << n->toString() << endl;
-        }
-        else if (result->type == "TRUE"){
-            cout << result->type << endl;
-        }
-        else if (result->type == "()"){
-            cout << result->type << endl;
-        }
-        else {
-            cout << result->type << endl;
-            cout << "error" << endl;
+        if (result != NULL) {
+            if (result->type == "Number") {
+                NUM_SXP* n = (NUM_SXP*)result;
+                cout << n->toString() << endl;
+            }
+            else if (result->type == "Symbol") {
+                SYM_SXP* n = (SYM_SXP*)result;
+                cout << n->toString() << endl;
+            }
+            else if (result->type == "List") {
+                LIST_SXP* n = (LIST_SXP*)result;
+                cout << n->toString() << endl;
+            }
+            else if (result->type == "TRUE"){
+                cout << result->type << endl;
+            }
+            else if (result->type == "()"){
+                cout << result->type << endl;
+            }
+            else {
+                cout << result->type << endl;
+                cout << "error" << endl;
+            }
         }
         currentExpression = parser->getNextExpression();
     }
