@@ -382,11 +382,11 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_SYMBOL:
-                    if (s1->type == "Symbol" || s1->type == "TRUE")
+                    if (s1->type == "Symbol" || s1->type == "TRUE" || s1->type == "Number")
                         result = TRUE;
                     break;
                 case IS_LIST:
-                    if (s1->type == "List")
+                    if (s1->type == "List" || s1->type == "()")
                         result = TRUE;
                     break;
                 case PRINT:

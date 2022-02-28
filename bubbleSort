@@ -1,4 +1,5 @@
 (print "BUBBLE SORT TEST")
+(print "This doesn't even work")
 
 (define swap (a b) (begin
     (set c a)
@@ -11,18 +12,24 @@
     (if (list? a) (begin
         (set size 0)
         (set cur a)
+        (set list ())
         (while (list? cur) (begin
+            (print size)
             (set size (+ size 1))
             (set cur (cdr cur))
         ))
+        (set cur a)
+        (set max 0)
         (while (> size 0) (begin
             (while (list? cur) (begin
-                (if (> cur (car (cdr cur))) (swap cur (car (cdr cur))) ())
-                (set size (- size 1))
+                (if (> (car cur) (car (cdr cur))) (begin (swap (car cur) (car (cdr cur))) (print "swapped")) ())
+                (set cur (cdr cur))
             ))
+            (set cur a)
+            (set size (- size 1))
         ))
     ) (print "Not a list") )
-    (print a)
+    a
 ))
 
 (sort (5 4 8 2 17 3 1))
