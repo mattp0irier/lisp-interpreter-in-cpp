@@ -1,0 +1,73 @@
+(define newLine () (print ""))
+(define testOp (expr expected) 
+    (begin
+        (print expected)
+        (print expr)
+        (newline)
+    )
+)
+
+(print "Basic Arith Ops")
+(newline)
+
+(print "Expected value: 6")
+(+ 2 4)
+(newline)
+
+(print "Expected value: 9")
+(- 10 1)
+(newline)
+
+(print "Expected value: 6")
+(* 1 6)
+(newline)
+
+(print "Expected value: 9")
+(/ 81 9)
+(newline)
+
+(print "Expected value: 3")
+(% 7 4)
+(newline)
+
+(print "Expected value: T")
+(< 3 4)
+(newline)
+
+(print "Expected value: ()")
+(< 4 3)
+(newline)
+
+(print "Expected value: T")
+(<= -3 4)
+(newline)
+
+(print "Expected value: T")
+(<= 4 4)
+(newline)
+
+(print "Expected value: ()")
+(>= 3 4)
+(newline)
+
+(print "Expected value: ()")
+(> 3 4)
+(newline)
+
+(print "Expected value: T")
+(> 4 3)
+(newline)
+
+(print "Expected value: T")
+(= 4 4)
+(newline)
+
+(print "Expected value: ()")
+(= 3 4)
+(newline)
+
+(print "Expected value: T")
+(= -3 -3)
+(newline)
+
+(testOp (+ 5 3) "expected: 8")
