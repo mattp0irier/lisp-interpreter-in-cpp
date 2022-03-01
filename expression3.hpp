@@ -81,44 +81,75 @@ class LIST_SXP: public S_EXP {
     public:
         // Every list has a car and cdr
         S_EXP *carVal, *cdrVal;
+        bool isCons;
 
-        LIST_SXP(S_EXP *carVal, S_EXP *cdrVal) {
+        LIST_SXP(S_EXP *carVal, S_EXP *cdrVal, bool isCons) {
             this->type = "List";
             this->carVal = carVal;
             this->cdrVal = cdrVal;
+            this->isCons = isCons;
         }
 
         // Combine list into a string
         string toString(){
-            // cout << carVal->type << " " << cdrVal->type << endl;
-            string list = "(";
+            string list;
+            if(isCons) {
+                list = "(";
 
-            // car must be an atom: either Number or Symbol
-            if (carVal->type == "Number"){
-                list += to_string(((NUM_SXP *)carVal)->intVal);
-            }
-            else if (carVal->type == "Symbol"){
-                list += ((SYM_SXP *)carVal)->symVal;
-            }
+                // car must be an atom: either Number or Symbol
+                if (carVal->type == "Number"){
+                    list += to_string(((NUM_SXP *)carVal)->intVal);
+                }
+                else if (carVal->type == "Symbol"){
+                    list += ((SYM_SXP *)carVal)->symVal;
+                }
 
-            // cdr may be nil, another List, or an atom
-            if (cdrVal->type == "()") {
+                // cdr may be nil, another List, or an atom
+                if (cdrVal->type == "()") {
+                    list += ")";
+                    return list;
+                }
+
+                // Necessary to cast pointer into the specific S-Expression derived class before accessing data
+                else if (cdrVal->type == "Number"){
+                    list += " . " + to_string(((NUM_SXP *)cdrVal)->intVal);
+                }
+                else if (carVal->type == "Symbol"){
+                    list += " . " + ((SYM_SXP *)cdrVal)->symVal;
+                }
                 list += ")";
-                return list;
             }
+            else {
+                list = "(";
 
-            // Necessary to cast pointer into the specific S-Expression derived class before accessing data
-            else if (cdrVal->type == "List") {
-                LIST_SXP *temp = (LIST_SXP *)cdrVal;
-                list += " " + temp->toString();
+                // car must be an atom: either Number or Symbol
+                if (carVal->type == "Number"){
+                    list += to_string(((NUM_SXP *)carVal)->intVal);
+                }
+                else if (carVal->type == "Symbol"){
+                    list += ((SYM_SXP *)carVal)->symVal;
+                }
+
+                // cdr may be nil, another List, or an atom
+                if (cdrVal->type == "()") {
+                    list += ")";
+                    return list;
+                }
+
+                // Necessary to cast pointer into the specific S-Expression derived class before accessing data
+                else if (cdrVal->type == "List") {
+                    LIST_SXP *temp = (LIST_SXP *)cdrVal;
+                    list += " " + temp->toString();
+                }
+                else if (cdrVal->type == "Number"){
+                    list += " " + to_string(((NUM_SXP *)cdrVal)->intVal);
+                }
+                else if (carVal->type == "Symbol"){
+                    list += " " + ((SYM_SXP *)cdrVal)->symVal;
+                }
+                list += ")";
             }
-            else if (cdrVal->type == "Number"){
-                list += " " + to_string(((NUM_SXP *)cdrVal)->intVal);
-            }
-            else if (carVal->type == "Symbol"){
-                list += " " + ((SYM_SXP *)cdrVal)->symVal;
-            }
-            list += ")";
+            
             return list;
         }
 };

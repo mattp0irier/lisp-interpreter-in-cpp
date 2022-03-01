@@ -200,7 +200,7 @@ class Parser {
                 // car is an S-Expression, cdr is a list
                 car = parseSExp();
                 cdr = parseList();
-                return new LIST_SXP(car, cdr);
+                return new LIST_SXP(car, cdr, false);
             }
         }
 
@@ -241,7 +241,7 @@ class Parser {
             return new SYM_SXP(symbolname);
         }
 
-        // parseSExp: creates either a LIST_SXP, NUM_SXP, or SYM_SXP
+        // parseSExp: creates either a , NUM_SXP, or SYM_SXP
         S_EXP *parseSExp() {
             if (tokenList[pos].getType() == T) {
                 // literal true
