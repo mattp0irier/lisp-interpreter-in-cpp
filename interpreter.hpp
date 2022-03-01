@@ -88,7 +88,7 @@ class Interpreter {
                     else if (isBound(varble, globalEnv))
                         assign(varble, s, globalEnv); // updates if exists
                     else
-                        bindVar(varble, s, rho); // bind variable since didn't exist
+                        bindVar(varble, s, globalEnv); // bind variable since didn't exist
                     return s;
                     break;
                 case BEGIN:
