@@ -31,6 +31,10 @@
 (% -7 4)
 (newline)
 
+(print "Expected value: -36")
+(* (- 0 (% 27 7)) (+ 2 (/ 100 25)))
+(newline)
+
 (print "Basic Rel Ops")
 (newline)
 
@@ -129,6 +133,22 @@
 (symbol? 1)
 (newline)
 
+(print "Expected value: ()")
+(null? "a")
+(newline)
+
+(print "Expected value: ()")
+(list? "a")
+(newline)
+
+(print "Expected value: ()")
+(number? "a")
+(newline)
+
+(print "Expected value: T")
+(symbol? "a")
+(newline)
+
 (print "define atom? function")
 (define atom? (a)
     (if (list? a) (if (null? a) T ()) T)
@@ -155,4 +175,55 @@
 
 (print "expected output: ()")
 (atom? (1 3))
+(newline)
+
+(print "Basic List Ops")
+(newline)
+
+(print "Expected value: (1 (2 (3 (4 (5 (6))))))")
+(print (set a (1 2 3 4 5 6)))
+(newline)
+
+(print "Expected value: (1 . 2)")
+(print (set b (cons 1 2)))
+(newline)
+
+(print "Expected value: (a (b (c (d (e (f))))))")
+(print (set c ("a" "b" "c" "d" "e" "f")))
+(newline)
+
+(print "Expected value: (a . b)")
+(print (set d (cons "a" "b")))
+(newline)
+
+(print "Expected value: 1")
+(print (car a))
+(newline)
+
+(print "Expected value: (2 (3 (4 (5 (6)))))")
+(print (cdr a))
+(newline)
+
+(print "Expected value: 1")
+(print (car b))
+(newline)
+
+(print "Expected value: 2")
+(print (cdr b))
+(newline)
+
+(print "Expected value: a")
+(print (car c))
+(newline)
+
+(print "Expected value: (b (c (d (e (f)))))")
+(print (cdr c))
+(newline)
+
+(print "Expected value: a")
+(print (car d))
+(newline)
+
+(print "Expected value: b")
+(print (cdr d))
 (newline)
