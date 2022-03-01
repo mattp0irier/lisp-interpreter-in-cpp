@@ -1,8 +1,17 @@
 EXPONENTIATION TEST
+3^1, expected output 3
+3
+3^2, expected output 9
 9
+3^3, expected output 27
 27
+3^4, expected output 81
 81
+8^4, expected output 4096
 4096
+2.5^2, expected output 6.250000
 6.250000
+35^0, expected output 1
 1
+0^0, expected output 1
 1
