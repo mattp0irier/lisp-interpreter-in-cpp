@@ -112,8 +112,8 @@ class LIST_SXP: public S_EXP {
 
                 // Necessary to cast pointer into the specific S-Expression derived class before accessing data
                 else if (cdrVal->type == "Number"){
-                    if (((NUM_SXP *)cdrVal)->type2 == "Float") list += to_string(((NUM_SXP *)cdrVal)->doubleVal);
-                    else list += to_string(((NUM_SXP *)cdrVal)->intVal);
+                    if (((NUM_SXP *)cdrVal)->type2 == "Float") list += " . " + to_string(((NUM_SXP *)cdrVal)->doubleVal);
+                    else list += " . " + to_string(((NUM_SXP *)cdrVal)->intVal);
                 }
                 else if (cdrVal->type == "Symbol"){
                     list += " . " + ((SYM_SXP *)cdrVal)->symVal;
