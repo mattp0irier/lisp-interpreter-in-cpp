@@ -305,7 +305,7 @@ class Interpreter {
             // switch on operation TokenType
             switch (op.getType()) {
                 case CONS:
-                    result = new LIST_SXP(s1, s2);
+                    result = new LIST_SXP(s1, s2, true);
                     break;
                 case EQUAL:
                     // if both nil, equal
