@@ -260,10 +260,10 @@ class Interpreter {
                         }
                         else{
                             if (n1->type2 == "Integer"){
-                                result = applyArithOp(op, n1->intVal, (int)(n2->doubleVal));
+                                result = applyArithOp(op, (double)(n1->intVal), (n2->doubleVal));
                             }
                             else
-                                result = applyArithOp(op, (int)(n1->doubleVal), n2->intVal);
+                                result = applyArithOp(op, (n1->doubleVal), (double)(n2->intVal));
                         }
                     }
                     // else relational op, call applyRelOp
@@ -396,6 +396,9 @@ class Interpreter {
                     }
                     else if (s1->type == "Number"){
                         cout << ((NUM_SXP *)s1)->toString() << endl;
+                    }
+                    else if (s1->type == "List"){
+                        cout << ((LIST_SXP *)s1)->toString() << endl;
                     }
                     else {
                         cout << s1->toString() << endl;

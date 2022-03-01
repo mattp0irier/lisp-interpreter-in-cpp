@@ -98,7 +98,7 @@ void run(string line){
             }
             else if (result->type == "List") {
                 LIST_SXP* n = (LIST_SXP*)result;
-                cout << n->toString() << endl;
+               // cout << n->toString() << endl;
             }
             else if (result->type == "TRUE"){
                 cout << "T" << endl;

@@ -1,0 +1,49 @@
+(define sumList (a) (begin
+    (set sum 0)
+    (set num (car a))
+    (set ptr a)
+
+    (while (list? (cdr ptr)) (begin
+        (set sum (+ sum (car ptr)))
+        (set ptr (cdr ptr))   
+    ))
+    (set sum (+ sum (car ptr)))
+    sum
+))
+
+(define countList (a) (begin
+    (set count 0)
+    (set num (car a))
+    (set ptr a)
+
+    (while (list? (cdr ptr)) (begin
+        (set count (+ count 1))
+        (set ptr (cdr ptr))
+    ))
+    (set count (+ count 1))
+    count
+))
+
+(define avgList (a)
+    (/ (sumList a) (countList a))
+)
+
+(set list (1.2 1.2 1.4 1.6 1.8 2.2))
+(print list)
+
+(print "EXPECTED SUM 9.400000")
+(sumList list)
+(print "EXPECTED COUNT 6")
+(/ (countList list) 1)
+(print "EXPECTED AVG 1.566667")
+(avgList list)
+(print "")
+
+(set list (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+(print list)
+(print "EXPECTED SUM 120")
+(sumList list)
+(print "EXPECTED COUNT 15")
+(/ (countList list) 1)
+(print "EXPECTED AVG 8")
+(avgList list)

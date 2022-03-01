@@ -95,7 +95,8 @@ class LIST_SXP: public S_EXP {
 
             // car must be an atom: either Number or Symbol
             if (carVal->type == "Number"){
-                list += to_string(((NUM_SXP *)carVal)->intVal);
+                if (((NUM_SXP *)carVal)->type2 == "Float") list += to_string(((NUM_SXP *)carVal)->doubleVal);
+                else list += to_string(((NUM_SXP *)carVal)->intVal);
             }
             else if (carVal->type == "Symbol"){
                 list += ((SYM_SXP *)carVal)->symVal;
@@ -113,7 +114,8 @@ class LIST_SXP: public S_EXP {
                 list += " " + temp->toString();
             }
             else if (cdrVal->type == "Number"){
-                list += " " + to_string(((NUM_SXP *)cdrVal)->intVal);
+                if (((NUM_SXP *)cdrVal)->type2 == "Float") list += to_string(((NUM_SXP *)cdrVal)->doubleVal);
+                else list += " " + to_string(((NUM_SXP *)cdrVal)->intVal);
             }
             else if (carVal->type == "Symbol"){
                 list += " " + ((SYM_SXP *)cdrVal)->symVal;
