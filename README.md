@@ -18,3 +18,4 @@ To run with an input file:
 Several tests were run on the interpreter in order to verify the interpreter was working. Included test files are:
 
 - simpleStuff: Basic tests of all operations and functions; expected value for each result is printed
+- numListOps: A set of operations performed on lists, which demonstrates implicit float to int conversion, defining functions, and several other operations
