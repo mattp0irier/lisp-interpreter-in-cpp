@@ -382,11 +382,11 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_SYMBOL:
-                    if (s1->type == "Symbol" || s1->type == "TRUE" || s1->type == "Number")
+                    if (s1->type == "Symbol" || s1->type == "TRUE" || s1->type == "Number" || s1->type == "()")
                         result = TRUE;
                     break;
                 case IS_LIST:
-                    if (s1->type == "List")
+                    if (s1->type == "List" || s1->type == "()")
                         result = TRUE;
                     break;
                 case PRINT:
@@ -425,6 +425,7 @@ class Interpreter {
             // if valexp, cast and return
             if (expression->name == "valexp") {
                 VALEXP* exp = (VALEXP*)expression;
+                // loop thru list? 
                 return exp->sxp;
             }
 

@@ -118,18 +118,26 @@ class LIST_SXP: public S_EXP {
                 else if (cdrVal->type == "Symbol"){
                     list += " . " + ((SYM_SXP *)cdrVal)->symVal;
                 }
+                else if (cdrVal->type == "List"){
+                    list += " . " + ((LIST_SXP *)cdrVal)->toString();
+                }
                 list += ")";
             }
             else {
                 list = "(";
 
                 // car must be an atom: either Number or Symbol
+                // if list, it is a nested list
                 if (carVal->type == "Number"){
                     if (((NUM_SXP *)carVal)->type2 == "Float") list += to_string(((NUM_SXP *)carVal)->doubleVal);
                     else list += to_string(((NUM_SXP *)carVal)->intVal);
                 }
                 else if (carVal->type == "Symbol"){
                     list += ((SYM_SXP *)carVal)->symVal;
+                }
+                else if (carVal->type == "List") {
+                    LIST_SXP *temp = (LIST_SXP *)carVal;
+                    list += temp->toString();
                 }
 
                 // cdr may be nil, another List, or an atom
@@ -389,5 +397,20 @@ int lengthNL(NAMELIST *nl){
     }
     return len;
 }
+
+// List of Expressions
+class LIST_EXP: public S_EXP {
+    public:
+        // Every list has a car and cdr
+        EXP* car;
+        S_EXP* cdr;
+
+        LIST_EXP(EXP *car, S_EXP *cdr) {
+            cout << "in LIST_EXP()" << endl;
+            this->type = "ExpList";
+            this->car = car;
+            this->cdr = cdr;
+        }
+};
 
 #endif

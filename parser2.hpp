@@ -74,11 +74,13 @@ class Parser {
 
                     // function definition is parsed into an expression  
                     EXP* e = parseExp();
+                    
+                    cout << "parsed expression ending at pos " << pos << endl;
 
                     // define call ends with )
                     if(tokenList[pos].getType() == RIGHT_PAREN) pos++;
                     else {
-                        cout << "Error at pos " << pos << endl;
+                        cout << "Error at pos " << pos << " got " << tokenList[pos].getType() << endl;
                         ERROR("expected ) ");
                         return "error";
                     }
@@ -142,7 +144,7 @@ class Parser {
                     pos++;
                     return nil;
                 }
-                else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == STRING) {
+                else if (tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == STRING || tokenList[pos].getType() == LEFT_PAREN) {
                     // Literal value starts a list
                     return new VALEXP(parseList());
                 }
@@ -191,11 +193,27 @@ class Parser {
 
         // parselist: creates List S_Expression
         S_EXP *parseList() {
+            cout << "in parse list at pos " << pos << endl;
             S_EXP *car, *cdr;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
                 // default S_EXP constructor has value "()"
                 return new S_EXP();
+            }
+            else if(tokenList[pos].getType() == LEFT_PAREN) {
+                // cout << "Left paren at pos " << pos << endl;
+                pos++;
+                if(tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN) {
+                    car = parseList();
+                    cdr = parseList();
+                    return new LIST_SXP(car, cdr, false);
+                }
+                else {
+                    // car is expression, cdr is list
+                    EXP* carExp = parseExp();
+                    cdr = parseList();
+                    return new LIST_EXP(carExp, cdr);
+                }
             }
             else {
                 // car is an S-Expression, cdr is a list
