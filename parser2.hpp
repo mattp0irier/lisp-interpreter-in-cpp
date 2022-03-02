@@ -201,7 +201,7 @@ class Parser {
                 return new S_EXP();
             }
             else if(tokenList[pos].getType() == LEFT_PAREN) {
-                // cout << "Left paren at pos " << pos << endl;
+                cout << "Left paren at pos " << pos << endl;
                 pos++;
                 if(tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN) {
                     car = parseList();
@@ -210,6 +210,7 @@ class Parser {
                 }
                 else {
                     // car is expression, cdr is list
+                    pos--;
                     EXP* carExp = parseExp();
                     cdr = parseList();
                     return new LIST_EXP(carExp, cdr);
