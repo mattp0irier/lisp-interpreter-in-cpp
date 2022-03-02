@@ -78,7 +78,8 @@ class Parser {
                     // define call ends with )
                     if(tokenList[pos].getType() == RIGHT_PAREN) pos++;
                     else {
-                        ERROR("expected )");
+                        cout << "Error at pos " << pos << endl;
+                        ERROR("expected ) ");
                         return "error";
                     }
                     
