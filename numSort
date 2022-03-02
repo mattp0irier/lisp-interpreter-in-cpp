@@ -1,0 +1,34 @@
+(define getMax (a) (begin
+    (set max (car a))
+    (set list a)
+    (while (list? (cdr list)) (begin
+        (if (> (car list) max) (set max (car list)) ())
+        (set list (cdr list))
+    ))
+    (if (> (car list) max) (set max (car list)) ())
+    max
+))
+
+(define remove (a b)
+    (if (list? (cdr a)) (begin
+        (print "true")
+        (if (= (car a) b) 
+            (set list (cdr a)) 
+            (set list ((car a) (remove (cdr a) b)))
+        )
+        )
+        (begin
+        (print "false")
+        (if (= a b) (set list ()) (set list a))
+        )
+    )
+)
+
+(print "what")
+
+(set b (1 2))
+(print b)
+(set b (remove b 1))
+(print b)
+(set a (1 2 5 4 5 2))
+(getMax a)

@@ -1,0 +1,13 @@
+(define recursive (i) (begin
+    (if (= i 0) 
+        ()
+        (begin
+          (print i)
+          (recursive (- i 1))  
+        )
+    )
+)
+)
+
+(recursive 5)
+
