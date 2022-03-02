@@ -67,7 +67,7 @@ class Interpreter {
                     else if (args->tail->head->name == "varexp"){
                         // check if var exists in local environment
                         if (isBound(((VAREXP *)(args->tail->head))->varble, rho)){
-                            s = eval(args->tail->head, rho); // updates if exists
+                            s = eval(args->tail->head, rho);
                         }
                         // check if var exists in global environment
                         else if (isBound(((VAREXP *)(args->tail->head))->varble, globalEnv)){

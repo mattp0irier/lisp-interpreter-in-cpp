@@ -1,0 +1,12 @@
+(define reverseBuild (a) (begin
+    (set newList 1)
+    (set oldList a)
+    (while (list? oldList) (begin
+        (set newList ((car oldList) newList))
+        (set oldList (cdr oldList))            
+    ))
+    (set newList (oldList newList))
+))
+
+(set b (1 2 3 4 5 6))
+(reverseBuild b)
