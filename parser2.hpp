@@ -78,7 +78,7 @@ class Parser {
                     // define call ends with )
                     if(tokenList[pos].getType() == RIGHT_PAREN) pos++;
                     else {
-                        ERROR("expected )");
+                        ERROR("expected ) at pos " + pos);
                         return "error";
                     }
                     
