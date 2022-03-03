@@ -17,7 +17,7 @@ enum TokenType {
 
     // Keywords
     IF, WHILE, SET, BEGIN, CONS, CAR, CDR,
-    IS_NUMBER, IS_SYMBOL, IS_LIST, IS_NULL,
+    IS_NUMBER, IS_SYMBOL, IS_LIST, IS_NULL, IS_NOT_NULL,
     PRINT, DEFINE, CALL,
 
     END_OF_FILE

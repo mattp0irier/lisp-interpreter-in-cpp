@@ -377,6 +377,10 @@ class Interpreter {
                     if (s1 == nil)
                         result = TRUE;
                     break;
+                case IS_NOT_NULL:
+                    if (s1 != nil)
+                        result = TRUE;
+                    break;
                 case IS_NUMBER:
                     if (s1->type == "Number")
                         result = TRUE;
@@ -386,7 +390,7 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_LIST:
-                    if (s1->type == "List" || s1->type == "()")
+                    if (s1->type == "List"/* || s1->type == "()"*/)
                         result = TRUE;
                     break;
                 case PRINT:

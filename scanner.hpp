@@ -30,6 +30,7 @@ class Scanner {
             {"symbol?", IS_SYMBOL},
             {"list?", IS_LIST},
             {"null?", IS_NULL},
+            {"notnull?", IS_NOT_NULL},
             {"print", PRINT},
             {"define", DEFINE},
             {"call", CALL}
@@ -48,6 +49,7 @@ class Scanner {
             {IS_SYMBOL, 1},
             {IS_LIST, 1},
             {IS_NULL, 1},
+            {IS_NOT_NULL, 1},
             {PRINT, 1},
             {DEFINE, 2},
             {IDENTIFIER, 0}

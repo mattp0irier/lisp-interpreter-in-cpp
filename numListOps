@@ -3,7 +3,7 @@
     (set num (car a))
     (set ptr a)
 
-    (while (list? (cdr ptr)) (begin
+    (while (notnull? (cdr ptr)) (begin
         (set sum (+ sum (car ptr)))
         (set ptr (cdr ptr))   
     ))
@@ -16,7 +16,7 @@
     (set num (car a))
     (set ptr a)
 
-    (while (list? (cdr ptr)) (begin
+    (while (notnull? (cdr ptr)) (begin
         (set count (+ count 1))
         (set ptr (cdr ptr))
     ))
