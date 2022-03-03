@@ -378,7 +378,7 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_NOT_NULL:
-                    if (s1 != nil)
+                    if (s1->type != "()")
                         result = TRUE;
                     break;
                 case IS_NUMBER:

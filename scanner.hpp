@@ -1,3 +1,6 @@
+#ifndef _SCANNER_
+#define _SCANNER_
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -279,3 +282,5 @@ class Scanner {
             cout << endl;
         }
 };
+
+#endif
