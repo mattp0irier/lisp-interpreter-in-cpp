@@ -496,6 +496,21 @@ class Interpreter {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
                 if (op.getType() == IDENTIFIER) {
+                    // check if it is a defined variable at beginning of list
+                    if (isBound(op.getVal(), rho) || isBound(op.getVal(), globalEnv)) {
+                        VAREXP* head = new VAREXP(op.getVal());
+                        EXPLIST* ptr = exp->args;
+                        LIST_EXP* headOfList = new LIST_EXP(head, NULL);
+                        LIST_EXP* currentNode = headOfList;
+                        while(ptr != NULL) {
+                            LIST_EXP* nextNode = new LIST_EXP(ptr->head, NULL);
+                            currentNode->cdr = (S_EXP*)nextNode;
+                            currentNode = nextNode;
+                            ptr = ptr->tail;
+                        }
+                        currentNode->cdr = new S_EXP("()");
+                        return eval(new VALEXP(headOfList), rho);
+                    }
                     return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
                 else {
