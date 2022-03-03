@@ -66,13 +66,13 @@ Expected value: T
 T
 
 Expected value: T
-()
+T
 
 Expected value: ()
 ()
 
 Expected value: T
-()
+T
 
 Expected value: ()
 ()
@@ -165,4 +165,10 @@ a
 
 Expected value: b
 b
+
+Expected value: (7 (9 (11)))
+(7 (9 (11)))
+
+Expected value: (1 ((2 (3)) (9)))
+(1 ((2 (3)) (9)))
 
