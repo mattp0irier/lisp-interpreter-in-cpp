@@ -74,8 +74,6 @@ class Parser {
 
                     // function definition is parsed into an expression  
                     EXP* e = parseExp();
-                    
-                    cout << "parsed expression ending at pos " << pos << endl;
 
                     // define call ends with )
                     if(tokenList[pos].getType() == RIGHT_PAREN) pos++;

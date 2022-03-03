@@ -390,7 +390,7 @@ class Interpreter {
                         result = TRUE;
                     break;
                 case IS_LIST:
-                    if (s1->type == "List"/* || s1->type == "()"*/)
+                    if (s1->type == "List" || s1->type == "()")
                         result = TRUE;
                     break;
                 case PRINT:
