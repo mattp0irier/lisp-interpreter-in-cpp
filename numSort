@@ -1,7 +1,7 @@
 (define getMax (a) (begin
     (set max (car a))
     (set list a)
-    (while (list? (cdr list)) (begin
+    (while (notnull? (cdr list)) (begin
         (if (> (car list) max) (set max (car list)) ())
         (set list (cdr list))
     ))
@@ -9,6 +9,9 @@
     max
 ))
 
+(define reverse (a)
+
+)
 
 (set b (1 2 3 4 5 6 7 9))
 (getMax b)
