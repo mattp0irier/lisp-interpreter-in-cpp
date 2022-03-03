@@ -70,7 +70,7 @@ void run(string line){
 
     // separate user input into tokens
     vector<Token> tokens = scanner.scanTokens();
-    scanner.printTokens();
+    // scanner.printTokens();
 
     // Objects used for parsing and interpreting expressions as they are read in
     Parser *parser = new Parser(tokens);

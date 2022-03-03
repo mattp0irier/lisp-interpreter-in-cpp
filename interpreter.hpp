@@ -425,7 +425,27 @@ class Interpreter {
             // if valexp, cast and return
             if (expression->name == "valexp") {
                 VALEXP* exp = (VALEXP*)expression;
-                // loop thru list? 
+                // if it is a list, check if it needs to be evaluated
+                if(exp->sxp->type == "List" || exp->sxp->type == "ExpList") {
+                    // if head node is an expression
+                    if(exp->sxp->type == "ExpList") {
+                        LIST_EXP* listExpression = (LIST_EXP*)exp->sxp;
+                        S_EXP *newPtr = eval(listExpression->car, rho);
+                        LIST_SXP* newListNode = new LIST_SXP(newPtr, listExpression->cdr, false);
+                        exp->sxp = newListNode; // reassign head node with evaluated statement
+                    }
+                    // loop through tail nodes and check for evaluation
+                    LIST_SXP *ptr = (LIST_SXP*)exp->sxp;
+                    while(ptr->cdrVal->type != "()") {
+                        if(ptr->cdrVal->type == "ExpList") {
+                            LIST_EXP* listExpression = (LIST_EXP*)ptr->cdrVal;
+                            S_EXP *newPtr = eval(listExpression->car, rho);
+                            LIST_SXP* newListNode = new LIST_SXP(newPtr, listExpression->cdr, false);
+                            ptr->cdrVal = newListNode; // reassign node with evaluated statement
+                        }
+                        ptr = (LIST_SXP*)ptr->cdrVal;
+                    }
+                }
                 return exp->sxp;
             }
 

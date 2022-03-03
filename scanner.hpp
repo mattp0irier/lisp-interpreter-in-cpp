@@ -258,7 +258,6 @@ class Scanner {
         void printTokens() {
             // loop through tokens
             for (int i=0; i<tokens.size(); i++){
-                cout << i << ": ";
                 // print correct value based on type
                 if(tokens[i].getType() == INTEGER) {
                     cout << "\"" << tokens[i].getIntVal() << "\"";

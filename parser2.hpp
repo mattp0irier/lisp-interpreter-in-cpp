@@ -193,7 +193,6 @@ class Parser {
 
         // parselist: creates List S_Expression
         S_EXP *parseList() {
-            cout << "in parse list at pos " << pos << endl;
             S_EXP *car, *cdr;
             if (tokenList[pos].getType() == RIGHT_PAREN) {
                 pos++;
@@ -201,7 +200,6 @@ class Parser {
                 return new S_EXP();
             }
             else if(tokenList[pos].getType() == LEFT_PAREN) {
-                cout << "Left paren at pos " << pos << endl;
                 pos++;
                 if(tokenList[pos].getType() == INTEGER || tokenList[pos].getType() == FLOAT || tokenList[pos].getType() == T || tokenList[pos].getType() == LEFT_PAREN) {
                     car = parseList();

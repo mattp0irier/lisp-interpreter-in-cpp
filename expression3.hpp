@@ -398,7 +398,7 @@ int lengthNL(NAMELIST *nl){
     return len;
 }
 
-// List of Expressions
+// LIST_EXP: For holding an expression in a list
 class LIST_EXP: public S_EXP {
     public:
         // Every list has a car and cdr
@@ -406,7 +406,6 @@ class LIST_EXP: public S_EXP {
         S_EXP* cdr;
 
         LIST_EXP(EXP *car, S_EXP *cdr) {
-            cout << "in LIST_EXP()" << endl;
             this->type = "ExpList";
             this->car = car;
             this->cdr = cdr;
