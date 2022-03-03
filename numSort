@@ -9,6 +9,27 @@
     max
 ))
 
+(define remove (a b) (begin
+    (if (list? (cdr a)) (begin
+        (print "true")
+        (if (= (car a) b) 
+            (set list (cdr a)) 
+            (set list ((car a) (remove (cdr a) b)))
+        )
+        )
+        (begin
+        (print "false")
+        (if (= a b) (set list ()) (set list a))
+        )
+    )
+    list)
+)
 
-(set b (1 2 3 4 5 6 7 9))
-(getMax b)
+(print "what")
+
+(set b (1 2))
+(print b)
+(set b (remove b 2))
+(print b)
+(set a (1 2 5 4 5 2))
+(getMax a)
