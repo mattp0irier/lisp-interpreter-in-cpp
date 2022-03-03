@@ -441,13 +441,33 @@ class Interpreter {
                     // loop through tail nodes and check for evaluation
                     LIST_SXP *ptr = (LIST_SXP*)exp->sxp;
                     while(ptr->cdrVal->type != "()") {
+                        LIST_EXP* listExpression = (LIST_EXP*)ptr->cdrVal;
                         if(ptr->cdrVal->type == "ExpList") {
-                            LIST_EXP* listExpression = (LIST_EXP*)ptr->cdrVal;
                             S_EXP *newPtr = eval(listExpression->car, rho);
                             LIST_SXP* newListNode = new LIST_SXP(newPtr, listExpression->cdr, false);
                             ptr->cdrVal = newListNode; // reassign node with evaluated statement
                         }
+                        // evaluate variable
+                        if(ptr->carVal->type == "Symbol") {
+                            string variable = (((SYM_SXP*)ptr->carVal)->symVal);
+                            if (isBound(variable, rho)) {
+                                ptr->carVal = fetch(variable, rho);
+                            }
+                            if (isBound(variable, globalEnv)) {
+                                ptr->carVal = fetch(variable, globalEnv);
+                            }
+                        }
                         ptr = (LIST_SXP*)ptr->cdrVal;
+                    }
+                    // evaluate var in last position
+                    if(ptr->carVal->type == "Symbol") {
+                        string variable = (((SYM_SXP*)ptr->carVal)->symVal);
+                        if (isBound(variable, rho)) {
+                            ptr->carVal = fetch(variable, rho);
+                        }
+                        if (isBound(variable, globalEnv)) {
+                            ptr->carVal = fetch(variable, globalEnv);
+                        }
                     }
                 }
                 return exp->sxp;

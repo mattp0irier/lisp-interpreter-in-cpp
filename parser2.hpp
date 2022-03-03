@@ -257,7 +257,7 @@ class Parser {
             return new SYM_SXP(symbolname);
         }
 
-        // parseSExp: creates either a , NUM_SXP, or SYM_SXP
+        // parseSExp: creates either a S_EXP, NUM_SXP, or SYM_SXP
         S_EXP *parseSExp() {
             if (tokenList[pos].getType() == T) {
                 // literal true
