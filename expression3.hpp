@@ -48,6 +48,7 @@ class NUM_SXP: public S_EXP {
             this->doubleVal = doubleVal;
         }
 
+        // Copy Constructors
         NUM_SXP(const NUM_SXP &src){
             this->type = src.type;
             this->type2 = src.type;
@@ -92,6 +93,7 @@ class SYM_SXP: public S_EXP {
             return symVal;
         }
 
+        // Copy Constructors
         SYM_SXP(const SYM_SXP &src){
             this->type = src.type;
             this->type2 = src.type2;
@@ -117,6 +119,7 @@ class LIST_SXP: public S_EXP {
             this->type = "List";
             this->carVal = carVal;
             this->cdrVal = cdrVal;
+            // check if lists should be joined
             string cdrType = cdrVal->type;
             if (cdrType == "List"){ 
                 if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
@@ -125,10 +128,12 @@ class LIST_SXP: public S_EXP {
             this->isCons = isCons;
         }
 
+        // Copy Constructors
         LIST_SXP(const LIST_SXP &src){
             this->type = src.type;
             this->carVal = src.carVal;
             this->cdrVal = src.cdrVal;
+            // check if lists should be joined
             string cdrType = cdrVal->type;
             if (cdrType == "List"){ 
                 if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
@@ -141,6 +146,7 @@ class LIST_SXP: public S_EXP {
             this->type = src.type;
             this->carVal = src.carVal;
             this->cdrVal = src.cdrVal;
+            // check if lists should be joined
             string cdrType = cdrVal->type;
             if (cdrType == "List"){ 
                 if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
@@ -246,6 +252,7 @@ class VALEXP: public EXP {
             this->name = "valexp";
         }
 
+        // Copy Constructors
         VALEXP(const VALEXP &src){
             this->name = src.name;
             this->sxp = src.sxp;
@@ -267,6 +274,7 @@ class VAREXP: public EXP {
             this->name = "varexp";
         }
 
+        // Copy Constructors
         VAREXP(const VAREXP &src){
             this->name = src.name;
             this->varble = src.varble;
@@ -289,6 +297,7 @@ class STREXP: public EXP {
             this->strVal = strVal;
         }
 
+        // Copy Constructors
         STREXP(const STREXP &src){
             this->name = src.name;
             this->strVal = src.strVal;
@@ -317,6 +326,7 @@ class EXPLIST {
             this->tail = tail;
         }
 
+        // Copy Constructors
         EXPLIST(const EXPLIST &src){
             this->head = src.head;
             this->tail = src.tail;
@@ -355,6 +365,7 @@ class APEXP: public EXP {
             this->name = "apexp";
         }
 
+        // Copy Constructors
         APEXP(const APEXP &src){
             this->op = src.op;
             this->args = src.args;
@@ -377,15 +388,14 @@ class VALUELIST {
         S_EXP *head;
         VALUELIST *tail;
 
-        VALUELIST() {
-            
-        }
+        VALUELIST() {}
 
         VALUELIST(S_EXP *head, VALUELIST *tail) {
             this->head = head;
             this->tail = tail;
         }
 
+        // Copy Constructors
         VALUELIST(const VALUELIST &src){
             this->head = src.head;
             this->tail = src.tail;
@@ -416,6 +426,7 @@ class NAMELIST {
             this->tail = tail;
         }
 
+        // Copy Constructors
         NAMELIST(const NAMELIST &src){
             this->head = src.head;
             this->tail = src.tail;
@@ -517,6 +528,7 @@ class LIST_EXP: public S_EXP {
             this->cdr = cdr;
         }
 
+        // Copy Constructors
         LIST_EXP(const LIST_EXP &src){
             this->type = src.type;
             this->car = src.car;
