@@ -1,0 +1,174 @@
+Basic Arith Ops
+
+Expected value: 6
+6
+
+Expected value: 9
+9
+
+Expected value: 6
+6
+
+Expected value: 9
+9
+
+Expected value: ERROR
+ERROR:: Cannot divide by 0
+-1
+
+Expected value: 3
+3
+
+Expected value: -3
+-3
+
+Expected value: -36
+-36
+
+Basic Rel Ops
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Basic ? Ops
+
+Expected value: T
+T
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: ()
+()
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+Expected value: T
+T
+
+Expected value: ()
+()
+
+Expected value: ()
+()
+
+Expected value: ()
+()
+
+Expected value: T
+T
+
+define atom? function
+test atom? function
+
+expected output: T
+T
+
+expected output: T
+T
+
+expected output: T
+T
+
+expected output: T
+T
+
+expected output: ()
+()
+
+Basic List Ops
+
+Expected value: (1 (2 (3 (4 (5 (6))))))
+(1 (2 (3 (4 (5 (6))))))
+
+Expected value: (1 . 2)
+(1 . 2)
+
+Expected value: (a (b (c (d (e (f))))))
+(a (b (c (d (e (f))))))
+
+Expected value: (a . b)
+(a . b)
+
+Expected value: 1
+1
+
+Expected value: (2 (3 (4 (5 (6)))))
+(2 (3 (4 (5 (6)))))
+
+Expected value: 1
+1
+
+Expected value: 2
+2
+
+Expected value: a
+a
+
+Expected value: (b (c (d (e (f)))))
+(b (c (d (e (f)))))
+
+Expected value: a
+a
+
+Expected value: b
+b
+
+Expected value: (7 (9 (11)))
+(7 (9 (11)))
+
+Expected value: (1 ((2 (3)) (9)))
+(1 ((2 (3)) (9)))
+
