@@ -20,3 +20,7 @@ Several tests were run on the interpreter in order to verify the interpreter was
 - simpleStuff: Basic tests of all operations and functions; expected value for each result is printed
 - numListOps: A set of operations performed on lists, which demonstrates implicit float to int conversion, defining functions, and several other operations
 - pow: Creates a function pow that raises a number to a given power; runs tests with int and float values
+- recursionCheck: A simple example demonstrating that recursion works with our interpreter
+- numSort: List operations allowing for the creation of the reverse of a list, obtaining the maximum value from a list, and sorting the list in ascending order
+
+The outputs of our tests are stored in the files named `testNameOutput`.
