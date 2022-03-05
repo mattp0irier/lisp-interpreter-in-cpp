@@ -253,8 +253,10 @@ class Parser {
 
         // parseSym: creates a SYM_SXP from tokenList[pos]
         S_EXP *parseSym() {
-            string symbolname = tokenList[parseName()].getVal();
-            return new SYM_SXP(symbolname);
+            int i = parseName();
+            string symbolname = tokenList[i].getVal();
+            if (tokenList[i].getType() == STRING) return new SYM_SXP(symbolname, "String");
+            else return new SYM_SXP(symbolname, "Identifier");
         }
 
         // parseSExp: creates either a S_EXP, NUM_SXP, or SYM_SXP

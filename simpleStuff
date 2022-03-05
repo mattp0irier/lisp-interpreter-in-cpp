@@ -185,7 +185,7 @@
 (newline)
 
 (print "Expected value: (1 . 2)")
-(print (set b (cons 1 2)))
+(print (set bonsell (cons 1 2)))
 (newline)
 
 (print "Expected value: (a (b (c (d (e (f))))))")
@@ -205,11 +205,11 @@
 (newline)
 
 (print "Expected value: 1")
-(print (car b))
+(print (car bonsell))
 (newline)
 
 (print "Expected value: 2")
-(print (cdr b))
+(print (cdr bonsell))
 (newline)
 
 (print "Expected value: a")

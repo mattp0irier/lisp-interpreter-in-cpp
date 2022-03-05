@@ -48,6 +48,21 @@ class NUM_SXP: public S_EXP {
             this->doubleVal = doubleVal;
         }
 
+        NUM_SXP(const NUM_SXP &src){
+            this->type = src.type;
+            this->type2 = src.type;
+            this->intVal = src.intVal;
+            this->doubleVal = src.doubleVal;
+        }
+
+        NUM_SXP &operator= (const NUM_SXP &src) {
+            this->type = src.type;
+            this->type2 = src.type;
+            this->intVal = src.intVal;
+            this->doubleVal = src.doubleVal;
+            return *this;
+        }
+
         // toString handles either kind of number
         string toString(){
             if (type2 == "Integer")
@@ -65,14 +80,29 @@ class NUM_SXP: public S_EXP {
 class SYM_SXP: public S_EXP {
     public:
         string symVal;
+        string type2;
 
-        SYM_SXP(string symVal){
+        SYM_SXP(string symVal, string type2){
             this->type = "Symbol";
+            this->type2 = type2;
             this->symVal = symVal;
         }
 
         string toString(){
             return symVal;
+        }
+
+        SYM_SXP(const SYM_SXP &src){
+            this->type = src.type;
+            this->type2 = src.type2;
+            this->symVal = src.symVal;
+        }
+
+        SYM_SXP &operator= (const SYM_SXP &src) {
+            this->type = src.type;
+            this->type2 = src.type2;
+            this->symVal = src.symVal;
+            return *this;
         }
 };
 
@@ -87,7 +117,37 @@ class LIST_SXP: public S_EXP {
             this->type = "List";
             this->carVal = carVal;
             this->cdrVal = cdrVal;
+            string cdrType = cdrVal->type;
+            if (cdrType == "List"){ 
+                if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
+                    this->cdrVal = ((LIST_SXP *)cdrVal)->carVal;}
+            }
             this->isCons = isCons;
+        }
+
+        LIST_SXP(const LIST_SXP &src){
+            this->type = src.type;
+            this->carVal = src.carVal;
+            this->cdrVal = src.cdrVal;
+            string cdrType = cdrVal->type;
+            if (cdrType == "List"){ 
+                if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
+                    this->cdrVal = ((LIST_SXP *)cdrVal)->carVal;}
+            }
+            this->isCons = src.isCons;
+        }
+
+        LIST_SXP &operator= (const LIST_SXP &src) {
+            this->type = src.type;
+            this->carVal = src.carVal;
+            this->cdrVal = src.cdrVal;
+            string cdrType = cdrVal->type;
+            if (cdrType == "List"){ 
+                if ( ((LIST_SXP *)cdrVal)->carVal->type == "List" && ((LIST_SXP *)cdrVal)->cdrVal->type == "()"  ) {
+                    this->cdrVal = ((LIST_SXP *)cdrVal)->carVal;}
+            }
+            this->isCons = src.isCons;
+            return *this;
         }
 
         // Combine list into a string
@@ -185,6 +245,17 @@ class VALEXP: public EXP {
             this->sxp = sxp;
             this->name = "valexp";
         }
+
+        VALEXP(const VALEXP &src){
+            this->name = src.name;
+            this->sxp = src.sxp;
+        }
+
+        VALEXP &operator= (const VALEXP &src) {
+            this->name = src.name;
+            this->sxp = src.sxp;
+            return *this;
+        }
 };
 
 // Variable Expression Class: contains the name of some variable
@@ -194,6 +265,17 @@ class VAREXP: public EXP {
         VAREXP(string varble) {
             this->varble = varble;
             this->name = "varexp";
+        }
+
+        VAREXP(const VAREXP &src){
+            this->name = src.name;
+            this->varble = src.varble;
+        }
+
+        VAREXP &operator= (const VAREXP &src) {
+            this->name = src.name;
+            this->varble = src.varble;
+            return *this;
         }
 };
 
@@ -205,6 +287,17 @@ class STREXP: public EXP {
         STREXP(string strVal){
             this->name = "strexp";
             this->strVal = strVal;
+        }
+
+        STREXP(const STREXP &src){
+            this->name = src.name;
+            this->strVal = src.strVal;
+        }
+
+        STREXP &operator= (const STREXP &src) {
+            this->name = src.name;
+            this->strVal = src.strVal;
+            return *this;
         }
 };
 
@@ -260,6 +353,19 @@ class APEXP: public EXP {
             this->op = op;
             this->args = args;
             this->name = "apexp";
+        }
+
+        APEXP(const APEXP &src){
+            this->op = src.op;
+            this->args = src.args;
+            this->name = src.name;
+        }
+
+        APEXP &operator= (const APEXP &src) {
+            this->op = src.op;
+            this->args = src.args;
+            this->name = src.name;
+            return *this;
         }
 };
 
@@ -409,6 +515,19 @@ class LIST_EXP: public S_EXP {
             this->type = "ExpList";
             this->car = car;
             this->cdr = cdr;
+        }
+
+        LIST_EXP(const LIST_EXP &src){
+            this->type = src.type;
+            this->car = src.car;
+            this->cdr = src.cdr;
+        }
+
+        LIST_EXP &operator= (const LIST_EXP &src) {
+            this->type = src.type;
+            this->car = src.car;
+            this->cdr = src.cdr;
+            return *this;
         }
 };
 

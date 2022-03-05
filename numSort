@@ -1,4 +1,4 @@
-(define getMax (a) (begin
+(define getMax (a) (if (list? a) (begin
     (set max (car a))
     (set list a)
     (while (notnull? (cdr list)) (begin
@@ -7,17 +7,48 @@
     ))
     (if (> (car list) max) (set max (car list)) ())
     max
+) a ))
+
+(define reverse (a) (begin
+    (set temp a)
+    (set b (car a))
+    (while (notnull? (cdr temp)) (begin
+        (set temp (cdr temp))
+        (set b ((car temp) b))
+    ))
+    b
 ))
 
-(define reverse (a)
+(define remove (a b) (if (list? a) (begin
+    (set temp a)
+    (set newList (car a))
+    (while (notnull? (cdr temp)) (begin
+        (set temp (cdr temp))
+        (if (= (car temp) b) () (begin
+        (set newList ((car temp) newList))
+        ))
+    ))
+    (if (= (car a) b) (set newList (cdr a)) ())
+    newList
+) (if (= a b) () a)))
 
-)
+(define sort (a) (if (number? a) (a) (begin
+    (set list a)
+    (set max (getMax list))
+    (set newList max)
+    (set list (remove list max))
+    (while (notnull? list) (begin
+        (set max (getMax list))
+        (set newList (max newList))
+        (set list (remove list max))
+    ))
+    newList
+)))
 
-(print "what")
-
-(set b (1 2))
-(print b)
-(set b (remove b 2))
-(print b)
+(set b (3 7 489 29 94 9 84 9384 826 32 46 83 6 484))
 (set a (1 2 5 4 5 2))
 (getMax a)
+(set a (remove a 5))
+(print a)
+(set b (sort b))
+(print b)
