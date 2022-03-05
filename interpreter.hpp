@@ -418,19 +418,25 @@ class Interpreter {
             return result;
         }
 
+        // copyS_EXP: copies S_EXP so that existing values are not modified when a new expression is created, esp. for lists!
         S_EXP* copyS_EXP(S_EXP* expToCopy, ENV* rho) {
+            // if expression is null, return null
             if(expToCopy == NULL) {
                 return NULL;
             }
             S_EXP* newSEXP;
+            // check expression to copy's type
             if (expToCopy->type == "Symbol"){
+                // cast to SYM_SXP and create a new SYM_SXP
                 SYM_SXP* symSxpToCopy = (SYM_SXP*)expToCopy;
                 SYM_SXP* newSymSxp = new SYM_SXP(symSxpToCopy->symVal, symSxpToCopy->type2);
                 return (S_EXP*)newSymSxp;
             }
             else if (expToCopy->type == "Number"){
+                // cast to NUM_SXP and create a new NUM_SXP
                 NUM_SXP* numSxpToCopy = (NUM_SXP*)expToCopy;
                 NUM_SXP* newNumSxp;
+                // create either Integer or Float NUM_SXP
                 if(numSxpToCopy->type2 == "Integer") {
                     newNumSxp = new NUM_SXP(numSxpToCopy->intVal);
                 }
@@ -439,13 +445,14 @@ class Interpreter {
                 }
                 return (S_EXP*)newNumSxp;
             }
+            // cast to LIST_SXP and create a new LIST_SXP
             else if (expToCopy->type == "List"){
-                // cout << "";
                 LIST_SXP* listSxpToCopy = (LIST_SXP*)expToCopy;
                 LIST_SXP* newListSxp = new LIST_SXP(copyS_EXP(listSxpToCopy->carVal, rho), copyS_EXP(listSxpToCopy->cdrVal, rho), listSxpToCopy->isCons);
-                // evaluate var in last position
+                // check if symbol should be evaluated as a variable
                 if(newListSxp->carVal->type == "Symbol") {
                     string variable = (((SYM_SXP*)newListSxp->carVal)->symVal);
+                    // only evaluate if identifier, ignore string literals
                     if (((SYM_SXP*)newListSxp->carVal)->type2 == "Identifier") {
                         if (isBound(variable, rho)) {
                             newListSxp->carVal = fetch(variable, rho);
@@ -455,22 +462,16 @@ class Interpreter {
                         }
                     }
                 }
-                // if(newListSxp->carVal->type == "List") {
-                //     LIST_SXP *ptr = newListSxp;
-                //     while(ptr->cdrVal->type != "()") {
-                //         ptr = (LIST_SXP*)ptr->cdrVal;
-                //     }
-                //     ptr->cdrVal = newListSxp->cdrVal;
-                //     newListSxp->cdrVal = NULL;
-                // }
                 return (S_EXP*)newListSxp;
             }
+            // cast to LIST_EXP and create a new LIST_SXP
             else if (expToCopy->type == "ExpList"){
-                // cout << "";
                 LIST_EXP* listExpToCopy = (LIST_EXP*)expToCopy;
                 LIST_SXP* newListSxp = new LIST_SXP(eval(listExpToCopy->car, rho), copyS_EXP(listExpToCopy->cdr, rho), false);
+                // check if symbol should be evaluated as a variable
                 if(newListSxp->carVal->type == "Symbol") {
                     string variable = (((SYM_SXP*)newListSxp->carVal)->symVal);
+                    // only evaluate if identifier, ignore string literals
                     if (((SYM_SXP*)newListSxp->carVal)->type2 == "Identifier") {
                         if (isBound(variable, rho)) {
                             newListSxp->carVal = fetch(variable, rho);
@@ -483,8 +484,6 @@ class Interpreter {
                 return (S_EXP*)newListSxp;
             }
             else {
-                // S_EXP* sxpToCopy = (S_EXP*)sxpToCopy;
-                // S_EXP* newSxp = new S_EXP(sxpToCopy->type);
                 return expToCopy;
             }
         }
@@ -499,52 +498,10 @@ class Interpreter {
         S_EXP *eval(EXP *expression, ENV *rho) {
             Token op;
 
-            // if valexp, cast and return
+            // if valexp, cast, copy & evaluate, and return
             if (expression->name == "valexp") {
                 VALEXP* exp = (VALEXP*)expression;
                 return copyS_EXP(exp->sxp, rho);
-                // if it is a list, check if it needs to be evaluated
-                // if(exp->sxp->type == "List" || exp->sxp->type == "ExpList") {
-                    // if head node is an expression
-                    // if(exp->sxp->type == "ExpList") {
-                    //     LIST_EXP* listExpression = (LIST_EXP*)exp->sxp;
-                    //     S_EXP *newPtr = eval(listExpression->car, rho);
-                    //     LIST_SXP* newListNode = new LIST_SXP(newPtr, listExpression->cdr, false);
-                    //     exp->sxp = newListNode; // reassign head node with evaluated statement
-                    // }
-                    // loop through tail nodes and check for evaluation
-                    // LIST_SXP *ptr = (LIST_SXP*)exp->sxp;
-                    // while(ptr->cdrVal->type != "()") {
-                    //     LIST_EXP* listExpression = (LIST_EXP*)ptr->cdrVal;
-                    //     if(ptr->cdrVal->type == "ExpList") {
-                    //         S_EXP *newPtr = eval(listExpression->car, rho);
-                    //         LIST_SXP* newListNode = new LIST_SXP(newPtr, listExpression->cdr, false);
-                    //         ptr->cdrVal = newListNode; // reassign node with evaluated statement
-                    //     }
-                    //     // evaluate variable
-                    //     if(ptr->carVal->type == "Symbol") {
-                    //         string variable = (((SYM_SXP*)ptr->carVal)->symVal);
-                    //         if (isBound(variable, rho)) {
-                    //             ptr->carVal = fetch(variable, rho);
-                    //         }
-                    //         if (isBound(variable, globalEnv)) {
-                    //             ptr->carVal = fetch(variable, globalEnv);
-                    //         }
-                    //     }
-                    //     ptr = (LIST_SXP*)ptr->cdrVal;
-                    // }
-                    // // evaluate var in last position
-                    // if(ptr->carVal->type == "Symbol") {
-                    //     string variable = (((SYM_SXP*)ptr->carVal)->symVal);
-                    //     if (isBound(variable, rho)) {
-                    //         ptr->carVal = fetch(variable, rho);
-                    //     }
-                    //     if (isBound(variable, globalEnv)) {
-                    //         ptr->carVal = fetch(variable, globalEnv);
-                    //     }
-                    // }
-                // }
-                // return exp->sxp;
             }
 
             // if strexp (string literal), cast and return
@@ -569,6 +526,7 @@ class Interpreter {
             else if (expression->name == "apexp") {
                 APEXP* exp = (APEXP*)expression;
                 op = exp->op;
+                // check if operation token is item
                 if (op.getType() == IDENTIFIER) {
                     // check if it is a defined variable at beginning of list
                     if (isBound(op.getVal(), rho) || isBound(op.getVal(), globalEnv)) {
@@ -576,17 +534,20 @@ class Interpreter {
                         EXPLIST* ptr = exp->args;
                         LIST_EXP* headOfList = new LIST_EXP(head, NULL);
                         LIST_EXP* currentNode = headOfList;
+                        // append cdr of current node to end of existing list so the LIST_EXP's cdr values are not lost
                         while(ptr != NULL) {
                             LIST_EXP* nextNode = new LIST_EXP(ptr->head, NULL);
                             currentNode->cdr = (S_EXP*)nextNode;
                             currentNode = nextNode;
                             ptr = ptr->tail;
                         }
-                        currentNode->cdr = new S_EXP("()");
+                        currentNode->cdr = new S_EXP("()"); // end with nil
                         return eval(new VALEXP(headOfList), rho);
                     }
+                    // else it is a user function
                     return applyUserFun(op.getVal(), evalList(exp->args, rho));
                 }
+                // else it is a control or value operation
                 else {
                     if (op.getType() == IF || op.getType() == SET || op.getType() == WHILE || op.getType() == BEGIN) {
                         return applyCtrlOp(op, exp->args, rho);

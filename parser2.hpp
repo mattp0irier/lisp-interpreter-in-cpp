@@ -127,8 +127,6 @@ class Parser {
 
         // parseExp: creates an expression from tokens
         EXP *parseExp() {
-            // cout << "in parseExp with pos " << pos << endl;
-            // string nm;
             EXPLIST *el;
             int posOfToken;
             if (tokenList[pos].getType() == END_OF_FILE) {
