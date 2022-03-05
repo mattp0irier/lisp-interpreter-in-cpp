@@ -1,5 +1,0 @@
-(set b (1 2 3 4 5 6))
-(set a ((car b) (cdr b)))
-(print a)
-(print (car a))
-(print (cdr a))
