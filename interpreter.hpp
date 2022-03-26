@@ -363,6 +363,9 @@ class Interpreter {
                         LIST_SXP *concell = (LIST_SXP *)s1;
                         result = concell->carVal;
                     }
+                    else if (s1->type == "()") {
+                        result = nil;
+                    }
                     else
                         ERROR("car applied to non-list");
                     break;
@@ -371,6 +374,9 @@ class Interpreter {
                     if (s1->type == "List") {
                         LIST_SXP *concell = (LIST_SXP *)s1;
                         result = concell->cdrVal;
+                    }
+                    else if (s1->type == "()") {
+                        result = nil;
                     }
                     else
                         ERROR("cdr applied to non-list");
