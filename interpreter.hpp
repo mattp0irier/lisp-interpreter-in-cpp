@@ -382,7 +382,7 @@ class Interpreter {
                         ERROR("cdr applied to non-list");
                     break;
                 case IS_NULL:
-                    if (s1 == nil)
+                    if (s1->type == "()")
                         result = TRUE;
                     break;
                 case IS_NOT_NULL:
